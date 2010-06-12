@@ -1,0 +1,3 @@
+[submodule "clj-simple-dist"]
+	path = clj-simple-dist
+	url = git@github.com:schani/clj-simple-dist.git
