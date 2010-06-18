@@ -14,9 +14,10 @@
 				 (range n)))
 	      n {:l [n :l] :r :x-in})})
 
+(def key-gen-input [0,2,2,2,2,2,2,0,2,1,0,1,1,0,0,1,1])
 ; more or less the output of 
 ; perl -pe 'BEGIN{$x=0;}$_=lc $_;s/.*\#(\d+)([rl])(\d+)([rl]).*/$x\n{:l [$1 :$2] :r [$3 :$4]}/;$x++'
-(defn key-gen []
+(def key-gen-circuit  
   {:input [19 :l]
    :outputs {
 	     0
