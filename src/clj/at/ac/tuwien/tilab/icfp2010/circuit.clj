@@ -58,7 +58,6 @@
 (defn undef-inputs [circuit]
   (into {} (mapcat (fn [[gate outputs]]
 		     (mapcat (fn [[wire input]]
-			       (println {:gate gate :wire wire :input input})
 			       (if (or (= input :x-in) (not (wire-delayed? circuit gate wire)))
 				 []
 				 [[input :undef]]))
@@ -66,7 +65,7 @@
 		   (:outputs circuit))))
 
 (defn circuit-step [circuit inputs]
-    (loop [outputs (:outputs circuit)
+    (loop [outputs (sort-by key (:outputs circuit))
 	   inputs inputs
 	   delayed {}
 	   changed false]
