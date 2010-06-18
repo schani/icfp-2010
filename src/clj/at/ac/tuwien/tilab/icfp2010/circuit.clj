@@ -94,6 +94,32 @@
 		(recur (rest outputs) inputs** delayed** true)))
 	    (recur (rest outputs) inputs delayed changed))))))
 
+(defn input-index [input]
+  (if (= input :x-in)
+    0
+    (let [[gate wire] input]
+      (inc (+ (* gate 2) (if (= wire :l) 0 1))))))
+
+(defn preprocess-circuit [circuit]
+  (loop [outputs (sort-by key (:outputs circuit))
+	 code []]
+    (if (empty? outputs)
+      code
+      (let [gate (key (first outputs))
+	    gate-outputs (val (first outputs))]
+	(recur (rest outputs)
+	       (conj code [(input-index [gate :l]) (input-index [gate :r])
+			   (input-index (:l gate-outputs)) (input-index (:r gate-outputs))]))))))
+
+(defn preprocessed-step [code inputs]
+  (loop [code code
+	 inputs inputs]
+    (if (empty? code)
+      inputs
+      (let [[li ri lo ro] (first code)
+	    [l r] (gate-function (nth inputs li) (nth inputs ri))]
+	(recur (rest code) (assoc inputs lo l ro r))))))
+
 (defn simulate-circuit [circuit input-stream]
   (loop [input-stream input-stream
 	 last-inputs (undef-inputs circuit)
@@ -105,6 +131,18 @@
 	(recur (rest input-stream)
 	       delayed
 	       (conj output-stream (:x-in inputs)))))))
+
+(defn simulate-preprocessed [circuit input-stream]
+  (let [code (preprocess-circuit circuit)
+	in-index (input-index (:input circuit))
+	inputs (apply vector (repeat (inc (* (count (:outputs circuit)) 2)) 0))]
+    (loop [input-stream input-stream
+	   output-stream []
+	   inputs inputs]
+      (if (empty? input-stream)
+	output-stream
+	(let [new-inputs (preprocessed-step code (assoc inputs in-index (first input-stream)))]
+	  (recur (rest input-stream) (conj output-stream (nth new-inputs 0)) new-inputs))))))
 
 (defn input-output-string [io]
   (if (contains? #{:x-in :x-out} io)
