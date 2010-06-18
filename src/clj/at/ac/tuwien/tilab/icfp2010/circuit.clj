@@ -174,3 +174,29 @@
 	 (input-output-string (:x-in inputs)) "\n")))
 
 (def default-input [0 1 2 0 2 1 0 1 2 1 0 2 0 1 2 0 2])
+
+; parser follows
+
+(defn parse-connection [p]
+  (let [connection (re-seq #"[0-9]+|[LRX]" p)]
+    (if (= connection '("X"))
+      :x-in
+      [(Integer. (first connection)) (if (= "R" (second connection)) :r :l)])))
+
+(defn parse-gate [il ir k0 ol or]
+  {
+   :l (parse-connection ol)
+   :r (parse-connection or)
+   })
+
+(defn gates-parser [index result tokens]
+  (if (= 1 (count tokens))
+    result
+    (gates-parser (inc index) (assoc result index (apply parse-gate (first tokens))) (rest tokens))))
+
+(defn circuit-parser [circuit-string]
+  (let [tokens (split-at 1 (re-seq #"0#|[0-9]+[LR]|X" circuit-string))
+	head-token (ffirst tokens)
+	rest-tokens (partition-all 5 (first (rest tokens)))]
+    {:input (parse-connection head-token)
+     :outputs (gates-parser 0 {} rest-tokens)}))
