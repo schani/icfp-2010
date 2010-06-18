@@ -19,7 +19,5 @@
 	      (aset a (dec n) y)))
 	  (recur (inc i) res))))))
 
-	  )))
-
 (defn all-permutations [n]
   (heap [] (into-array (range n)) n))
