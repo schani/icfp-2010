@@ -1,16 +1,64 @@
 (ns at.ac.tuwien.tilab.icfp2010.search
   (:use at.ac.tuwien.tilab.icfp2010.circuit)
   (:import [at.ac.tuwien.tilab.icfp2010 Permuter IPermutationConsumer Simulator
-	    SimulationPermutationConsumer SearchSimulationConsumer ISimulationConsumer]))
+	    SimulationPermutationConsumer SearchSimulationConsumer ISimulationConsumer]
+	   [java.util Random]))
 
 (defn- int-arr [a]
   (into-array (. Integer TYPE) a))
 
-(defn search-circuits [n]
-  (let [print-simulation-consumer (reify
+(defn- java-simulate [n circuit input-index input-stream]
+  (doall (seq (Simulator/simulate n circuit input-index (int-arr input-stream)))))
+
+(defn search-circuits [n pred]
+  (let [results (atom [])
+	print-simulation-consumer (reify
 				   ISimulationConsumer
 				   (consumeSimulation [this n circuit input-index input-stream output-stream]
-						      (println {:circuit (doall (seq circuit)) :output (doall (seq output-stream))})))
+						      (let [output (apply vector output-stream)]
+							(when (pred n circuit input-index output)
+							  (swap! results conj {:circuit (apply vector circuit)
+									       :input-index input-index
+									       :output output})))))
 	search-simulation-consumer (SearchSimulationConsumer. (into-array [(int-arr the-key)]) print-simulation-consumer)
 	simulation-permutation-consumer (SimulationPermutationConsumer. n (int-arr default-input) search-simulation-consumer)]
-    (Permuter/permuteRange (inc (* n 2)) simulation-permutation-consumer)))
+    (Permuter/permuteRange (inc (* n 2)) simulation-permutation-consumer)
+    @results))
+
+(defn all-inputs [n]
+  (if (zero? n)
+    [[]]
+    (let [all-sub (all-inputs (dec n))]
+      (mapcat (fn [i]
+		(map #(conj % i)
+		     all-sub))
+	      [0 1 2]))))
+
+(defn random-inputs [n len]
+  (let [rand (Random.)]
+    (map (fn [x]
+	   (map (fn [i]
+		  (.nextInt rand 3))
+		(range len)))
+	 (range n))))
+
+(def all-inputs-6 (all-inputs 6))
+(def some-random-inputs (random-inputs 50 1000))
+
+(defn simple-gen? [n circuit input-index output]
+  (and (not (= (first output) 0))
+       (= (second output) 0)
+       (apply = (rest output))
+       (= (java-simulate n circuit input-index the-key) output)
+       (= (java-simulate n circuit input-index [2 1 2 0 2 0 1 2 2 0 1 1 0 1 1 1 0]) output)
+       (every? (fn [input]
+		 (let [result (java-simulate n circuit input-index input)]
+		   ;;(println result)
+		   (= result (take (count input) output))))
+	       all-inputs-6)
+       ;;(println "beidel")
+       (every? (fn [input]
+		 (let [result (java-simulate n circuit input-index input)]
+		   (and (= (take (count output) result) output)
+			(apply = (rest result)))))
+	       some-random-inputs)))
