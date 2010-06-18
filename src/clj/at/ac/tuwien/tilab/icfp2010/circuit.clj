@@ -1,5 +1,5 @@
 (ns at.ac.tuwien.tilab.icfp2010.circuit
-  )
+  (:use at.ac.tuwien.tilab.icfp2010.perms))
 
 (def sample-circuit
   {:input [0 :l]
@@ -212,3 +212,17 @@
 	 (input-output-string (:x-in inputs)) "\n")))
 
 (def default-input [0 1 2 0 2 1 0 1 2 1 0 2 0 1 2 0 2])
+
+(defn all-circuits [num-gates]
+  (let [num-inputs (inc (* num-gates 2))
+	inputs (conj (for [gate (range num-gates) wire [:l :r]] [gate wire]) :x-in)
+	perms (all-permutations num-inputs)]
+    (map (fn [perm]
+	   {:input (nth inputs (first perm))
+	    :outputs (into {} (map (fn [gate [l r]]
+				     [gate {:l (nth inputs l) :r (nth inputs r)}])
+				   (range num-gates)
+				   (partition 2 (rest perm))))})
+	 perms)))
+
+(def the-key [1 1 0 2 1 2 1 0 1 1 2 1 0 1 2 2 1])
