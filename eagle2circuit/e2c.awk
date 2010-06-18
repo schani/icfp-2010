@@ -16,24 +16,28 @@ function pin2stabe( pin ) {
 	enabled++
     else {
 	if (enabled) {
-	    # printf "connection from gate%s[%s] to gate%s[%s]\n", fromgate, fromconnector, togate, toconnector;
+	    printf "connection from gate%s[%s] to gate%s[%s]\n", fromgate, fromconnector, togate, toconnector;
 	    gate_con[fromgate,fromconnector] = sprintf( "%i%c", togate, pin2stabe(toconnector));
 	    gate_con[togate,toconnector] = sprintf( "%i%c", fromgate, pin2stabe(fromconnector));
 	    if (togate == "INPUT") {
+		print "AAA";
 		gate_con[fromgate,fromconnector] = "X";
-		inputgate = sprintf( "%i%c", togate, pin2stabe(toconnector));
+		inputgate = sprintf( "%i%c", fromgate, pin2stabe(fromconnector));
 	    }
 	    if (togate == "OUTPUT") {
+		print "BBB";
 		gate_con[fromgate,fromconnector] = "X";
-		outputgate = sprintf( "%i%c", togate, pin2stabe(toconnector));
+		outputgate = sprintf( "%i%c", fromgate, pin2stabe(fromconnector));
 	    }
 	    if (fromgate == "INPUT") {
+		print "CCC";
 		gate_con[togate,toconnector] = "X";
-		outputgate = sprintf( "%i%c", fromgate, pin2stabe(fromconnector));
+		inputgate = sprintf( "%i%c", togate, pin2stabe(toconnector));
 	    }
 	    if (fromgate == "OUTPUT") {
+		print "DDD";
 		gate_con[togate,toconnector] = "X";
-		outputgate = sprintf( "%i%c", fromgate, pin2stabe(fromconnector));
+		outputgate = sprintf( "%i%c", togate, pin2stabe(toconnector));
 	    }
 	    if (fromgate > maxgate)
 		maxgate = fromgate;
