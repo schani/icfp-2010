@@ -252,3 +252,6 @@
 	rest-tokens (partition-all 5 (first (rest tokens)))]
     {:input (parse-connection head-token)
      :outputs (gates-parser 0 {} rest-tokens)}))
+
+(defn circuit-from-file [filename]
+  (circuit-parser (slurp filename)))
