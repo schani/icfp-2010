@@ -6,6 +6,14 @@
    :outputs {0 {:r :x-in
 		:l [0 :r]}}})
 
+(defn grid-gen [n]
+  {:input [0 :r]
+   :outputs (assoc (into {} (map (fn [i]
+				   [i {:l [i :l]
+				       :r [(inc i) :r]}])
+				 (range n)))
+	      n {:l [n :l] :r :x-in})})
+
 (defn assign-input [inputs output input]
   (if (= :x-in input)
     (assoc inputs :x-in output)
