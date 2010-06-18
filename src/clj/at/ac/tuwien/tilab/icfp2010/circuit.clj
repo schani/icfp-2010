@@ -127,7 +127,7 @@
     (if (empty? input-stream)
       output-stream
       (let [[inputs delayed changed] (circuit-step circuit (assoc last-inputs (:input circuit) (first input-stream)))]
-	(println {:inputs inputs :delayed delayed :changed changed})
+	;;(println {:inputs inputs :delayed delayed :changed changed})
 	(recur (rest input-stream)
 	       delayed
 	       (conj output-stream (:x-in inputs)))))))
