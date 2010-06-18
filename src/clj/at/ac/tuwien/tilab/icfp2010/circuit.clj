@@ -14,6 +14,54 @@
 				 (range n)))
 	      n {:l [n :l] :r :x-in})})
 
+; more or less the output of 
+; perl -pe 'BEGIN{$x=0;}$_=lc $_;s/.*\#(\d+)([rl])(\d+)([rl]).*/$x\n{:l [$1 :$2] :r [$3 :$4]}/;$x++'
+(defn key-gen []
+  {:input [19 :l]
+   :outputs {
+	     0
+	     {:l [1 :r] :r [12 :r]}
+	     1
+	     {:l [4 :r] :r [9 :l]}
+	     2
+	     {:l [3 :l] :r [8 :l]}
+	     3
+	     {:l [5 :l] :r [9 :r]}
+	     4
+	     {:l [10 :r] :r [13 :r]}
+	     5
+	     {:l [6 :l] :r [15 :l]}
+	     6
+	     {:l [13 :l] :r [12 :l]}
+	     7
+	     {:l [11 :r] :r [8 :r]}
+	     8
+	     {:l [11 :l] :r [10 :l]}
+	     9
+	     {:l [18 :l] :r [2 :l]}
+	     10
+	     {:l [16 :l] :r [2 :r]}
+	     11
+	     {:l [15 :r] :r [6 :r]}
+	     12
+	     {:l [14 :l] :r [0 :l]}
+	     13
+	     {:l [14 :r] :r [0 :r]}
+	     14
+	     {:l [17 :l] :r [1 :l]}
+	     15
+	     {:l [16 :r] :r [4 :l]}
+	     16
+	     {:l [17 :r] :r [7 :r]}
+	     17
+	     {:l [18 :r] :r [3 :r]}
+	     18
+	     {:l [19 :r] :r [5 :r]}
+	     19
+	     {:l :x-in :r [7 :l]}}})
+  
+
+
 (defn assign-input [inputs output input]
   (if (= :x-in input)
     (assoc inputs :x-in output)
