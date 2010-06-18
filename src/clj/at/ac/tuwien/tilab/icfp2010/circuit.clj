@@ -16,7 +16,7 @@
 
 ; more or less the output of 
 ; perl -pe 'BEGIN{$x=0;}$_=lc $_;s/.*\#(\d+)([rl])(\d+)([rl]).*/$x\n{:l [$1 :$2] :r [$3 :$4]}/;$x++'
-(defn key-gen []
+(def key-gen
   {:input [19 :l]
    :outputs {
 	     0
@@ -59,8 +59,6 @@
 	     {:l [19 :r] :r [5 :r]}
 	     19
 	     {:l :x-in :r [7 :l]}}})
-  
-
 
 (defn assign-input [inputs output input]
   (if (= :x-in input)
