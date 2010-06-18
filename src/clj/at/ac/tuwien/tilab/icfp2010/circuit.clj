@@ -8,7 +8,7 @@
 
 (defn assign-input [inputs output input]
   (if (= :x-in input)
-    inputs
+    (assoc inputs :x-in output)
     (let [input-gate (first input)]
       (assoc inputs input-gate (assoc (inputs input-gate) (second input) output)))))
 
@@ -86,4 +86,23 @@
 	(println {:inputs inputs :delayed delayed :changed changed})
 	(recur (rest input-stream)
 	       delayed
-	       (conj output-stream (:x-in inputs))))))))
+	       (conj output-stream (:x-in inputs)))))))
+
+(defn input-output-string [io]
+  (if (contains? #{:x-in :x-out} io)
+    "X"
+    (let [[gate wire] io]
+      (str gate ({:l "L" :r "R"} wire)))))
+
+(defn circuit-string [circuit]
+  (let [inputs (gate-inputs circuit)]
+    (str (input-output-string (:input circuit)) ":\n"
+	 (apply str
+		(interpose ",\n"
+			   (map (fn [[gate output]]
+				  (let [gate-inputs (inputs gate)
+					[li ri lo ro] (map input-output-string [(:l gate-inputs) (:r gate-inputs)
+										(:l output) (:r output)])]
+				    (str li ri "0#" lo ro)))
+				(:outputs circuit)))) ":\n"
+	 (input-output-string (:x-in inputs)) "\n")))
