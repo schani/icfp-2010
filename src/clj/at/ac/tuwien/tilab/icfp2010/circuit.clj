@@ -26,20 +26,31 @@
 		     (assign-input [gate :r] (:r wires)))
 		 (rest outputs)))))))
 
+(def gate-table {[0 0] [0 2]
+		 [0 1] [2 2]
+		 [0 2] [1 2]
+		 [1 0] [1 2]
+		 [1 1] [0 0]
+		 [1 2] [2 1]
+		 [2 0] [2 2]
+		 [2 1] [1 1]
+		 [2 2] [0 0]})
+
 (defn gate-function [l r]
   (let [ln (if (= :undef l) 0 l)
-	rn (if (= :undef r) 0 1)]
-    [ln (mod (+ ln rn) 3)]))
+	rn (if (= :undef r) 0 r)]
+    (gate-table [ln rn])))
 
 (defn wire-delayed? [circuit gate wire]
   (let [output (((:outputs circuit) gate) wire)]
     (if (= :x-in output)
       false
-      (>= (first output) gate))))
+      (<= (first output) gate))))
 
 (defn undef-inputs [circuit]
   (into {} (mapcat (fn [[gate outputs]]
 		     (mapcat (fn [[wire input]]
+			       (println {:gate gate :wire wire :input input})
 			       (if (or (= input :x-in) (not (wire-delayed? circuit gate wire)))
 				 []
 				 [[input :undef]]))
@@ -104,5 +115,7 @@
 					[li ri lo ro] (map input-output-string [(:l gate-inputs) (:r gate-inputs)
 										(:l output) (:r output)])]
 				    (str li ri "0#" lo ro)))
-				(:outputs circuit)))) ":\n"
+				(sort-by key (:outputs circuit))))) ":\n"
 	 (input-output-string (:x-in inputs)) "\n")))
+
+(def default-input [0 1 2 0 2 1 0 1 2 1 0 2 0 1 2 0 2])
