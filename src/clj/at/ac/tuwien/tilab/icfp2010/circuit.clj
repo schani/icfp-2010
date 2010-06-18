@@ -26,9 +26,6 @@
 		     (assign-input [gate :r] (:r wires)))
 		 (rest outputs)))))))
 
-(defn lookup-input [gate wire circuit-inputs inputs]
-  (inputs ((circuit-inputs gate) wire)))
-
 (defn gate-function [l r]
   (let [ln (if (= :undef l) 0 l)
 	rn (if (= :undef r) 0 1)]
@@ -49,7 +46,7 @@
 			     outputs))
 		   (:outputs circuit))))
 
-(defn circuit-step [circuit circuit-inputs inputs]
+(defn circuit-step [circuit inputs]
     (loop [outputs (:outputs circuit)
 	   inputs inputs
 	   delayed {}
@@ -80,14 +77,13 @@
 	    (recur (rest outputs) inputs delayed changed))))))
 
 (defn simulate-circuit [circuit input-stream]
-  (let [circuit-inputs (gate-inputs circuit)]
-    (loop [input-stream input-stream
-	   last-inputs (undef-inputs circuit)
-	   output-stream []]
-      (if (empty? input-stream)
-	output-stream
-	(let [[inputs delayed changed] (circuit-step circuit circuit-inputs (assoc last-inputs (:input circuit) (first input-stream)))]
-	  (println {:inputs inputs :delayed delayed :changed changed})
-	  (recur (rest input-stream)
-		 delayed
-		 (conj output-stream (:x-in inputs))))))))
+  (loop [input-stream input-stream
+	 last-inputs (undef-inputs circuit)
+	 output-stream []]
+    (if (empty? input-stream)
+      output-stream
+      (let [[inputs delayed changed] (circuit-step circuit (assoc last-inputs (:input circuit) (first input-stream)))]
+	(println {:inputs inputs :delayed delayed :changed changed})
+	(recur (rest input-stream)
+	       delayed
+	       (conj output-stream (:x-in inputs))))))))
