@@ -173,7 +173,7 @@
     (if-not pcirc 
       {:input (un-input-index input-index) :outputs map}
       (let [[_ _ left right] (first pcirc)]
-	(recur (next pcirc) (dec index)
+	(recur (next pcirc) (inc index)
 	       (assoc map index {:l (un-input-index left)
 				 :r (un-input-index right)}))))))
 
