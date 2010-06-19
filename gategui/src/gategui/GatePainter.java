@@ -31,7 +31,6 @@ public class GatePainter extends JPanel {
     int inputLineGoesToGateNr = -1;
     int outputLineGoesToGateNr = -1;
 
-
     public enum Quadrant {
 
         TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT
@@ -140,31 +139,43 @@ public class GatePainter extends JPanel {
     void exportGatesToTextField() {
         Gate[] gatesArr = gates.toArray(new Gate[0]);
         StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%d%c:%n", inputLineGoesToGateNr,
+                (gatesArr[inputLineGoesToGateNr].inL == INPUT_LINE) ? 'L' : 'R'));
         for (int i = 0; i < gatesArr.length; i++) {
             if (frame.lineNrsCheckBox.isSelected()) {
                 sb.append(i + ": "); // linenr
             }
+
             Gate gate = gatesArr[i];
             if (gate.inL != -1) {
-
                 sb.append(String.format("%d%c", gate.inL, gate.inLc));
             }
             if (gate.inR != -1) {
-                sb.append(gate.inR + gate.inRc);
+                sb.append(String.format("%d%c", gate.inR, gate.inRc));
             }
             if ((gate.inL != -1) || (gate.inR != -1) || (gate.outL != -1) || (gate.outR != -1)) {
                 sb.append("0#");
             }
             if (gate.outL != -1) {
-                sb.append(gate.outL + gate.outLc);
+                sb.append(String.format("%d%c", gate.outL, gate.outLc));
             }
             if (gate.outR != -1) {
-                sb.append(gate.outR + gate.outRc);
+                sb.append(String.format("%d%c", gate.outR, gate.outRc));
             }
-            sb.append("\n");
+            sb.append(",\n");
+
         }
 
-        frame.jTextArea1.setText(sb.toString());
+        sb.replace(sb.lastIndexOf(","), sb.length(), ":\n");
+
+        sb.append(String.format("%d%c%n", outputLineGoesToGateNr,
+                (gatesArr[outputLineGoesToGateNr].inL == INPUT_LINE) ? 'L' : 'R'));
+        // encode input and output as 'X'
+        String str = sb.toString();
+        str = str.replace("-1000I", "X");
+        str = str.replace("-2000O", "X");
+
+        frame.jTextArea1.setText(str);
     }
 
     class GateMouseListener implements MouseListener {
