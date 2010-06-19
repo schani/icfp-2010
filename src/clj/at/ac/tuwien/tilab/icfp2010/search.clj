@@ -119,12 +119,33 @@
 		       (apply = s)))]
     (check-solution (fn [input output] (proper? output)))))
 
+(defn delay-add-stream [s n]
+  (map #(mod (+ % n) 3)
+       (take (count s) (concat [0] s))))
+
+(defn is-delay-adder? [n]
+  (check-solution (fn [input result]
+		    (= result (delay-add-stream input n)))))
+
+(defn delay-double-add-stream [s a b]
+  (take (count s)
+	(map (fn [x y z] (mod (+ x y z) 3))
+	     (concat [0] s)
+	     (repeat a)
+	     (concat [0] (repeat b)))))
+
+(defn is-delay-double-adder? [a b]
+  (check-solution (fn [input result]
+		    (= result (delay-double-add-stream input a b)))))
+
 (defn decode-wish [name arg]
   (case name
 	'incrementer [(is-incrementer? arg) [(increment-stream default-input arg)]]
-	'constant [(is-constant-x? arg) []]))
+	'constant [(is-constant-x? arg) []]
+	'delay-add [(is-delay-adder? arg) [(delay-add-stream default-input arg)]]
+	'delay-double-add [(is-delay-double-adder? (first arg) (second arg)) [(delay-double-add-stream default-input (first arg) (second arg))]]))
 
-(vsc-fn search-wish-with-prefix 1 [n prefix name arg]
+(vsc-fn search-wish-with-prefix 2 [n prefix name arg]
 	(let [[pred outputs] (decode-wish name arg)]
 	  (search-circuits-with-prefix n outputs prefix pred)))
 
