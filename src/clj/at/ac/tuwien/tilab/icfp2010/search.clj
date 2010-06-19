@@ -107,16 +107,28 @@
 		   (= result (increment-stream input))))
 	       all-inputs-6)))
 
-(defn is-constant-1? [n circuit input-index output]
-  (let [proper? (fn [s]
-		  (and (= (first s) 2)
-		       (apply = s)))]
-    (and (proper? output)
-	 (every? (fn [input]
-		   (let [result (java-simulate n circuit input-index input)]
-		     (proper? result)))
-		 all-inputs-6)
-	 (every? (fn [input]
-		   (let [result (java-simulate n circuit input-index input)]
-		     (proper? result)))
-		 some-random-inputs))))
+(defn is-identity? [n circuit input-index output]
+  (and (= output default-input)
+       (every? (fn [input]
+		 (let [result (java-simulate n circuit input-index input)]
+		   (= result input)))
+	       all-inputs-6)
+       (every? (fn [input]
+		 (let [result (java-simulate n circuit input-index input)]
+		   (= result input)))
+	       some-random-inputs)))
+
+(defn is-constant-x? [x]
+  (fn [n circuit input-index output]
+    (let [proper? (fn [s]
+		    (and (= (first s) x)
+			 (apply = s)))]
+      (and (proper? output)
+	   (every? (fn [input]
+		     (let [result (java-simulate n circuit input-index input)]
+		       (proper? result)))
+		   all-inputs-6)
+	   (every? (fn [input]
+		     (let [result (java-simulate n circuit input-index input)]
+		       (proper? result)))
+		   some-random-inputs)))))
