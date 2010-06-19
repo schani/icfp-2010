@@ -1,7 +1,7 @@
 (ns at.ac.tuwien.tilab.icfp2010.search
   (:use at.ac.tuwien.tilab.icfp2010.circuit)
   (:import [at.ac.tuwien.tilab.icfp2010 Permuter IPermutationConsumer Simulator
-	    SimulationPermutationConsumer SearchSimulationConsumer ISimulationConsumer]
+	    SimulationPermutationConsumer SearchSimulationConsumer ISimulationConsumer PrefixPermutationConsumer]
 	   [java.util Random]))
 
 (defn- int-arr [a]
@@ -10,18 +10,40 @@
 (defn- java-simulate [n circuit input-index input-stream]
   (doall (seq (Simulator/simulate n circuit input-index (int-arr input-stream)))))
 
-(defn search-circuits [n pred]
-  (let [results (atom [])
-	print-simulation-consumer (reify
+(defn all-subpermutations [n coll]
+  (if (zero? n)
+    [[]]
+    (mapcat (fn [x]
+	      (map #(conj % x)
+		   (all-subpermutations (dec n) (remove #(= % x) coll))))
+	    coll)))
+
+(defn search-prefixes [num-gates len]
+  (all-subpermutations len (range (inc (* num-gates 2)))))
+
+(defn make-simulation-permutation-consumer [n pred results-atom]
+  (let [print-simulation-consumer (reify
 				   ISimulationConsumer
 				   (consumeSimulation [this n circuit input-index input-stream output-stream]
 						      (let [output (apply vector output-stream)]
 							(when (pred n circuit input-index output)
-							  (swap! results conj {:circuit (apply vector circuit)
-									       :input-index input-index
-									       :output output})))))
-	search-simulation-consumer (SearchSimulationConsumer. (into-array [(int-arr the-key)]) print-simulation-consumer)
-	simulation-permutation-consumer (SimulationPermutationConsumer. n (int-arr default-input) search-simulation-consumer)]
+							  (swap! results-atom conj {:circuit (apply vector circuit)
+										    :input-index input-index
+										    :output output})))))
+	search-simulation-consumer (SearchSimulationConsumer. (into-array [(int-arr the-key)]) print-simulation-consumer)]
+    (SimulationPermutationConsumer. n (int-arr default-input) search-simulation-consumer)))
+
+(defn search-circuits-with-prefix [n prefix pred]
+  (let [rest-seq (remove (fn [x] (some #(= % x) prefix)) (range (inc (* n 2))))
+	results (atom [])
+	simulation-permutation-consumer (make-simulation-permutation-consumer n pred results)
+	prefix-permutation-consumer (PrefixPermutationConsumer. (int-arr prefix) simulation-permutation-consumer)]
+    (Permuter/permuteArray (int-arr rest-seq) prefix-permutation-consumer)
+    @results))
+
+(defn search-circuits [n pred]
+  (let [results (atom [])
+	simulation-permutation-consumer (make-simulation-permutation-consumer n pred results)]
     (Permuter/permuteRange (inc (* n 2)) simulation-permutation-consumer)
     @results))
 
