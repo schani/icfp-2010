@@ -1,0 +1,15 @@
+#!/bin/bash
+
+[ -f $1 ] || {
+	file not found: $1
+	exit 1
+}
+IFIBASE=${1%.*}
+
+awk -f c2g.awk < $1 > $IFIBASE.dot && {
+	dot -Tps -o $IFIBASE.eps $IFIBASE.dot
+	dot -Tsvg -o $IFIBASE.svg $IFIBASE.dot
+}
+
+exit 0
+

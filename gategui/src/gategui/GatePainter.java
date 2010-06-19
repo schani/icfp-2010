@@ -20,10 +20,17 @@ public class GatePainter extends JPanel {
 
     final static int GATE_WIDTH = 80;
     final static int GATE_HEIGHT = 50;
+    final static int INPUT_LINE = -1000;
+    final static int OUTPUT_LINE = -2000;
     ArrayList<Gate> gates = new ArrayList<Gate>();
     Gate lastSelectedGate = null;
     Quadrant lastSelectedQuadrant = null;
     private final GateFrame frame;
+    boolean inputLineDefinitionMode = false;
+    boolean outputLineDefinitionMode = false;
+    int inputLineGoesToGateNr = -1;
+    int outputLineGoesToGateNr = -1;
+
 
     public enum Quadrant {
 
@@ -61,16 +68,16 @@ public class GatePainter extends JPanel {
 
             g2.setColor(Color.blue);
             if (gate.inL != -1) {
-                g2.drawString(gate.inL + ""+gate.inLc, (int) rect.getX() - 20, (int) rect.getY() + 10);
+                g2.drawString(gate.inL + "" + gate.inLc, (int) rect.getX() - 20, (int) rect.getY() + 10);
             }
             if (gate.inR != -1) {
-                g2.drawString(gate.inR + ""+gate.inRc, (int) rect.getX() - 20, (int) rect.getY() + GATE_HEIGHT - 10);
+                g2.drawString(gate.inR + "" + gate.inRc, (int) rect.getX() - 20, (int) rect.getY() + GATE_HEIGHT - 10);
             }
             if (gate.outL != -1) {
-                g2.drawString(gate.outL + ""+gate.outLc, (int) rect.getX() + GATE_WIDTH + 10, (int) rect.getY() + 10);
+                g2.drawString(gate.outL + "" + gate.outLc, (int) rect.getX() + GATE_WIDTH + 10, (int) rect.getY() + 10);
             }
             if (gate.outR != -1) {
-                g2.drawString(gate.outR + ""+gate.outRc, (int) rect.getX() + GATE_WIDTH + 10, (int) rect.getY() + GATE_HEIGHT - 10);
+                g2.drawString(gate.outR + "" + gate.outRc, (int) rect.getX() + GATE_WIDTH + 10, (int) rect.getY() + GATE_HEIGHT - 10);
             }
 
             // gateNr label
@@ -79,7 +86,7 @@ public class GatePainter extends JPanel {
 
             g2.setColor(Color.blue);
             g2.setStroke(new BasicStroke(2));
-            if (gate.outL != -1) {
+            if (gate.outL >= 0) {
                 Gate gate2 = gates.get(gate.outL);
                 CubicCurve2D c = new CubicCurve2D.Double();
                 float y2 = (float) ((gate2.inLc == 'L') ? gate2.getTopLeft().getY() : gate2.getBottomLeft().getY());
@@ -89,7 +96,7 @@ public class GatePainter extends JPanel {
                         gate2.rect.x, y2);
                 g2.draw(c);
             }
-            if (gate.outR != -1) {
+            if (gate.outR >= 0) {
                 Gate gate2 = gates.get(gate.outR);
                 CubicCurve2D c = new CubicCurve2D.Double();
                 float y2 = (float) ((gate2.outRc == 'L') ? gate2.getTopLeft().getY() : gate2.getBottomLeft().getY());
@@ -184,6 +191,45 @@ public class GatePainter extends JPanel {
                 }
             }
 
+            // input definition mode
+            if ((inputLineDefinitionMode || outputLineDefinitionMode) && gate != null) {
+                Quadrant quad = getQuadrantByPosition(gate, e.getX(), e.getY());
+                int gateNr = gates.indexOf(gate);
+
+                int line; // in or out
+                if (inputLineDefinitionMode) {
+                    line = INPUT_LINE;
+                    inputLineGoesToGateNr = gateNr;
+
+                } else {
+                    line = OUTPUT_LINE;
+                    outputLineGoesToGateNr = gateNr;
+                }
+                char lineC = (inputLineDefinitionMode) ? 'I' : 'O';
+                switch (quad) {
+                    case TOPRIGHT:
+                        gate.outL = line;
+                        gate.outLc = lineC;
+                        break;
+                    case BOTTOMRIGHT:
+                        gate.outR = line;
+                        gate.outRc = lineC;
+                        break;
+                    case TOPLEFT:
+                        gate.inL = line;
+                        gate.inLc = lineC;
+                        break;
+                    case BOTTOMLEFT:
+                        gate.inR = line;
+                        gate.inRc = lineC;
+                        break;
+                }
+                inputLineDefinitionMode = false;
+                outputLineDefinitionMode = false;
+                repaint(500);
+                return;
+            }
+
             // connection mode
             if (gate != null) {
                 if (lastSelectedGate == null) { // first gate
@@ -201,38 +247,37 @@ public class GatePainter extends JPanel {
                     switch (quad1) {
                         case TOPRIGHT:
                             gate1.outL = nrOfGate2;
-                            gate1.outLc = ((quad2==Quadrant.TOPLEFT)?'L':'R');
+                            gate1.outLc = ((quad2 == Quadrant.TOPLEFT) ? 'L' : 'R');
                             break;
                         case BOTTOMRIGHT:
                             gate1.outR = nrOfGate2;
-                            gate1.outRc = ((quad2==Quadrant.TOPLEFT)?'L':'R');
+                            gate1.outRc = ((quad2 == Quadrant.TOPLEFT) ? 'L' : 'R');
                             break;
                         case TOPLEFT:
                             gate1.inL = nrOfGate2;
-                            gate1.inLc = ((quad2==Quadrant.TOPRIGHT)?'L':'R');
+                            gate1.inLc = ((quad2 == Quadrant.TOPRIGHT) ? 'L' : 'R');
                             break;
                         case BOTTOMLEFT:
                             gate1.inR = nrOfGate2;
-                            gate1.inRc = ((quad2==Quadrant.TOPRIGHT)?'L':'R');
+                            gate1.inRc = ((quad2 == Quadrant.TOPRIGHT) ? 'L' : 'R');
                             break;
                     }
                     switch (quad2) {
                         case TOPRIGHT:
                             gate2.outL = nrOfGate1;
-                            gate2.outLc = ((quad1==Quadrant.TOPLEFT)?'L':'R');
+                            gate2.outLc = ((quad1 == Quadrant.TOPLEFT) ? 'L' : 'R');
                             break;
                         case BOTTOMRIGHT:
                             gate2.outR = nrOfGate1;
-                            gate2.outRc = ((quad1==Quadrant.TOPLEFT)?'L':'R');
+                            gate2.outRc = ((quad1 == Quadrant.TOPLEFT) ? 'L' : 'R');
                             break;
                         case TOPLEFT:
                             gate2.inL = nrOfGate1;
-                            gate2.inLc = ((quad1==Quadrant.TOPRIGHT)?'L':'R');
+                            gate2.inLc = ((quad1 == Quadrant.TOPRIGHT) ? 'L' : 'R');
                             break;
                         case BOTTOMLEFT:
                             gate2.inR = nrOfGate1;
-                            gate2.inRc = ((quad1==Quadrant.TOPRIGHT)?'L':'R');
-                            System.out.println("tmptmp");
+                            gate2.inRc = ((quad1 == Quadrant.TOPRIGHT) ? 'L' : 'R');
                             break;
                     }
                     lastSelectedGate = null;

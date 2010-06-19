@@ -29,6 +29,20 @@ if ($mode eq "car") {
     } else {
 		($car, $fuel) = (@ARGV, "4R:1L3L0#5L1R,2L0R0#0L3R,5R3R0#1L4L,4R1R0#0R2R,2RX0#5R3L,0L4L0#X2L:5L");
 	}
+	
+	# Replace CMDLINE with STDIN if requested
+	if ($car eq "-") {
+		$car = <STDIN>;
+		chomp $car;
+	}
+	if ($fuel eq "-") {
+		$fuel = "";
+		while (<STDIN>) { $fuel .= $_ }
+	}
+
+	# Test Input
+	die "Invalid car" unless $car =~ /^[012]+$/;
+	die "Invalid fuel" unless $fuel =~ /^[0-9LRlr:,Xx\#\n]+$/m;
 
 	# GET the car form, renew login if necessary
     while (1) {
