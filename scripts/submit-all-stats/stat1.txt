@@ -1,0 +1,273 @@
+error, carid=15253, fuel not matching
+success, carid=15188, size=57
+success, carid=15168, size=57
+error, carid=15164, fuel not matching
+success, carid=15077, size=57
+error, carid=13252, fuel not matching
+error, carid=13232, fuel not matching
+error, carid=13204, fuel not matching
+error, carid=13129, fuel not matching
+error, carid=13108, fuel not matching
+error, carid=13046, fuel not matching
+error, carid=13035, fuel not matching
+error, carid=13016, fuel not matching
+error, carid=13010, fuel not matching
+error, carid=13003, fuel not matching
+error, carid=12881, fuel not matching
+error, carid=12850, fuel not matching
+error, carid=12844, fuel not matching
+error, carid=12840, fuel not matching
+error, carid=12830, fuel not matching
+error, carid=12816, fuel not matching
+error, carid=12797, fuel not matching
+error, carid=12793, fuel not matching
+error, carid=12785, fuel not matching
+error, carid=12776, fuel not matching
+error, carid=12129, fuel not matching
+error, carid=12116, fuel not matching
+error, carid=12072, fuel not matching
+error, carid=12053, fuel not matching
+error, carid=12034, fuel not matching
+success, carid=12030, size=57
+error, carid=11964, fuel not matching
+success, carid=11893, size=57
+success, carid=11887, size=57
+success, carid=11866, size=57
+error, carid=11860, fuel not matching
+error, carid=11810, fuel not matching
+error, carid=11772, fuel not matching
+error, carid=11756, fuel not matching
+error, carid=11156, fuel not matching
+success, carid=11083, size=57
+success, carid=11045, size=57
+error, carid=10656, fuel not matching
+error, carid=10544, fuel not matching
+error, carid=10486, fuel not matching
+error, carid=10463, fuel not matching
+success, carid=10431, size=57
+success, carid=10404, size=57
+error, carid=10317, fuel not matching
+error, carid=10255, fuel not matching
+error, carid=10220, fuel not matching
+error, carid=10134, fuel not matching
+success, carid=10103, size=57
+success, carid=10094, size=57
+success, carid=10086, size=57
+error, carid=10060, fuel not matching
+error, carid=10047, fuel not matching
+error, carid=9987, fuel not matching
+error, carid=9748, fuel not matching
+success, carid=9577, size=57
+success, carid=9559, size=57
+success, carid=9480, size=57
+success, carid=9258, size=57
+error, carid=5310, fuel not matching
+error, carid=5293, fuel not matching
+error, carid=5231, fuel not matching
+error, carid=5224, fuel not matching
+error, carid=5162, fuel not matching
+error, carid=5157, fuel not matching
+error, carid=5151, fuel not matching
+error, carid=5145, fuel not matching
+error, carid=5138, fuel not matching
+error, carid=5130, fuel not matching
+error, carid=5109, fuel not matching
+error, carid=5076, fuel not matching
+error, carid=5011, fuel not matching
+error, carid=4991, fuel not matching
+error, carid=4979, fuel not matching
+error, carid=4970, fuel not matching
+error, carid=4964, fuel not matching
+error, carid=4953, fuel not matching
+error, carid=4951, fuel not matching
+error, carid=4943, fuel not matching
+error, carid=4938, fuel not matching
+error, carid=4934, fuel not matching
+error, carid=4920, fuel not matching
+error, carid=4893, fuel not matching
+error, carid=4854, fuel not matching
+error, carid=4847, fuel not matching
+error, carid=4840, fuel not matching
+error, carid=4827, fuel not matching
+error, carid=4824, fuel not matching
+error, carid=4819, fuel not matching
+error, carid=4816, fuel not matching
+success, carid=4791, size=57
+success, carid=4731, size=57
+success, carid=4619, size=57
+success, carid=4552, size=57
+success, carid=4528, size=57
+success, carid=4522, size=57
+success, carid=4507, size=57
+error, carid=4487, fuel not matching
+error, carid=4484, fuel not matching
+success, carid=4454, size=57
+error, carid=4438, fuel not matching
+error, carid=4432, fuel not matching
+error, carid=4412, fuel not matching
+error, carid=4374, fuel not matching
+error, carid=4314, fuel not matching
+error, carid=4282, fuel not matching
+error, carid=4248, fuel not matching
+error, carid=4220, fuel not matching
+error, carid=4206, fuel not matching
+error, carid=4202, fuel not matching
+error, carid=4200, fuel not matching
+error, carid=4196, fuel not matching
+error, carid=4190, fuel not matching
+error, carid=4181, fuel not matching
+error, carid=4157, fuel not matching
+error, carid=4141, fuel not matching
+error, carid=4125, fuel not matching
+error, carid=4106, fuel not matching
+error, carid=4074, fuel not matching
+error, carid=4057, fuel not matching
+error, carid=4051, fuel not matching
+error, carid=4046, fuel not matching
+error, carid=4044, fuel not matching
+error, carid=4040, fuel not matching
+error, carid=4036, fuel not matching
+error, carid=4029, fuel not matching
+error, carid=4017, fuel not matching
+error, carid=4014, fuel not matching
+error, carid=4009, fuel not matching
+error, carid=4007, fuel not matching
+error, carid=4002, fuel not matching
+error, carid=4000, fuel not matching
+error, carid=3995, fuel not matching
+error, carid=3989, fuel not matching
+success, carid=3986, size=57
+error, carid=3975, fuel not matching
+error, carid=3969, fuel not matching
+error, carid=3941, fuel not matching
+error, carid=3939, fuel not matching
+error, carid=3937, fuel not matching
+error, carid=3932, fuel not matching
+error, carid=3930, fuel not matching
+error, carid=3927, fuel not matching
+error, carid=3925, fuel not matching
+error, carid=3916, fuel not matching
+error, carid=3865, fuel not matching
+error, carid=3861, fuel not matching
+error, carid=3856, fuel not matching
+error, carid=3842, fuel not matching
+error, carid=3831, fuel not matching
+error, carid=3820, fuel not matching
+error, carid=3817, fuel not matching
+error, carid=3815, fuel not matching
+error, carid=3811, fuel not matching
+error, carid=3808, fuel not matching
+error, carid=3786, fuel not matching
+success, carid=3778, size=57
+error, carid=3770, fuel not matching
+error, carid=3762, fuel not matching
+error, carid=3746, fuel not matching
+error, carid=3734, fuel not matching
+error, carid=3729, fuel not matching
+error, carid=3726, fuel not matching
+error, carid=3720, fuel not matching
+error, carid=3715, fuel not matching
+error, carid=3705, fuel not matching
+error, carid=3680, fuel not matching
+error, carid=3670, fuel not matching
+error, carid=3666, fuel not matching
+error, carid=3661, fuel not matching
+error, carid=3658, fuel not matching
+error, carid=3633, fuel not matching
+error, carid=3630, fuel not matching
+error, carid=3626, fuel not matching
+error, carid=3615, fuel not matching
+error, carid=3610, fuel not matching
+error, carid=3608, fuel not matching
+error, carid=3606, fuel not matching
+error, carid=3589, fuel not matching
+error, carid=3562, fuel not matching
+error, carid=3533, fuel not matching
+error, carid=3529, fuel not matching
+error, carid=3519, fuel not matching
+error, carid=3498, fuel not matching
+error, carid=3470, fuel not matching
+error, carid=3467, fuel not matching
+error, carid=3465, fuel not matching
+error, carid=3460, fuel not matching
+error, carid=3450, fuel not matching
+error, carid=3385, fuel not matching
+error, carid=3336, fuel not matching
+error, carid=3283, fuel not matching
+error, carid=3270, fuel not matching
+error, carid=3268, fuel not matching
+error, carid=3227, fuel not matching
+success, carid=3211, size=57
+success, carid=3049, size=57
+success, carid=3044, size=57
+success, carid=3039, size=57
+success, carid=3032, size=57
+success, carid=3028, size=57
+success, carid=2992, size=57
+error, carid=2912, fuel not matching
+success, carid=2888, size=57
+success, carid=2886, size=57
+success, carid=2884, size=57
+success, carid=2881, size=57
+success, carid=2878, size=57
+error, carid=2875, fuel not matching
+error, carid=2869, fuel not matching
+error, carid=2864, fuel not matching
+success, carid=2801, size=57
+success, carid=2795, size=57
+success, carid=2785, size=57
+success, carid=2782, size=57
+success, carid=2780, size=57
+success, carid=2778, size=57
+success, carid=2776, size=57
+error, carid=2774, fuel not matching
+success, carid=2772, size=57
+success, carid=2770, size=57
+success, carid=2767, size=57
+success, carid=2765, size=57
+error, carid=2763, fuel not matching
+success, carid=2761, size=57
+success, carid=2759, size=57
+error, carid=2756, fuel not matching
+success, carid=2754, size=57
+success, carid=2752, size=57
+error, carid=2750, fuel not matching
+success, carid=2748, size=57
+success, carid=2745, size=57
+error, carid=2738, fuel not matching
+error, carid=2735, fuel not matching
+error, carid=2733, fuel not matching
+error, carid=2731, fuel not matching
+error, carid=2728, fuel not matching
+error, carid=2726, fuel not matching
+error, carid=2723, fuel not matching
+error, carid=2721, fuel not matching
+error, carid=2719, fuel not matching
+error, carid=2717, fuel not matching
+error, carid=2715, fuel not matching
+error, carid=2713, fuel not matching
+error, carid=2711, fuel not matching
+error, carid=2708, fuel not matching
+error, carid=2689, fuel not matching
+error, carid=2685, fuel not matching
+success, carid=2658, size=57
+success, carid=2655, size=57
+success, carid=2652, size=57
+success, carid=2650, size=57
+success, carid=2648, size=57
+success, carid=2646, size=57
+success, carid=2644, size=57
+success, carid=2641, size=57
+success, carid=2638, size=57
+success, carid=2634, size=57
+success, carid=2627, size=57
+success, carid=2625, size=57
+error, carid=2591, fuel not matching
+error, carid=2498, fuel not matching
+success, carid=2416, size=57
+error, carid=2386, fuel not matching
+error, carid=1728, fuel not matching
+error, carid=1726, fuel not matching
+error, carid=1187, fuel not matching
+error, carid=297, fuel not matching
+success, carid=219, size=57
