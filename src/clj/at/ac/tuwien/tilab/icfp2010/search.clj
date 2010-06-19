@@ -108,9 +108,8 @@
   (map #(mod (+ % n) 3) s))
 
 (defn is-incrementer? [x]
-  (let [default-input-increment ]
-    (check-solution (fn [input result]
-		      (= result (increment-stream input x))))))
+  (check-solution (fn [input result]
+		    (= result (increment-stream input x)))))
 
 (def is-identity? (check-solution =))
 
@@ -128,3 +127,24 @@
 (vsc-fn search-wish-with-prefix 1 [n prefix name arg]
 	(let [[pred outputs] (decode-wish name arg)]
 	  (search-circuits-with-prefix n outputs prefix pred)))
+
+(defn vsc-pmap [n f coll]
+  ([f coll]
+     (let [rets (map #(future (f %)) coll)
+	   step (fn step [[x & xs :as vs] fs]
+		  (lazy-seq
+		   (if-let [s (seq fs)]
+		     (cons (deref x) (step xs (rest s)))
+		     (map deref vs))))]
+       (step rets (drop n rets))))
+  ([f coll & colls]
+     (let [step (fn step [cs]
+		  (lazy-seq
+		   (let [ss (map seq cs)]
+		     (when (every? identity ss)
+		       (cons (map first ss) (step (map rest ss)))))))]
+       (vsc-pmap n #(apply f %) (step (cons coll colls))))))
+
+(defn vsc-search [n prefix-len name arg]
+  (let [prefixes (search-prefixes n prefix-len)]
+    (apply concat (vsc-map (max 1000 (count prefixes)) #(search-wish-with-prefix-vsc n % name arg) prefixes))))
