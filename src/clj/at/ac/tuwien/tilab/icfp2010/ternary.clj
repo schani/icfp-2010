@@ -9,8 +9,6 @@
       "222210100", "222210101", "222210102", "222210110", "222210111", "222210120", "222210121", "222210122", "222210200",
       "222210201", "222210202", "222210210", "222210211", "222210212", "222210220", "222210221", "222210222"])
 
-(defn number-to-ternary [n]
-  (str (ternary-prefix n) (pad-leading-zeros (positive-integer-to-string-with-radix (- n (ternary-offset n)) 3) (number-of-real-digits n) )))
 
 (defn number-of-real-digits [n]
   (. 
@@ -21,6 +19,10 @@
 
 (defn ternary-prefix [n]
   (nth prefixes (number-of-real-digits n)))
+
+(defn pad-leading-zeros [string zeros]
+  (str (apply str (repeat (- zeros (count string)) "0")) string))
+
 
 (defn ternary-offset [n]
   (.
@@ -42,8 +44,9 @@
 	   (/ (- n digit) radix)
 	   (str digit string)))))))
 
-(defn pad-leading-zeros [string zeros]
-  (str (apply str (repeat (- zeros (count string)) "0")) string))
+
+(defn number-to-ternary [n]
+  (str (ternary-prefix n) (pad-leading-zeros (positive-integer-to-string-with-radix (- n (ternary-offset n)) 3) (number-of-real-digits n) )))
 
 (defn ternary-to-number [string]
   (if (= string "0")
@@ -55,3 +58,6 @@
 	     (/ (dec (pow 3 prefix-index)) 2)))
 	  intValue)
 	 )))
+
+
+
