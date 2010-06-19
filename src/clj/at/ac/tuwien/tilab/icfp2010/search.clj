@@ -138,14 +138,27 @@
   (check-solution (fn [input result]
 		    (= result (delay-double-add-stream input a b)))))
 
+(defn delay-triple-add-stream [s a b c]
+  (take (count s)
+	(map (fn [w x y z] (mod (+ w x y z) 3))
+	     (concat [0 0] s)
+	     (repeat a)
+	     (concat [0] (repeat b))
+	     (concat [0 0] (repeat c)))))
+
+(defn is-delay-triple-adder? [a b c]
+  (check-solution (fn [input result]
+		    (= result (delay-triple-add-stream input a b c)))))
+
 (defn decode-wish [name arg]
   (case name
 	'incrementer [(is-incrementer? arg) [(increment-stream default-input arg)]]
 	'constant [(is-constant-x? arg) []]
 	'delay-add [(is-delay-adder? arg) [(delay-add-stream default-input arg)]]
-	'delay-double-add [(is-delay-double-adder? (first arg) (second arg)) [(delay-double-add-stream default-input (first arg) (second arg))]]))
+	'delay-double-add [(is-delay-double-adder? (first arg) (second arg)) [(delay-double-add-stream default-input (first arg) (second arg))]]
+	'delay-triple-add [(apply is-delay-triple-adder? arg) [(apply delay-triple-add-stream default-input arg)]]))
 
-(vsc-fn search-wish-with-prefix 2 [n prefix name arg]
+(vsc-fn search-wish-with-prefix 3 [n prefix name arg]
 	(let [[pred outputs] (decode-wish name arg)]
 	  (search-circuits-with-prefix n outputs prefix pred)))
 
@@ -168,4 +181,23 @@
 
 (defn vsc-search [n prefix-len name arg]
   (let [prefixes (search-prefixes n prefix-len)]
-    (apply concat (vsc-pmap (max 1000 (count prefixes)) #(search-wish-with-prefix-vsc n % name arg) prefixes))))
+    (apply concat (vsc-pmap (min 600 (count prefixes)) #(search-wish-with-prefix-vsc n % name arg) prefixes))))
+
+(defn- search-delay-triple-adders-with-length [len combinations]
+  (loop [combinations combinations
+	 no-solutions []]
+    (if (empty? combinations)
+      no-solutions
+      (let [combination (first combinations)
+	    solutions (take 20 (vsc-search len 3 'delay-triple-add combination))]
+	(println {:len len :combination combination :solutions solutions})
+	(if (empty? solutions)
+	  (recur (rest combinations) (conj no-solutions combination))
+	  (recur (rest combinations) no-solutions))))))
+
+(defn search-delay-triple-adders [max]
+  (loop [n 2
+	 combinations (all-inputs 3)]
+    (when (<= n max)
+      (let [no-solutions (search-delay-triple-adders-with-length n combinations)]
+	(recur (inc n) no-solutions)))))
