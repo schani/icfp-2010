@@ -13,6 +13,23 @@
 				  4 {:l [0 :r], :r [0 :l]},
 				  5 {:l :x-in, :r [4 :r]}}})
 
+(def decrement-circuit {:input [6 :l],
+			:outputs {0 {:l [1 :l], :r [1 :r]}
+				  1 {:l [2 :l], :r [3 :r]},
+				  2 {:l [6 :r], :r [0 :l]},
+				  3 {:l [0 :r], :r [2 :r]},
+				  4 {:l [3 :l], :r [5 :r]},
+				  5 {:l [4 :l], :r [4 :r]},
+				  6 {:l :x-in :r [5 :l]}}})
+
+(def better-decrement-circuit {:input [1 :r],
+			       :outputs {5 {:l [0 :r], :r [0 :l]},
+					 4 {:l :x-in, :r [5 :r]},
+					 3 {:l [4 :r], :r [5 :l]},
+					 2 {:l [3 :r], :r [3 :l]},
+					 1 {:l [2 :l], :r [4 :l]},
+					 0 {:l [2 :r], :r [1 :l]}}})
+
 (defn shift-input [input n]
   (if (= input :x-in)
     input
@@ -53,7 +70,7 @@
 
 (def adders [identity-circuit
 	     increment-circuit
-	     (concat-circuits increment-circuit increment-circuit)])
+	     better-decrement-circuit])
 
 (defn calculate-adders [ys]
   (loop [as []
