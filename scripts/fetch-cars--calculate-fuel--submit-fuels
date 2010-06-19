@@ -1,0 +1,67 @@
+#!/bin/bash 
+
+
+#this script fetches all available cars from the contest webpage, generates fues for them and if generation successful submit the fuel to the webpage
+
+if [ "$1" = "--force" ]
+then
+    FORCE=true
+elif [ "$1" = "" ]
+then
+    FORCE=false
+else
+    echo "usage: $0 [--force]"
+    exit 1
+fi
+
+
+LASTFETCH="fetch.old.txt"
+RUNFIRST=0;
+
+
+[ -f ./$LASTFETCH ] || {
+    echo "running the first time. all generated fuels will be upped."
+    RUNFIRST=1;
+}
+
+TEMPF=$(mktemp)
+TEMPF2=$(mktemp)
+TEMPF3=$(mktemp)
+
+#fetch cars from the homepage, remove the task car, store in tempfile
+./fetch-cars --plain | grep -v task > $TEMPF
+
+#get difference to last submit
+if [ $RUNFIRST -eq 1 ]
+then
+    cp $TEMPF $TEMPF2
+else
+    comm -13 $LASTFETCH $TEMPF > $TEMPF2
+fi
+
+
+cat  $TEMPF2 | while read line
+do
+    carid=`echo $line | awk '{print $1}'`;
+    carspec=`echo $line | awk '{print $2}'`;
+    
+    #call the magic fuel generator
+    
+    # ./fuelgenerate $carspec > $TEMPF3;
+    
+    cat  $TEMPF3 | while read line2
+    do
+	#call magic submit script
+	
+	#./submitscript $carid "$line2";
+    done
+    
+done
+
+#store current fetch of cars
+cp $TEMPF  $LASTFETCH
+
+#cleanup
+rm -f $TEMPF $TEMPF2 $TEMPF3
+
+exit 0
