@@ -13,26 +13,6 @@
 				  4 {:l [0 :r], :r [0 :l]},
 				  5 {:l :x-in, :r [4 :r]}}})
 
-identity-circuit
-{:input [0 :l],
- :outputs {0 {:l :x-in, :r [2 :l]},
-	   1 {:l [0 :r], :r [1 :l]},
-	   2 {:l [1 :r], :r [2 :r]}}}
-
-(concat-circuits-reversed identity-circuit (concat-circuits-reversed identity-circuit identity-circuit))
-{:input [6 :l],
- :outputs {0 {:l :x-in, :r [2 :l]},
-	   1 {:l [0 :r], :r [1 :l]},
-	   2 {:l [1 :r], :r [2 :r]},
-
-	   3 {:l [0 :l], :r [5 :l]},
-	   4 {:l [3 :r], :r [4 :l]},
-	   5 {:l [4 :r], :r [5 :r]},
-
-	   6 {:l [3 :l], :r [8 :l]},
-	   7 {:l [6 :r], :r [7 :l]},
-	   8 {:l [7 :r], :r [8 :r]}}}
-
 (defn shift-input [input n]
   (if (= input :x-in)
     input
@@ -97,3 +77,6 @@ identity-circuit
 (defn build-fuel-factory [ys]
   (let [adders (build-adders ys)]
     (reduce-right concat-circuits-reversed adders)))
+
+(defn build-fuel-factory-from-string [s]
+  (build-fuel-factory (concat the-key (map #(Integer/parseInt (str %)) s))))
