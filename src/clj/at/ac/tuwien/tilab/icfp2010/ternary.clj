@@ -44,3 +44,14 @@
 
 (defn pad-leading-zeros [string zeros]
   (str (apply str (repeat (- zeros (count string)) "0")) string))
+
+(defn ternary-to-number [string]
+  (if (= string "0")
+    0
+    (let [prefix (some (fn [pre] (if (. string startsWith pre) pre false)) (drop 1 prefixes)), remain (. string substring (count prefix))
+	  prefix-index (first (some (fn [x] (if (= (second x) prefix) x nil)) (map list (range) prefixes))) ]
+      (. (new Double
+	  (+ (Integer/valueOf remain 3)
+	     (/ (dec (pow 3 prefix-index)) 2)))
+	  intValue)
+	 )))
