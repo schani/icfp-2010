@@ -1,0 +1,49 @@
+#!/bin/bash 
+
+
+
+[ -f ~/cookies.txt ] || {
+    echo "i need cookies.txt in homedir, use firefox extension cookie export"
+    exit 1
+}
+
+TEMPF=$(mktemp)
+TEMPF2=$(mktemp)
+
+wget  --load-cookies ~/cookies.txt -O $TEMPF http://icfpcontest.org/icfp10/score/instanceTeamCount 1>/dev/null 2>&1|| {
+    echo wget failed
+    exit 1
+}
+
+cat <<EOF
+
+{| class="wikitable" style="text-align:left"
+|-
+! Id !! Car
+|-
+| task || 221022000022010112201010022001122011110220010 
+EOF
+
+
+for nummer in `cat  $TEMPF | ./getactions.py | sort -n`
+do
+    
+    wget  --load-cookies ~/cookies.txt -O $TEMPF2 http://icfpcontest.org/icfp10/instance/$nummer/solve/form  1>/dev/null 2>&1|| {
+	echo wget failed
+	exit 1
+    }
+    
+    result=$(cat $TEMPF2 | tr ">" "\n" | grep -A1 ^Car: | tail -1 | tr "<" "\n" | head -1)
+    
+    echo "|-"
+    echo "| $nummer || $result"
+    
+done
+
+echo "|}"
+
+
+
+rm -f $TEMPF $TEMPF2
+
+exit 0

@@ -60,8 +60,6 @@
 	     {:l [19 :r] :r [5 :r]}
 	     19
 	     {:l :x-in :r [7 :l]}}})
-  
-
 
 (defn assign-input [inputs output input]
   (if (= :x-in input)
