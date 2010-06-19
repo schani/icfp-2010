@@ -60,10 +60,15 @@
 	  intValue)
 	 )))
 
+(defn- eat [input num]
+  (if (< (count input) num)
+    (throw (Exception. (str "input " (apply str input) " should be at least " num " long")))
+    (drop num input)))
+
 (defn consume [input expected]
   (if (.startsWith (apply str input) expected)
     (drop (count expected) input)
-    (throw (Exception. (str "expected " expected " but got " input)))))
+    (throw (Exception. (str "expected " expected " but got " (apply str input))))))
 
 (defn int-pow [x y]
   (apply * (repeat y x)))
@@ -75,33 +80,35 @@
   (case (first input)
 	\0 [(rest input) 0]
 	\1 (case (second input)
-		 \0 [(drop 2 input) 1]
-		 \1 [(drop 2 input) 2]
-		 \2 [(drop 2 input) 3])
-	(let [input (consume input "22")
-	      [input len] (parse-number input)
-	      len (+ len 2)
-	      str (apply str (take len input))
-	      input (drop len input)]
-	  [input (+ (len-offset len) (Integer/parseInt str 3))])))
+		 \0 [(eat input 2) 1]
+		 \1 [(eat input 2) 2]
+		 \2 [(eat input 2) 3])
+	\2 (let [input (consume input "22")
+		 [input len] (parse-number input)
+		 len (+ len 2)
+		 str (apply str (take len input))
+		 input (eat input len)]
+	     [input (+ (len-offset len) (Integer/parseInt str 3))])
+	(throw (Exception. (str "illegal input " (apply str input))))))
 
 (defn parse-list [input parse-elem]
   (case (first input)
 	\0 [(rest input) []]
 	\1 (let [[input elem] (parse-elem (rest input))]
 	     [input [elem]])
-	(let [input (consume input "22")
-	      [input len] (parse-number input)
-	      len (+ len 2)]
-	  (loop [input input
-		 elems []
-		 i 0]
-	    (if (= i len)
-	      [input elems]
-	      (let [[input elem] (parse-elem input)]
-		(recur input
-		       (conj elems elem)
-		       (inc i))))))))
+	\2 (let [input (consume input "22")
+		 [input len] (parse-number input)
+		 len (+ len 2)]
+	     (loop [input input
+		    elems []
+		    i 0]
+	       (if (= i len)
+		 [input elems]
+		 (let [[input elem] (parse-elem input)]
+		   (recur input
+			  (conj elems elem)
+			  (inc i))))))
+	(throw (Exception. (str "illegal input " (apply str input))))))
 
 (defn parse-chamber [input]
   (let [[input upper] (parse-list input parse-number)
