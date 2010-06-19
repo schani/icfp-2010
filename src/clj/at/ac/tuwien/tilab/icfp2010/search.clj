@@ -84,3 +84,6 @@
 		   (and (= (take (count output) result) output)
 			(apply = (rest result)))))
 	       some-random-inputs)))
+
+(defn is-key? [n circuit input-index output]
+  (= output the-key))
