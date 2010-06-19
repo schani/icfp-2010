@@ -71,6 +71,18 @@
 (def all-inputs-6 (all-inputs 6))
 (def some-random-inputs (random-inputs 50 1000))
 
+(defn check-solution [pred]
+  (fn [n circuit input-index output]
+    (and (pred default-input output)
+	 (every? (fn [input]
+		   (let [result (java-simulate n circuit input-index input)]
+		     (pred input result)))
+		 all-inputs-6)
+	 (every? (fn [input]
+		   (let [result (java-simulate n circuit input-index input)]
+		     (pred input result)))
+		 some-random-inputs))))
+
 (defn simple-gen? [n circuit input-index output]
   (and (not (= (first output) 0))
        (= (second output) 0)
@@ -89,46 +101,30 @@
 			(apply = (rest result)))))
 	       some-random-inputs)))
 
-(vsc-fn search-simple-gen-with-prefix 1 [n prefix]
-	(search-circuits-with-prefix n [] prefix simple-gen?))
-
 (defn is-key? [n circuit input-index output]
   (= output the-key))
 
-(defn increment-stream [s]
-  (map #(mod (inc %) 3) s))
+(defn increment-stream [s n]
+  (map #(mod (+ % n) 3) s))
 
-(def default-input-increment (increment-stream default-input))
+(defn is-incrementer? [x]
+  (let [default-input-increment ]
+    (check-solution (fn [input result]
+		      (= result (increment-stream input x))))))
 
-(defn is-incrementer? [n circuit input-index output]
-  (and (= output default-input-increment)
-       (every? (fn [input]
-		 (let [result (java-simulate n circuit input-index input)]
-		   (= result (increment-stream input))))
-	       all-inputs-6)))
-
-(defn is-identity? [n circuit input-index output]
-  (and (= output default-input)
-       (every? (fn [input]
-		 (let [result (java-simulate n circuit input-index input)]
-		   (= result input)))
-	       all-inputs-6)
-       (every? (fn [input]
-		 (let [result (java-simulate n circuit input-index input)]
-		   (= result input)))
-	       some-random-inputs)))
+(def is-identity? (check-solution =))
 
 (defn is-constant-x? [x]
-  (fn [n circuit input-index output]
-    (let [proper? (fn [s]
-		    (and (= (first s) x)
-			 (apply = s)))]
-      (and (proper? output)
-	   (every? (fn [input]
-		     (let [result (java-simulate n circuit input-index input)]
-		       (proper? result)))
-		   all-inputs-6)
-	   (every? (fn [input]
-		     (let [result (java-simulate n circuit input-index input)]
-		       (proper? result)))
-		   some-random-inputs)))))
+  (let [proper? (fn [s]
+		  (and (= (first s) x)
+		       (apply = s)))]
+    (check-solution (fn [input output] (proper? output)))))
+
+(defn decode-wish [name arg]
+  (case name
+	'incrementer [(is-incrementer? arg) [(increment-stream default-input arg)]]
+	'constant [(is-constant-x? arg) []]))
+
+(vsc-fn search-wish-with-prefix 1 [n prefix name arg]
+	(let [[pred outputs] (decode-wish name arg)]
+	  (search-circuits-with-prefix n outputs prefix pred)))
