@@ -76,6 +76,31 @@
 (defn len-offset [m]
   (/ (dec (int-pow 3 m)) 2))
 
+(defn invert-len-offset [x]
+  (loop [i 1]
+    (if (< x (len-offset i))
+      (dec i)
+      (recur (inc i)))))
+
+(defn trinarify-number [num length]
+  (loop [digits ()
+	 num num
+	 length length]
+    (if (zero? length)
+      (apply str digits)
+      (recur (cons (mod num 3) digits)
+	     (/ (- num (mod num 3)) 3)
+	     (dec length)))))
+
+(defn encode-number [input]
+  (case input
+	0 "0"
+	1 "10"
+	(str "22"
+	     (encode-number (- (invert-len-offset input) 2))
+	     (trinarify-number (- input (len-offset (invert-len-offset input)))
+			       (invert-len-offset input)))))
+
 (defn parse-number [input]
   (case (first input)
 	\0 [(rest input) 0]
