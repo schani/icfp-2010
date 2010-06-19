@@ -44,10 +44,10 @@ error, carid=11045, msg=You have already submitted this solution.
 error, carid=10656, fuel not matching
 error, carid=10544, msg=You have already submitted this solution.
 error, carid=10486, msg=You have already submitted this solution.
-error, carid=10463, fuel not matching
+error, carid=10463, msg=You have already submitted this solution.
 error, carid=10431, msg=You have already submitted this solution.
 error, carid=10404, msg=You have already submitted this solution.
-error, carid=10317, fuel not matching
+error, carid=10317, msg=You have already submitted this solution.
 error, carid=10255, fuel not matching
 error, carid=10220, msg=You have already submitted this solution.
 error, carid=10134, msg=You have already submitted this solution.

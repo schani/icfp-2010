@@ -1,8 +1,9 @@
+error, carid=15917, fuel not matching
 error, carid=15253, fuel not matching
-success, carid=15188, size=139
-success, carid=15168, size=139
+error, carid=15188, msg=You have already submitted this solution.
+error, carid=15168, msg=You have already submitted this solution.
 error, carid=15164, fuel not matching
-success, carid=15077, size=139
+error, carid=15077, msg=You have already submitted this solution.
 error, carid=13252, fuel not matching
 error, carid=13232, fuel not matching
 error, carid=13204, fuel not matching
@@ -28,39 +29,39 @@ error, carid=12116, fuel not matching
 error, carid=12072, fuel not matching
 error, carid=12053, fuel not matching
 error, carid=12034, fuel not matching
-success, carid=12030, size=139
+error, carid=12030, msg=You have already submitted this solution.
 error, carid=11964, fuel not matching
-success, carid=11893, size=139
-success, carid=11887, size=139
-success, carid=11866, size=139
+error, carid=11893, msg=You have already submitted this solution.
+error, carid=11887, msg=You have already submitted this solution.
+error, carid=11866, msg=You have already submitted this solution.
 error, carid=11860, fuel not matching
 error, carid=11810, fuel not matching
 error, carid=11772, fuel not matching
 error, carid=11756, fuel not matching
 error, carid=11156, fuel not matching
-success, carid=11083, size=139
-success, carid=11045, size=139
+error, carid=11083, msg=You have already submitted this solution.
+error, carid=11045, msg=You have already submitted this solution.
 error, carid=10656, fuel not matching
-success, carid=10544, size=139
-success, carid=10486, size=139
+error, carid=10544, msg=You have already submitted this solution.
+error, carid=10486, msg=You have already submitted this solution.
 error, carid=10463, fuel not matching
-success, carid=10431, size=139
-success, carid=10404, size=139
+error, carid=10431, msg=You have already submitted this solution.
+error, carid=10404, msg=You have already submitted this solution.
 error, carid=10317, fuel not matching
 error, carid=10255, fuel not matching
-success, carid=10220, size=139
-success, carid=10134, size=139
-success, carid=10103, size=139
-success, carid=10094, size=139
-success, carid=10086, size=139
+error, carid=10220, msg=You have already submitted this solution.
+error, carid=10134, msg=You have already submitted this solution.
+error, carid=10103, msg=You have already submitted this solution.
+error, carid=10094, msg=You have already submitted this solution.
+error, carid=10086, msg=You have already submitted this solution.
 error, carid=10060, fuel not matching
 error, carid=10047, fuel not matching
 error, carid=9987, fuel not matching
 error, carid=9748, fuel not matching
-success, carid=9577, size=139
-success, carid=9559, size=139
-success, carid=9480, size=139
-success, carid=9258, size=139
+error, carid=9577, msg=You have already submitted this solution.
+error, carid=9559, msg=You have already submitted this solution.
+error, carid=9480, msg=You have already submitted this solution.
+error, carid=9258, msg=You have already submitted this solution.
 error, carid=5310, fuel not matching
 error, carid=5293, fuel not matching
 error, carid=5231, fuel not matching
@@ -92,16 +93,16 @@ error, carid=4827, fuel not matching
 error, carid=4824, fuel not matching
 error, carid=4819, fuel not matching
 error, carid=4816, fuel not matching
-success, carid=4791, size=139
-success, carid=4731, size=139
-success, carid=4619, size=139
-success, carid=4552, size=139
-success, carid=4528, size=139
-success, carid=4522, size=139
-success, carid=4507, size=139
+error, carid=4791, msg=You have already submitted this solution.
+error, carid=4731, msg=You have already submitted this solution.
+error, carid=4619, msg=You have already submitted this solution.
+error, carid=4552, msg=You have already submitted this solution.
+error, carid=4528, msg=You have already submitted this solution.
+error, carid=4522, msg=You have already submitted this solution.
+error, carid=4507, msg=You have already submitted this solution.
 error, carid=4487, fuel not matching
 error, carid=4484, fuel not matching
-success, carid=4454, size=139
+error, carid=4454, msg=You have already submitted this solution.
 error, carid=4438, fuel not matching
 error, carid=4432, fuel not matching
 error, carid=4412, fuel not matching
@@ -136,7 +137,7 @@ error, carid=4002, fuel not matching
 error, carid=4000, fuel not matching
 error, carid=3995, fuel not matching
 error, carid=3989, fuel not matching
-success, carid=3986, size=139
+error, carid=3986, msg=You have already submitted this solution.
 error, carid=3975, fuel not matching
 error, carid=3969, fuel not matching
 error, carid=3941, fuel not matching
@@ -158,7 +159,7 @@ error, carid=3815, fuel not matching
 error, carid=3811, fuel not matching
 error, carid=3808, fuel not matching
 error, carid=3786, fuel not matching
-success, carid=3778, size=139
+error, carid=3778, msg=You have already submitted this solution.
 error, carid=3770, fuel not matching
 error, carid=3762, fuel not matching
 error, carid=3746, fuel not matching
@@ -197,43 +198,43 @@ error, carid=3283, fuel not matching
 error, carid=3270, fuel not matching
 error, carid=3268, fuel not matching
 error, carid=3227, fuel not matching
-success, carid=3211, size=139
-success, carid=3049, size=139
-success, carid=3044, size=139
-success, carid=3039, size=139
-success, carid=3032, size=139
-success, carid=3028, size=139
-success, carid=2992, size=139
+error, carid=3211, msg=You have already submitted this solution.
+error, carid=3049, msg=You have already submitted this solution.
+error, carid=3044, msg=You have already submitted this solution.
+error, carid=3039, msg=You have already submitted this solution.
+error, carid=3032, msg=You have already submitted this solution.
+error, carid=3028, msg=You have already submitted this solution.
+error, carid=2992, msg=You have already submitted this solution.
 error, carid=2912, fuel not matching
-success, carid=2888, size=139
-success, carid=2886, size=139
-success, carid=2884, size=139
-success, carid=2881, size=139
-success, carid=2878, size=139
+error, carid=2888, msg=You have already submitted this solution.
+error, carid=2886, msg=You have already submitted this solution.
+error, carid=2884, msg=You have already submitted this solution.
+error, carid=2881, msg=You have already submitted this solution.
+error, carid=2878, msg=You have already submitted this solution.
 error, carid=2875, fuel not matching
 error, carid=2869, fuel not matching
 error, carid=2864, fuel not matching
-success, carid=2801, size=139
-success, carid=2795, size=139
-success, carid=2785, size=139
-success, carid=2782, size=139
-success, carid=2780, size=139
-success, carid=2778, size=139
-success, carid=2776, size=139
+error, carid=2801, msg=You have already submitted this solution.
+error, carid=2795, msg=You have already submitted this solution.
+error, carid=2785, msg=You have already submitted this solution.
+error, carid=2782, msg=You have already submitted this solution.
+error, carid=2780, msg=You have already submitted this solution.
+error, carid=2778, msg=You have already submitted this solution.
+error, carid=2776, msg=You have already submitted this solution.
 error, carid=2774, fuel not matching
-success, carid=2772, size=139
-success, carid=2770, size=139
-success, carid=2767, size=139
-success, carid=2765, size=139
+error, carid=2772, msg=You have already submitted this solution.
+error, carid=2770, msg=You have already submitted this solution.
+error, carid=2767, msg=You have already submitted this solution.
+error, carid=2765, msg=You have already submitted this solution.
 error, carid=2763, fuel not matching
-success, carid=2761, size=139
-success, carid=2759, size=139
+error, carid=2761, msg=You have already submitted this solution.
+error, carid=2759, msg=You have already submitted this solution.
 error, carid=2756, fuel not matching
-success, carid=2754, size=139
-success, carid=2752, size=139
+error, carid=2754, msg=You have already submitted this solution.
+error, carid=2752, msg=You have already submitted this solution.
 error, carid=2750, fuel not matching
-success, carid=2748, size=139
-success, carid=2745, size=139
+error, carid=2748, msg=You have already submitted this solution.
+error, carid=2745, msg=You have already submitted this solution.
 error, carid=2738, fuel not matching
 error, carid=2735, fuel not matching
 error, carid=2733, fuel not matching
@@ -250,24 +251,24 @@ error, carid=2711, fuel not matching
 error, carid=2708, fuel not matching
 error, carid=2689, fuel not matching
 error, carid=2685, fuel not matching
-success, carid=2658, size=139
-success, carid=2655, size=139
-success, carid=2652, size=139
-success, carid=2650, size=139
-success, carid=2648, size=139
-success, carid=2646, size=139
-success, carid=2644, size=139
-success, carid=2641, size=139
-success, carid=2638, size=139
-success, carid=2634, size=139
-success, carid=2627, size=139
-success, carid=2625, size=139
+error, carid=2658, msg=You have already submitted this solution.
+error, carid=2655, msg=You have already submitted this solution.
+error, carid=2652, msg=You have already submitted this solution.
+error, carid=2650, msg=You have already submitted this solution.
+error, carid=2648, msg=You have already submitted this solution.
+error, carid=2646, msg=You have already submitted this solution.
+error, carid=2644, msg=You have already submitted this solution.
+error, carid=2641, msg=You have already submitted this solution.
+error, carid=2638, msg=You have already submitted this solution.
+error, carid=2634, msg=You have already submitted this solution.
+error, carid=2627, msg=You have already submitted this solution.
+error, carid=2625, msg=You have already submitted this solution.
 error, carid=2591, fuel not matching
-success, carid=2498, size=139
-success, carid=2416, size=139
+error, carid=2498, msg=You have already submitted this solution.
+error, carid=2416, msg=You have already submitted this solution.
 error, carid=2386, fuel not matching
 error, carid=1728, fuel not matching
 error, carid=1726, fuel not matching
 error, carid=1187, fuel not matching
 error, carid=297, fuel not matching
-success, carid=219, size=139
+error, carid=219, msg=You have already submitted this solution.
