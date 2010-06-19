@@ -35,8 +35,12 @@ function pin2stabe( pin ) {
 		gate_con[togate,toconnector] = "X";
 		outputgate = sprintf( "%i%c", togate, pin2stabe(toconnector));
 	    }
-	    if (fromgate > maxgate)
+	    if ((fromgate+0) > (maxgate+0)) {
 		maxgate = fromgate;
+	    }
+	    if ((togate+0) > (maxgate+0)) {
+		maxgate = togate;
+	    }
 	}
     }
 }
@@ -59,7 +63,7 @@ function pin2stabe( pin ) {
 END {
     # printf "maxgate is %i\n", maxgate;
     printf "%s:", inputgate;
-    for (gate = 0; gate <= maxgate; gate++) {
+    for (gate = 0; gate < maxgate+1; gate++) {
 	if (gate > 0)
 	    printf ",";
 	printf "\n%s%s0#%s%s", 
