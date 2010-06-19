@@ -30,6 +30,16 @@
 					 1 {:l [2 :l], :r [4 :l]},
 					 0 {:l [2 :r], :r [1 :l]}}})
 
+(def delay-double-adders {[0 0] (un-preprocess-java-circuit 3 [0 5 1 6 2 4 3])
+			  [0 1] (un-preprocess-java-circuit 12 [4 5 6 10 8 7 9 0 11 2 1 3 12])
+			  [0 2] (un-preprocess-java-circuit 9 [4 5 0 6 7 8 11 10 12 3 2 1 9])
+			  [1 0] (un-preprocess-java-circuit 6 [5 4 0 7 9 10 1 2 11 12 13 14 8 3 6])
+			  [1 1] (un-preprocess-java-circuit 9 [6 5 1 10 8 11 0 12 2 7 3 4 9])
+			  [1 2] (un-preprocess-java-circuit 5 [6 4 0 1 3 2 5])
+			  [2 0] (un-preprocess-java-circuit 7 [5 3 0 11 12 8 9 10 14 13 2 1 6 4 7])
+			  [2 1] (un-preprocess-java-circuit 6 [5 3 0 1 4 2 6])
+			  [2 2] (un-preprocess-java-circuit 5 [4 3 0 14 1 2 6 10 13 11 7 8 9 12 5])})
+
 (defn shift-input [input n]
   (if (= input :x-in)
     input
@@ -84,7 +94,12 @@
 	       (rest ys))))))
 
 (defn build-adders [ys]
-  (map adders (calculate-adders ys)))
+  (loop [zs (calculate-adders ys)
+	 res []]
+    (cond (empty? zs) res
+	  (= (count zs) 1) (conj res (adders (first zs)))
+	  :else (recur (drop 2 zs)
+		       (conj res (delay-double-adders (take 2 zs)))))))
 
 (defn reduce-right [f s]
   (cond (empty? s) (f)

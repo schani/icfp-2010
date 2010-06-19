@@ -9,10 +9,9 @@
   (if (list? thing)
     (apply str 
 	   (prefixes (count thing)) 
-	   (map thing-to-string thing)  
-	   )
+	   (map thing-to-string thing))  
     (if (vector? thing)
-      (apply (map thing-to-string) thing)
+      (apply str (map thing-to-string thing))
       (number-to-ternary thing))))
 
 

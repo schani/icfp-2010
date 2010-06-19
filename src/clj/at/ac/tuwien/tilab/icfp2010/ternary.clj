@@ -107,7 +107,7 @@
   (let [[input upper] (parse-list input parse-number)
 	[input is-aux] (parse-number input)
 	[input lower] (parse-list input parse-number)]
-    [input {:upper upper :is-aux is-aux :lower lower}]))
+    [input {:upper upper :is-main (zero? is-aux) :lower lower}]))
 
 (defn parse-car [input]
   (parse-list input parse-chamber))
