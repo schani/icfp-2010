@@ -1,13 +1,16 @@
 (ns at.ac.tuwien.tilab.icfp2010.search
-  (:use at.ac.tuwien.tilab.icfp2010.circuit)
+  (:use at.ac.tuwien.tilab.icfp2010.circuit
+	at.ac.tuwien.complang.distributor.vsc)
   (:import [at.ac.tuwien.tilab.icfp2010 Permuter IPermutationConsumer Simulator
 	    SimulationPermutationConsumer SearchSimulationConsumer ISimulationConsumer PrefixPermutationConsumer]
 	   [java.util Random]))
 
+(def integer-array-type (type (into-array (. Integer TYPE) [1 2 3])))
+
 (defn- int-arr [a]
   (into-array (. Integer TYPE) a))
 
-(defn- java-simulate [n circuit input-index input-stream]
+(defn java-simulate [n circuit input-index input-stream]
   (doall (seq (Simulator/simulate n circuit input-index (int-arr input-stream)))))
 
 (defn all-subpermutations [n coll]
@@ -21,7 +24,7 @@
 (defn search-prefixes [num-gates len]
   (all-subpermutations len (range (inc (* num-gates 2)))))
 
-(defn make-simulation-permutation-consumer [n pred results-atom]
+(defn make-simulation-permutation-consumer [n search-streams pred results-atom]
   (let [print-simulation-consumer (reify
 				   ISimulationConsumer
 				   (consumeSimulation [this n circuit input-index input-stream output-stream]
@@ -30,20 +33,21 @@
 							  (swap! results-atom conj {:circuit (apply vector circuit)
 										    :input-index input-index
 										    :output output})))))
-	search-simulation-consumer (SearchSimulationConsumer. (into-array [(int-arr the-key)]) print-simulation-consumer)]
+	search-simulation-consumer (SearchSimulationConsumer. (into-array integer-array-type (map int-arr search-streams))
+							      print-simulation-consumer)]
     (SimulationPermutationConsumer. n (int-arr default-input) search-simulation-consumer)))
 
-(defn search-circuits-with-prefix [n prefix pred]
+(defn search-circuits-with-prefix [n search-streams prefix pred]
   (let [rest-seq (remove (fn [x] (some #(= % x) prefix)) (range (inc (* n 2))))
 	results (atom [])
-	simulation-permutation-consumer (make-simulation-permutation-consumer n pred results)
+	simulation-permutation-consumer (make-simulation-permutation-consumer n search-streams pred results)
 	prefix-permutation-consumer (PrefixPermutationConsumer. (int-arr prefix) simulation-permutation-consumer)]
     (Permuter/permuteArray (int-arr rest-seq) prefix-permutation-consumer)
     @results))
 
-(defn search-circuits [n pred]
+(defn search-circuits [n search-streams pred]
   (let [results (atom [])
-	simulation-permutation-consumer (make-simulation-permutation-consumer n pred results)]
+	simulation-permutation-consumer (make-simulation-permutation-consumer n search-streams pred results)]
     (Permuter/permuteRange (inc (* n 2)) simulation-permutation-consumer)
     @results))
 
@@ -85,5 +89,34 @@
 			(apply = (rest result)))))
 	       some-random-inputs)))
 
+(vsc-fn search-simple-gen-with-prefix 1 [n prefix]
+	(search-circuits-with-prefix n [] prefix simple-gen?))
+
 (defn is-key? [n circuit input-index output]
   (= output the-key))
+
+(defn increment-stream [s]
+  (map #(mod (inc %) 3) s))
+
+(def default-input-increment (increment-stream default-input))
+
+(defn is-incrementer? [n circuit input-index output]
+  (and (= output default-input-increment)
+       (every? (fn [input]
+		 (let [result (java-simulate n circuit input-index input)]
+		   (= result (increment-stream input))))
+	       all-inputs-6)))
+
+(defn is-constant-1? [n circuit input-index output]
+  (let [proper? (fn [s]
+		  (and (= (first s) 2)
+		       (apply = s)))]
+    (and (proper? output)
+	 (every? (fn [input]
+		   (let [result (java-simulate n circuit input-index input)]
+		     (proper? result)))
+		 all-inputs-6)
+	 (every? (fn [input]
+		   (let [result (java-simulate n circuit input-index input)]
+		     (proper? result)))
+		 some-random-inputs))))
