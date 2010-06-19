@@ -136,12 +136,15 @@ if ($mode eq "car") {
 	if ($response->content =~ /You have submitted fuel for car ([0-9]+) with size ([0-9]+)./m) {
 		printf("success, carid=%d, size=%d\n", $1, $2);
 		exit 0;
+	} elsif ($response->content =~ /(You have already submitted this solution)/m) {
+        printf("error, carid=%d, msg=%s\n", $carid, $1);
+        exit 10;
 	} elsif ($response->content =~ /<span id="solution.errors" class="errors">([^<]+)<\/span>/m) {
         printf("error, carid=%d, msg=%s\n", $carid, $1);
         exit 1;
 	} elsif ($response->content =~ /<pre>([^<]+)<\/pre>/m) {
         printf("error, carid=%d, fuel not matching\n", $carid);
-        print STDERR $1;
+#        print STDERR $1;
 		exit 1;
     } else {
 		die "Could not parse result. Output saved to ./out.html";
