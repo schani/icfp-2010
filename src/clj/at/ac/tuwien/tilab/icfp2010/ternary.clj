@@ -88,7 +88,7 @@
 		 len (+ len 2)
 		 str (apply str (take len input))
 		 input (eat input len)]
-	     [input (+ (len-offset len) (Integer/parseInt str 3))])
+	     [input (+ (len-offset len) (java.math.BigInteger. str 3))])
 	(throw (Exception. (str "illegal input " (apply str input))))))
 
 (defn parse-list [input parse-elem]
