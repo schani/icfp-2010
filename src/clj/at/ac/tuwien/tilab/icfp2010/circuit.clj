@@ -14,9 +14,10 @@
 				 (range n)))
 	      n {:l [n :l] :r :x-in})})
 
+(def key-gen-input [0,2,2,2,2,2,2,0,2,1,0,1,1,0,0,1,1])
 ; more or less the output of 
 ; perl -pe 'BEGIN{$x=0;}$_=lc $_;s/.*\#(\d+)([rl])(\d+)([rl]).*/$x\n{:l [$1 :$2] :r [$3 :$4]}/;$x++'
-(defn key-gen []
+(def key-gen-circuit  
   {:input [19 :l]
    :outputs {
 	     0
@@ -59,8 +60,6 @@
 	     {:l [19 :r] :r [5 :r]}
 	     19
 	     {:l :x-in :r [7 :l]}}})
-  
-
 
 (defn assign-input [inputs output input]
   (if (= :x-in input)
@@ -158,6 +157,26 @@
 	(recur (rest outputs)
 	       (conj code [(input-index [gate :l]) (input-index [gate :r])
 			   (input-index (:l gate-outputs)) (input-index (:r gate-outputs))]))))))
+
+(defn un-input-index [input]
+  (if (= input 0) 
+    :x-in
+    (let [input (- input 1)]
+      (let [gate (int (/ input 2))
+	    side (if (= 0 (mod input 2)) :l :r)]
+	[gate side]))))
+
+(defn un-preprocess-circuit [input-index pcirc]
+  (loop [pcirc pcirc
+	 index 0
+	 map {}] 
+    (if-not pcirc 
+      {:input (un-input-index input-index) :outputs map}
+      (let [[_ _ left right] (first pcirc)]
+	(recur (next pcirc) (inc index)
+	       (assoc map index {:l (un-input-index left)
+				 :r (un-input-index right)}))))))
+
 
 (defn preprocessed-step [code inputs]
   (loop [code code

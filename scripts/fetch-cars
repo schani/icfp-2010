@@ -1,0 +1,74 @@
+#!/bin/bash 
+
+if [ "$1" = "--plain" ]
+then
+  WIKI=false
+elif [ "$1" = "" ]
+then
+  WIKI=true
+else
+  echo "usage: $0 [--plain]"
+  exit 1
+fi
+
+[ -f ~/cookies.txt ] || {
+    echo "i need cookies.txt in homedir, use firefox extension cookie export"
+    exit 1
+}
+
+TEMPF=$(mktemp)
+TEMPF2=$(mktemp)
+
+wget  --load-cookies ~/cookies.txt -O $TEMPF http://icfpcontest.org/icfp10/score/instanceTeamCount 1>/dev/null 2>&1|| {
+    echo wget failed
+    exit 1
+}
+
+
+if [ $WIKI = "true" ] 
+then
+
+cat <<EOF
+
+{| class="wikitable" style="text-align:left"
+|-
+! Id !! Car
+|-
+| task || 221022000022010112201010022001122011110220010 
+EOF
+
+else
+    echo "task 221022000022010112201010022001122011110220010"
+fi
+
+
+
+for nummer in `cat  $TEMPF | ./getactions.py | sort -n`
+do
+    
+    wget  --load-cookies ~/cookies.txt -O $TEMPF2 http://icfpcontest.org/icfp10/instance/$nummer/solve/form  1>/dev/null 2>&1|| {
+	echo wget failed
+	exit 1
+    }
+    
+    result=$(cat $TEMPF2 | tr ">" "\n" | grep -A1 ^Car: | tail -1 | tr "<" "\n" | head -1)
+
+    if [ $WIKI = "true" ]
+    then    
+        echo "|-"
+        echo "| $nummer || $result"
+    else
+        echo "$nummer $result"
+    fi
+    
+done
+
+if [ $WIKI = "true" ]
+then
+    echo "|}"
+fi
+
+
+rm -f $TEMPF $TEMPF2
+
+exit 0

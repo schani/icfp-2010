@@ -1,0 +1,13 @@
+[{:circuit [11 4 1 8 3 9 2 6 12 7 0 5 10], :input-index 10, :output [1 1 0 2 1 2 1 0 1 1 2 1 0 1 2 2 1]}
+4R:
+1L3L0#5L1R,
+2L0R0#0L3R,
+5R3R0#1L4L,
+4R1R0#0R2R,
+2RX0#5R3L,
+0L4L0#X2L:
+5L
+
+ {:circuit [11 3 2 7 4 9 1 6 12 8 0 5 10], :input-index 10, :output [1 1 0 2 1 2 1 0 1 1 2 1 0 1 2 2 1]}
+ {:circuit [12 4 2 8 3 10 1 6 11 7 0 5 9], :input-index 9, :output [1 1 0 2 1 2 1 0 1 1 2 1 0 1 2 2 1]}
+ {:circuit [12 3 1 7 4 10 2 6 11 8 0 5 9], :input-index 9, :output [1 1 0 2 1 2 1 0 1 1 2 1 0 1 2 2 1]}]
