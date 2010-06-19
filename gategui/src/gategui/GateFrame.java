@@ -1,4 +1,3 @@
-
 package gategui;
 
 /**
@@ -8,9 +7,10 @@ package gategui;
 public class GateFrame extends javax.swing.JFrame {
 
     GatePainter paintComponent = null;
+    private final Main main;
 
-    /** Creates new form MainFrame */
-    public GateFrame() {
+    GateFrame(Main main) {
+        this.main = main;
         initComponents();
     }
 
@@ -33,6 +33,9 @@ public class GateFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         lineNrsCheckBox = new javax.swing.JCheckBox();
+        simulatorButton = new javax.swing.JButton();
+        setInLineButton = new javax.swing.JButton();
+        setOutLine = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,6 +100,27 @@ public class GateFrame extends javax.swing.JFrame {
         lineNrsCheckBox.setSelected(true);
         lineNrsCheckBox.setText("show gate nrs");
 
+        simulatorButton.setText("simulate circuit");
+        simulatorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simulatorButtonActionPerformed(evt);
+            }
+        });
+
+        setInLineButton.setText("set in line");
+        setInLineButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setInLineButtonActionPerformed(evt);
+            }
+        });
+
+        setOutLine.setText("set out line");
+        setOutLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setOutLineActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -105,15 +129,24 @@ public class GateFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(moveToggleButton)
-                        .addGap(32, 32, 32)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 220, Short.MAX_VALUE)
+                        .addComponent(simulatorButton)
+                        .addGap(89, 89, 89)
                         .addComponent(quitButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(111, 111, 111)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1)
+                                    .addComponent(jButton2))
+                                .addGap(33, 33, 33)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(setOutLine)
+                                    .addComponent(setInLineButton))
+                                .addGap(90, 90, 90))
+                            .addComponent(moveToggleButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -131,21 +164,25 @@ public class GateFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(exportButton)
-                        .addGap(3, 3, 3)
-                        .addComponent(lineNrsCheckBox)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(quitButton)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2))
-                        .addComponent(moveToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(exportButton)
+                            .addComponent(moveToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(3, 3, 3)
+                        .addComponent(lineNrsCheckBox))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(setInLineButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(quitButton)
+                    .addComponent(simulatorButton)
+                    .addComponent(jButton2)
+                    .addComponent(setOutLine))
                 .addContainerGap())
         );
 
@@ -153,7 +190,6 @@ public class GateFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jScrollPane1MouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_jScrollPane1MouseWheelMoved
-        
     }//GEN-LAST:event_jScrollPane1MouseWheelMoved
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
@@ -170,10 +206,21 @@ public class GateFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        paintComponent.gates.remove(paintComponent.gates.size()-1); // remove last
+        paintComponent.gates.remove(paintComponent.gates.size() - 1); // remove last
         paintComponent.repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void simulatorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simulatorButtonActionPerformed
+        main.simulate();
+    }//GEN-LAST:event_simulatorButtonActionPerformed
+
+    private void setInLineButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setInLineButtonActionPerformed
+        paintComponent.inputLineDefinitionMode = true;
+    }//GEN-LAST:event_setInLineButtonActionPerformed
+
+    private void setOutLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setOutLineActionPerformed
+    paintComponent.outputLineDefinitionMode = true;
+    }//GEN-LAST:event_setOutLineActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton exportButton;
@@ -186,6 +233,8 @@ public class GateFrame extends javax.swing.JFrame {
     javax.swing.JToggleButton moveToggleButton;
     private javax.swing.JPanel paintPanel;
     private javax.swing.JButton quitButton;
+    private javax.swing.JButton setInLineButton;
+    private javax.swing.JButton setOutLine;
+    private javax.swing.JButton simulatorButton;
     // End of variables declaration//GEN-END:variables
-
 }
