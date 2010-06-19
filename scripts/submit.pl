@@ -88,9 +88,62 @@ if ($mode eq "car") {
 
 # Fuel handling
 } elsif ($mode eq "fuel") {
+	
+	# More command line handling
+	my ($carid, $fuel);
+	die "Synopsis: ./submit.pl fuel CARID FUEL" unless @ARGV == 2;
+	($carid, $fuel) = @ARGV;	
+	
+	# Replace CMDLINE with STDIN if requested
+	if ($carid eq "-") {
+		$carid = <STDIN>;
+		chomp $carid;
+	}
+	if ($fuel eq "-") {
+		$fuel = "";
+		while (<STDIN>) { $fuel .= $_ }
+	}
 
-	die "unsupported"
+	# Test Input
+	die "Invalid car" unless $carid =~ /^[0-9]+$/;
+	die "Invalid fuel" unless $fuel =~ /^[0-9LRlr:,Xx\#\n]+$/m;
 
+	# GET the car form, renew login if necessary
+    while (1) {
+    	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/'. $carid .'/solve/form' );
+	    $response = $ua->request($request);
+		next if $response->content =~ /Access is denied/;
+		last;
+	} continue {
+		login();
+	}
+
+	# parse the form, fill in values
+    $form = HTML::Form->parse( $response );
+    $form->value( "contents", $fuel );
+
+    # make new request, add cookie, post
+    $request = $form->click();
+    $cookieJar->add_cookie_header( $request );
+    $response = $ua->request($request);
+
+    # save output
+    my $file;
+    open $file, "> out.html";
+    print $file $response->content;
+    close $file;
+
+    if ($response->content =~ /<span id="solution.errors" class="errors">([^<]+)<\/span>/m) {
+        print $1;
+        exit 1;
+	} elsif ($response->content =~ /<pre>([^<]+)<\/pre>/m) {
+		my $msg = $1;
+        print $msg;
+        exit 0 if ($msg =~ /Good! The car can use this fuel./m);
+		exit 1;
+    } else {
+		die "Could not parse result. Output saved to ./out.html";
+	}
 }
 
 
