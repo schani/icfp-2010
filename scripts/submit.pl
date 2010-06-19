@@ -7,7 +7,7 @@ require HTML::Form;
 
 # Check command line
 my $mode = shift;
-die unless $mode eq "fuel" || $mode eq "car";
+die "Synopsis: ./submit.pl car | fuel | getcars" unless $mode eq "fuel" || $mode eq "car" || $mode eq "getcars";
 
 # Instanciate user agent, check for cookie, login if necessary
 my $ua = LWP::UserAgent->new;
@@ -133,16 +133,39 @@ if ($mode eq "car") {
     print $file $response->content;
     close $file;
 
-    if ($response->content =~ /<span id="solution.errors" class="errors">([^<]+)<\/span>/m) {
-        print $1;
+	if ($response->content =~ /You have submitted fuel for car ([0-9]+) with size ([0-9]+)./m) {
+		printf("success, carid=%d, size=%d\n", $1, $2);
+		exit 0;
+	} elsif ($response->content =~ /<span id="solution.errors" class="errors">([^<]+)<\/span>/m) {
+        printf("error, carid=%d, msg=%s\n", $carid, $1);
         exit 1;
 	} elsif ($response->content =~ /<pre>([^<]+)<\/pre>/m) {
-		my $msg = $1;
-        print $msg;
-        exit 0 if ($msg =~ /Good! The car can use this fuel./m);
+        printf("error, carid=%d, fuel not matching\n", $carid);
+        print STDERR $1;
 		exit 1;
     } else {
 		die "Could not parse result. Output saved to ./out.html";
+	}
+
+
+# Getcars handling
+} elsif ($mode eq "getcars") {
+
+
+	# GET the car form, renew login if necessary
+    while (1) {
+    	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/score/instanceTeamCount' );
+	    $response = $ua->request($request);
+		next unless $response->content =~ /action/;
+		last;
+	} continue {
+		login();
+	}
+
+	my @matches = $response->content =~ m|action="/icfp10/instance/[0-9]+/solve/form"|g;
+	foreach (@matches) {
+		s|^action="/icfp10/instance/([0-9]+)/solve/form"$|$1|;
+		print $_;
 	}
 }
 
