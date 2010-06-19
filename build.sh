@@ -9,3 +9,4 @@ cd ..
 
 lein deps
 lein compile-java
+lein uberjar

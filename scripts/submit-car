@@ -1,0 +1,41 @@
+#!/bin/bash 
+
+# THIS DOES NOT WORK
+
+# usage: $0 $1
+#   $1 .. number of car
+#   stdin .. fuel string (use "s)
+
+KEYFUEL="4R:1L3L0#5L1R,2L0R0#0L3R,5R3R0#1L4L,4R1R0#0R2R,2RX0#5R3L,0L4L0#X2L:5L"
+CAR=$1
+
+[ -f ~/cookies.txt ] || {
+  echo "i need cookies.txt in homedir, use firefox extension cookie export"
+  exit 1
+}
+
+TEMPF=schass.log
+# wget-output.$$
+
+wget --load-cookies ~/cookies.txt -O $TEMPF \
+    --post-data 'problem='"$1"' exampleSolution.contents='"$CAR" \
+    http://icfpcontest.org/icfp10/instance || {
+     echo wget failed
+     exit 1
+}
+
+exit 88
+
+echo $2
+echo Fehlermeldung:
+
+sed 's#>#>\n#g' < $TEMPF | awk '{if (outputon) {print}} /<pre>/ { outputon=1 } /<[/]pre>/ { outputon=0}' | sed 's#</pre>##' > log/$POSTCONTENT-errormsg.txt
+cat log/$POSTCONTENT-errormsg.txt
+
+echo Done
+
+cp $TEMPF last-wget.html
+
+rm -f $TEMPF
+
+exit 0

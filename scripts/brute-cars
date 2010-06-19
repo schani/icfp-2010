@@ -1,0 +1,19 @@
+#!/bin/bash
+
+TEMPF1=$0.1.$$
+TEMPF2=$0.2.$$
+
+CARLOG=car-log
+
+mkdir -p $CARLOG
+
+while read line
+do
+	echo doing $line
+	./submit.pl car $line > $TEMPF1 2> $TEMPF2 && touch $CARLOG/GOOD-$line || touch $CARLOG/BAD-$line
+	mv $TEMPF1 $CARLOG/MSG-$line
+	mv $TEMPF2 $CARLOG/STDERR-$line
+done
+
+rm -f $TEMPF
+exit 0

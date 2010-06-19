@@ -1,0 +1,23 @@
+Netlist
+
+Exported from icfp.sch at  6/18/2010 18:59:40 
+
+EAGLE Version 4.16r2 Copyright (c) 1988-2006 CadSoft
+
+Net      Part     Pad      Pin        Sheet
+
+N$1      GATE0    1        LI         1
+         INPUT    1        P          1
+
+N$2      GATE0    2        LO         1
+         GATE1    1        LI         1
+
+N$3      GATE0    3        RI         1
+         GATE0    4        RO         1
+
+N$4      GATE1    3        RI         1
+         GATE1    4        RO         1
+
+N$5      GATE1    2        LO         1
+         OUTPUT   1        P          1
+
