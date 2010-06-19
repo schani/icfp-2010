@@ -177,6 +177,9 @@
 	       (assoc map index {:l (un-input-index left)
 				 :r (un-input-index right)}))))))
 
+(defn un-preprocess-java-circuit [input-index circuit]
+  (un-preprocess-circuit input-index (map (fn [[l r]] [:bla :bla l r])
+					  (partition 2 circuit))))
 
 (defn preprocessed-step [code inputs]
   (loop [code code

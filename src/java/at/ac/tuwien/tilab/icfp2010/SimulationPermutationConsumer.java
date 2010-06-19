@@ -13,6 +13,8 @@ public class SimulationPermutationConsumer implements IPermutationConsumer {
 
     public void consumePermutation (int[] perm) {
 	int inputIndex = perm [n * 2];
+	if (inputIndex == 0)
+	    return;
 	int[] outputStream = Simulator.simulate (n, perm, inputIndex, inputStream);
 	simulationConsumer.consumeSimulation (n, perm, inputIndex, inputStream, outputStream);
     }
