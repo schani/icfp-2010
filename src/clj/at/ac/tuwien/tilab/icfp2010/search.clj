@@ -128,8 +128,8 @@
 	(let [[pred outputs] (decode-wish name arg)]
 	  (search-circuits-with-prefix n outputs prefix pred)))
 
-(defn vsc-pmap [n f coll]
-  ([f coll]
+(defn vsc-pmap
+  ([n f coll]
      (let [rets (map #(future (f %)) coll)
 	   step (fn step [[x & xs :as vs] fs]
 		  (lazy-seq
@@ -137,7 +137,7 @@
 		     (cons (deref x) (step xs (rest s)))
 		     (map deref vs))))]
        (step rets (drop n rets))))
-  ([f coll & colls]
+  ([n f coll & colls]
      (let [step (fn step [cs]
 		  (lazy-seq
 		   (let [ss (map seq cs)]
