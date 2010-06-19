@@ -147,4 +147,4 @@
 
 (defn vsc-search [n prefix-len name arg]
   (let [prefixes (search-prefixes n prefix-len)]
-    (apply concat (vsc-map (max 1000 (count prefixes)) #(search-wish-with-prefix-vsc n % name arg) prefixes))))
+    (apply concat (vsc-pmap (max 1000 (count prefixes)) #(search-wish-with-prefix-vsc n % name arg) prefixes))))
