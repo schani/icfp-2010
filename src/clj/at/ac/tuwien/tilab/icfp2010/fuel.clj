@@ -132,9 +132,6 @@
 	       (inc num-of-chambs)
 	       )))))
 
-(reduce (fn [x y] (str x "*" y)) [])
-(apply str (interpose "*" ["1" "2" "3"]))
-
 ; for kurde in `ls`; do qsub $kurde ; done
 (defn prepare-cars-mathematica [file]
   (let [pattern (re-pattern "(\\d+) (\\d+)")]
