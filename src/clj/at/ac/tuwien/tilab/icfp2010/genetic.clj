@@ -86,7 +86,7 @@
 			  min-sections max-sections
 			  pop-size init-max max-mutate max-generations]
   (superpmap 1000 (fn [[id string]]
-		    [id (genetic-solve-car-from-string-vsc string min-ingred max-ingred pop-size init-max max-mutate max-generations)])
+		    [id (genetic-solve-car-from-string-vsc string min-ingred max-ingred min-sections max-sections pop-size init-max max-mutate max-generations)])
 	     cars))
 
 (defn read-cars-from-file [filename]
