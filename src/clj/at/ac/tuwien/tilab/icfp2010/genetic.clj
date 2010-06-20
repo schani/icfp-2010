@@ -2,6 +2,7 @@
   (:use at.ac.tuwien.tilab.icfp2010.cars
 	at.ac.tuwien.tilab.icfp2010.ternary
 	at.ac.tuwien.tilab.icfp2010.search
+	at.ac.tuwien.tilab.icfp2010.superpmap
 	at.ac.tuwien.complang.distributor.vsc)
   (:require clojure.contrib.string)
   (:import [at.ac.tuwien.tilab.icfp2010 Fuel]))
@@ -69,15 +70,15 @@
 		      (let [[gen fit-pop] (genetic-fuels car num-ingred pop-size init-max max-mutate max-generations)
 			    [best best-score] (first fit-pop)]
 			(if (> best-score 0)
-			  [true (koeblerify-fuels best)]
+			  [true (str (apply vector (koeblerify-fuels best)))]
 			  (recur (inc num-ingred))))))))
 	  (catch Exception exc
 	    [false (str exc)])))
 
 (defn genetic-solve-cars [cars min-ingred max-ingred pop-size init-max max-mutate max-generations]
-  (vsc-pmap 1000 (fn [[id string]]
-		   [id (genetic-solve-car-from-string-vsc string min-ingred max-ingred pop-size init-max max-mutate max-generations)])
-	    cars))
+  (superpmap 1000 (fn [[id string]]
+		    [id (genetic-solve-car-from-string-vsc string min-ingred max-ingred pop-size init-max max-mutate max-generations)])
+	     cars))
 
 (defn read-cars-from-file [filename]
   (map #(clojure.contrib.string/split #"\s+" %) (clojure.contrib.string/split-lines (slurp filename))))
