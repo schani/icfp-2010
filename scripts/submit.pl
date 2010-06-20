@@ -22,6 +22,7 @@ die $synopsis unless $mode eq "fuel" || $mode eq "vfuel" || $mode eq "car" || $m
 my $ua = LWP::UserAgent->new;
 my $cookieJar = HTTP::Cookies->new(file => "./.cookie", autosave => 1, ignore_discard => 1);
 $ua->cookie_jar($cookieJar);
+$ua->timeout(300); 
 login() unless $cookieJar->as_string =~ /JSESSIONID/;
 
 my ($request, $response, $form);
@@ -78,10 +79,12 @@ if ($mode eq "car" || $mode eq "vcar") {
     	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/form' );
 		$cookieJar->add_cookie_header( $request );
 	    $response = $ua->request($request);
+		next if $response->code >= 400;
 		next if $response->content =~ /Access is denied/;
 		last;
 	} continue {
-		login();
+		print STDERR "Retrying...";
+		login() if $response->content =~ /Access is denied/;
 	}
 
     # parse the form, fill in values
@@ -92,7 +95,10 @@ if ($mode eq "car" || $mode eq "vcar") {
     # make new request, add cookie, post
     $request = $form->click();
     $cookieJar->add_cookie_header( $request );
-    $response = $ua->request($request);
+    do {
+	    $response = $ua->request($request);
+		print STDERR "Retrying..." unless ($response->code < 400);
+	} until ($response->code < 400);
 
     # save output
     my $file;
@@ -173,10 +179,12 @@ if ($mode eq "car" || $mode eq "vcar") {
     	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/'. $carid .'/solve/form' );
 		$cookieJar->add_cookie_header( $request );
 	    $response = $ua->request($request);
+		next if $response->code >= 400;
 		next if $response->content =~ /Access is denied/;
 		last;
 	} continue {
-		login();
+		print STDERR "Retrying...";
+		login() if $response->content =~ /Access is denied/;
 	}
 
 	# parse the form, fill in values
@@ -186,7 +194,10 @@ if ($mode eq "car" || $mode eq "vcar") {
     # make new request, add cookie, post
     $request = $form->click();
     $cookieJar->add_cookie_header( $request );
-    $response = $ua->request($request);
+	do {
+	    $response = $ua->request($request);
+		print STDERR "Retrying..." unless ($response->code < 400);
+	} until ($response->code < 400);
 
     # save output
     my $file;
