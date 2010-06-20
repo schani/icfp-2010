@@ -6,12 +6,10 @@
 
  
 
-;; warning only up to 41 is supported
-
 (defn thing-to-string [thing]
   (if (list? thing)
     (apply str 
-	   (prefixes (count thing)) 
+	   (encode-list-length (count thing)) 
 	   (map thing-to-string thing))  
     (if (vector? thing)
       (apply str (map thing-to-string thing))

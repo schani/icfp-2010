@@ -103,6 +103,12 @@
 	     (trinarify-number (- input (len-offset (invert-len-offset input)))
 			       (invert-len-offset input)))))
 
+(defn encode-list-length [len]
+  (case len 
+	0 "0"
+	1 "1"
+	(str "22" (encode-number (- len 2)))))
+
 (defn parse-number [input]
   (case (first input)
 	\0 [(rest input) 0]
