@@ -85,24 +85,31 @@
 		       (conj solutions [car-id solution])
 		       solutions)))))))))
 
-(def mathematica-header "#$ -N mathematica\n#$ -pe mpich 32\n#$ -M mark.probst@gmail.com\n#$ -l h_rt=06:00:00\n#######$ -ar 2046\n#$ -cwd\n#$ -V\n\nMATHDIR=/opt/mathematica/tuwien/70/bin\n\n$MATHDIR/math <<EOF\n")
-(def mathematica-footer "\nEOF")
+(def mathematica-header "#$ -N mathematica\n#$ -pe mpich 1\n#$ -M mark.probst@gmail.com\n#$ -l h_rt=00:20:00\n#$ -ar 2035\n#$ -cwd\n#$ -V\n\nMATHDIR=/opt/mathematica/tuwien/70/bin\n\n$MATHDIR/math < ")
 
-(defn car-to-mathematica [car]
+(defn car-to-mathematica [id car]
   (loop [chamber-list car, string "", num-of-tanks 0, num-of-chambs 0]
     (if (empty? chamber-list)
       (str
        string
-       "FindInstance[ "
+       "X = FindInstance[ "
        (apply str (map (fn [x] (str "Z" x " >= 0 && ")) (range  num-of-chambs)))
        (reduce (fn [x y] (str x " && " y)) (map (fn [x] (str "A" x " >= 0")) (range  (inc num-of-tanks))))
        ", {"
        (reduce (fn [x y] (str x ", " y)) (map (fn [x] (str "A" x)) (range  (inc num-of-tanks))))
-       "}, Integers]"
+       "}, Integers];\n"
+       "StringForm[\""
+       id
+       " ("
+       (apply str (map (fn [x] " ((``)) ") (range (inc num-of-tanks))))
+       ")\", "
+       (reduce (fn [x y] (str x ", " y)) (map (fn [x] (str "A" x "/.X[[1]]")) (range  (inc num-of-tanks))))
+       "]\n\n"
        )
       (let [chamber (first chamber-list), max-num (apply max (cons num-of-tanks (concat (chamber :upper) (chamber :lower))))]
 	(recur (rest chamber-list)
-	       (str  "Z" num-of-chambs " = "
+	       (str  string
+		     "Z" num-of-chambs " = "
 		     (reduce (fn [x y] (str x "*" y)) (map (fn [x] (str "A" x)) (chamber :upper )))
 		     " - "
 		     (reduce (fn [x y] (str x "*" y)) (map (fn [x] (str "A" x)) (chamber :lower )))
@@ -116,19 +123,21 @@
 	       )
 	))))
 
+; for kurde in `ls`; do qsub $kurde ; done
+
 (defn prepare-cars-mathematica [file]
-  (let [pattern (re-pattern "id=(\\d+) car=(\\d+)")]
-    (with-open [file (BufferedReader. (FileReader. file))]
+  (let [pattern (re-pattern "(\\d+) (\\d+)")]
+    (let [file (BufferedReader. (FileReader. file))]
 	(loop [lines (line-seq file)]
-	  (if-not lines
+	  (if (empty? lines)
 	    nil
 	    (let [line (first lines)
 		  [_ car-id car-code] (first (re-seq pattern line))
-		  parsed-car (second (parse-car car-code))
-		  math-string (car-to-mathematica parsed-car)]
-	      (do
-		(with-open [out (BufferedWriter. (FileWriter. (str "mathematica_car" car-id ".sh")))]
-		(.write out (str mathematica-header math-string mathematica-footer))
-		))
-	      (recur (next lines))
+		  parsed-car (second (parse-car car-code)) 
+		  math-string (car-to-mathematica car-id parsed-car)]
+	      (with-open [out (BufferedWriter. (FileWriter. (str "mathematica_car" car-id))), script (BufferedWriter. (FileWriter. (str "mathematica_car" car-id ".sh")))]
+		(.write out math-string )
+;		(.write script (str mathematica-header "mathematica_car" car-id))
+		)
+	      (recur (rest lines))
 	      ))))))
