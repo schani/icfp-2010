@@ -65,8 +65,8 @@ if ($mode eq "car" || $mode eq "vcar") {
 	# Parse answer from test server
 	unless ($response->content =~ /Good! The car can use this fuel./m) {
 		if ($mode eq "vcar") {
-			$response->content =~ />([^<]+)<\/pre/m; 
-			print STDERR $1;
+			my @msgs = $response->content =~ />([^<]+)<\/pre/g; 
+			print STDERR join("\n", @msgs);
 		}
         print "error, car & fuel not matching";
 		exit 1;
@@ -157,9 +157,11 @@ if ($mode eq "car" || $mode eq "vcar") {
 
 	# Parse answer from test server
 	unless ($response->content =~ /Good! The car can use this fuel./m) {
-		$response->content =~ /<pre>([^<]+)<\/pre>/m;
+		if ($mode eq "vfuel") {
+			my @msgs = $response->content =~ />([^<]+)<\/pre/g; 
+			print STDERR join("\n", @msgs);
+		}
         printf("error, carid=%d, fuel not matching\n", $carid);
-        print STDERR $1 if $mode eq "vfuel";
 		exit 1;
 	}
 
