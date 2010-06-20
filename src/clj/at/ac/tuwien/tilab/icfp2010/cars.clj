@@ -80,7 +80,7 @@
    :is-main true
    :lower (random-pipe random num-tanks max-sections)})
 
-(defn mutate-pipe [random pipe num-tanks max-sections]
+(defn mutate-pipe [random pipe is-upper num-tanks max-sections]
   (let [sects (count pipe)]
     (case (.nextInt random 3)
 	  0 (if (zero? sects)
@@ -88,22 +88,30 @@
 	      (let [i (.nextInt random sects)
 		    tank (.nextInt random num-tanks)]
 		(assoc pipe i tank)))
-	  1 (if (zero? sects)
+	  1 (if is-upper
+	      (if (zero? sects)
+		pipe
+		(let [i (.nextInt random sects)]
+		  (apply vector (concat (take i pipe) (drop (inc i) pipe)))))
+	      (if (= sects max-sections)
+		pipe
+		(let [i (.nextInt random (inc sects))
+		      tank (.nextInt random num-tanks)]
+		  (apply vector (concat (take i pipe) [tank] (drop i pipe))))))
+	  2 (if (zero? sects)
 	      pipe
-	      (let [i (.nextInt random sects)]
-		(apply vector (concat (take i pipe) (drop (inc i) pipe)))))
-	  2 (if (= sects max-sections)
-	      pipe
-	      (let [i (.nextInt random (inc sects))
-		    tank (.nextInt random num-tanks)]
-		(apply vector (concat (take i pipe) [tank] (drop i pipe))))))))
+	      (let [i (.nextInt random sects)
+		    j (.nextInt random sects)
+		    ai (pipe i)
+		    aj (pipe j)]
+		(assoc pipe i aj j ai))))))
 
 (defn mutate-chamber [random chamber num-tanks max-sections]
   (let [bit (.nextInt random 2)
 	upper (:upper chamber)
-	upper (if (zero? bit) (mutate-pipe random upper num-tanks max-sections) upper)
+	upper (if (zero? bit) (mutate-pipe random upper true num-tanks max-sections) upper)
 	lower (:lower chamber)
-	lower (if (zero? bit) lower (mutate-pipe random lower num-tanks max-sections))]
+	lower (if (zero? bit) lower (mutate-pipe random lower false num-tanks max-sections))]
     {:upper upper
      :is-main (:is-main chamber)
      :lower lower}))

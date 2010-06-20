@@ -120,18 +120,23 @@
 		       [max-neg]
 		       (let [upper-freqs (frequencies (:upper chamber))
 			     lower-freqs (frequencies (:lower chamber))
+			     upper-count (count (:upper chamber))
+			     lower-count (count (:lower chamber))
 			     diff-score (apply * (map (fn [t]
 							(/ 1 (inc (abs (- (get upper-freqs t 0) (get lower-freqs t 0))))))
 						      (range num-tanks)))
-			     tanks-score (* (count upper-freqs) (count lower-freqs))]
+			     tanks-score (* (count upper-freqs) (count lower-freqs))
+			     short-upper-score (if (< upper-count lower-count) 2 1)]
 			 [(expt (- (/ max-neg pos-count))
-				(/ 1 (max (count (:upper chamber)) (count (:lower chamber)))))
-			  diff-score
-			  tanks-score]))))
+				(/ 1 (max upper-count lower-count)))
+			  ;diff-score
+			  tanks-score
+			  short-upper-score]))))
 	[num-gens fit-pop] (genetic-algorithm pop
 					      (fn [chamber] (apply * (score-fn chamber)))
 					      nil
 					      (fn [chamber] (mutate-chamber *random* chamber num-tanks max-sections))
-					      (fn [gen fit-pop] (>= gen max-generations)))]
+					      (fn [gen fit-pop] (>= gen max-generations))
+					      :mutation-rate 950)]
     (map (fn [[chamber score]] [chamber (score-fn chamber)])
 	 fit-pop)))
