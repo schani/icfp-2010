@@ -76,7 +76,7 @@
 
 (defn genetic-solve-cars [cars min-ingred max-ingred pop-size init-max max-mutate max-generations]
   (vsc-pmap 1000 (fn [[id string]]
-		   [id (genetic-solve-car-from-string string min-ingred max-ingred pop-size init-max max-mutate max-generations)])
+		   [id (genetic-solve-car-from-string-vsc string min-ingred max-ingred pop-size init-max max-mutate max-generations)])
 	    cars))
 
 (defn read-cars-from-file [filename]
