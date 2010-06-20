@@ -5,10 +5,18 @@ require LWP::UserAgent;
 require HTTP::Cookies;
 require HTML::Form;
 
+# Find data path
+my $datapath;
+if (exists $ENV{SUBMIT_DATA_PATH}) {
+	$datapath = $ENV{SUBMIT_DATA_PATH};
+} else {
+	$datapath = "data";
+}
+
 # Check command line
-my $synopsis = "Synopsis: ./submit.pl car | [v]fuel | getcarids | badcars | update-allcars";
+my $synopsis = "Synopsis: ./submit.pl [v]car | [v]fuel | getcarids | badcars | update-allcars";
 my $mode = shift || die $synopsis;
-die $synopsis unless $mode eq "fuel" || $mode eq "vfuel" || $mode eq "car" || $mode eq "getcarids" || $mode eq "badcars" || $mode eq "update-allcars";
+die $synopsis unless $mode eq "fuel" || $mode eq "vfuel" || $mode eq "car" || $mode eq "vcar" || $mode eq "getcarids" || $mode eq "badcars" || $mode eq "update-allcars";
 
 # Instanciate user agent, check for cookie, login if necessary
 my $ua = LWP::UserAgent->new;
@@ -20,7 +28,7 @@ my ($request, $response, $form);
 
 
 # Car handling
-if ($mode eq "car") {
+if ($mode eq "car" || $mode eq "vcar") {
 	
 	# More command line handling
 	my ($car, $fuel);
@@ -44,6 +52,26 @@ if ($mode eq "car") {
 	# Test Input
 	die "Invalid car" unless $car =~ /^[012]+$/;
 	die "Invalid fuel" unless $fuel =~ /^[0-9LRlr:,Xx\#\n]+$/m;
+
+	# Try request against test server
+	$request = HTTP::Request->new( GET => 'http://nfa.imn.htwk-leipzig.de/icfpcont/' );
+    $response = $ua->request($request);
+    $form = HTML::Form->parse( $response );
+    $form->value( "G0", $car );
+	$form->value( "G1", $fuel );
+	$request = $form->click();
+	$response = $ua->request($request);
+
+	# Parse answer from test server
+	unless ($response->content =~ /Good! The car can use this fuel./m) {
+		if ($mode eq "vcar") {
+			my @msgs = $response->content =~ />([^<]+)<\/pre/g; 
+			print STDERR join("\n", @msgs);
+		}
+        print "error, car & fuel not matching";
+		exit 1;
+	}
+	print "Hint: Test server ok, now submitting\n";
 
 	# GET the car form, renew login if necessary
     while (1) {
@@ -76,7 +104,7 @@ if ($mode eq "car") {
     if ($response->content =~ /<span id="instance.errors" class="errors">([^<]+)<\/span>/m) {
         print $1;
         exit 1;
-    } elsif ($response->content =~ /You have submitted the car ([0-9])+ with size ([0-9]+)/m) {
+    } elsif ($response->content =~ /You have submitted the car ([0-9]+) with size ([0-9]+)/m) {
 		my ($newid, $newsize) = ($1, $2);
 		$response->content =~ /This is car ([0-9]+) out of/;
 		printf("success, carid=%d, size=%d, carno=%d\n", $newid, $newsize, $1); 
@@ -129,11 +157,14 @@ if ($mode eq "car") {
 
 	# Parse answer from test server
 	unless ($response->content =~ /Good! The car can use this fuel./m) {
-		$response->content =~ /<pre>([^<]+)<\/pre>/m;
+		if ($mode eq "vfuel") {
+			my @msgs = $response->content =~ />([^<]+)<\/pre/g; 
+			print STDERR join("\n", @msgs);
+		}
         printf("error, carid=%d, fuel not matching\n", $carid);
-        print STDERR $1 if $mode eq "vfuel";
 		exit 1;
 	}
+	print STDERR "Hint: Test server ok, now submitting\n";
 
 	# Test server says its ok, continue to real server	
 
@@ -196,81 +227,76 @@ if ($mode eq "car") {
 	# Load known_cars
 	my @bad_cars;
 	my $known_cars_fh;
-	open $known_cars_fh, "< data/known_cars.txt" || die "Cannot load database of known cars";
+	open $known_cars_fh, "< ${datapath}/known_cars.txt" || die "Cannot load database of known cars";
 	while (<$known_cars_fh>) {
 		die unless m/^([0-9]+) (.*)$/;
 		push @bad_cars, $1 if $2 eq "-";
 	}
 	close $known_cars_fh;
 
-	my %all_cars2 = load_allcars();
+	# exclude solved cars found in submission log
+	my %log_solved;
+	my $log_fh;
+	open $log_fh, "cat ${datapath}/log/*.log |" || die "Failure cat_ing log-files\n";
+	while (<$log_fh>) {
+		my ($id) = /^success, carid=([0-9]+),/;
+		($id) = /^([0-9]+)$/ unless $id;
+		next unless $id;
+		$log_solved{$id} = 1;
+	}
+
+	my %all_cars = load_allcars();
 
 	# Loop over bad cars	
 	my $carid;
 	foreach $carid (@bad_cars) {
-		printf("%d %s\n", $carid, $all_cars2{$carid});
+		next if exists $log_solved{$carid};
+		printf("%d %s\n", $carid, $all_cars{$carid});
 	}
 
 # Update allcars
 } elsif ($mode eq "update-allcars") {
 
-	# Load allcars file
-	my %all_cars3 = load_allcars();
-
-	# GET the car form, renew login if necessary
-    while (1) {
-    	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/score/instanceTeamCount' );
-	    $response = $ua->request($request);
-		next unless $response->content =~ /action/;
-		last;
-	} continue {
-		login();
-		print STDERR "Warning: Renewing login";
-	}
-
-	my @server_cars;
-	my @matches = $response->content =~ m|action="/icfp10/instance/[0-9]+/solve/form"|g;
-	foreach (@matches) {
-		s|^action="/icfp10/instance/([0-9]+)/solve/form"$|$1|;
-		push @server_cars, $_;
-	}
-
-	# Filter cars	
-	my @new_cars = grep { ! exists $all_cars3{$_} } @server_cars;
-
-	my $no_new_cars = @new_cars;
-	print "Found ${no_new_cars} new cars\n";		
-
-	# Open output-descr to update allcars.txt
-	my $all_cars_fh;
-	open $all_cars_fh, ">> data/allcars.txt" || die;
-
-	# Loop over new cars	
-	my $carid2;
-	my $i;
-	foreach $carid2 (@new_cars) {
-		$i++;
-		
-		# GET the car form, renew login if necessary
-	    while (1) {
-    		$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/'. $carid2 .'/solve/form' );
-	    	$response = $ua->request($request);
-			next if $response->content =~ /Access is denied/;
-			last;
-		} continue {
-			login();
-		}
-
-		if ($response->content =~ m/Car:<\/label>([0-3]+)<\/div>/) {
-			print $all_cars_fh sprintf("%d %s", $carid2, $1);
-			print "${i}/${no_new_cars}\n";
-		} else {
-			print STDERR sprintf("%d parse error\n", $carid2);
-		}
-	}
+	# GET the form
+	$request = HTTP::Request->new( GET => 'http://nfa.imn.htwk-leipzig.de/recent_cars/' );
+    $response = $ua->request($request);
 	
+	my %allcars = load_allcars();	
+
+	my @tmpkeys = sort { $a <=> $b } keys %allcars;
+	my $page = pop(@tmpkeys);
+	my @matches;
+	do {
+		# round trip
+		$form = HTML::Form->parse( $response );
+		$form->value( "G0", $page );
+		$request = $form->click();
+		$response = $ua->request($request);
+
+		# parse response, save into hash
+		@matches = $response->content =~ m|\(([0-9]+),[^,]*,&quot;([0-2]+)&quot;\)|g;
+		for (my $i=0; $i < @matches; $i+=2) {
+			my $k = shift @matches; my $v = shift @matches;
+			$allcars{$k} = $v;
+			$page = $k;
+		}
+
+		print ".";
+
+		# do not increase page, server does it implicitly
+	} while (@matches);
+
+	die "Could not load any cars. Strange." unless (keys %allcars);
+
+	# sort them, dump to outfile
+	my $all_cars_fh;
+	open $all_cars_fh, "> ${datapath}/.allcars.txt".$$ || die;
+	foreach (sort { $a <=> $b } keys %allcars) {
+		print $all_cars_fh $_ . " " . $allcars{$_};
+	}
 	close $all_cars_fh;
-	print "data/allcars.txt updated.";
+	rename "${datapath}/.allcars.txt".$$, "${datapath}/allcars.txt" || die "Cannot rename file\n";
+
 }
 
 
@@ -298,7 +324,7 @@ sub login {
 sub load_allcars {
 	my %all_cars;
 	my $all_cars_fh;
-	open $all_cars_fh, "< data/allcars.txt" || die "Cannot load database of all cars";
+	open $all_cars_fh, "< ${datapath}/allcars.txt" || die "Cannot load database of all cars";
 	while (<$all_cars_fh>) {
 		next if m/^ ?$/;
 		die unless m/^([0-9]+) (.*)$/;

@@ -1,3 +1,4 @@
 #!/bin/bash
 
-./build-factory.sh $2 | sed '$ d' | scripts/submit.pl fuel $1 - 
+export SUBMIT_DATA_PATH=scripts/data
+./build-factory.sh $2 | sed '$ d' | scripts/submit.pl vfuel $1 - 

@@ -1,0 +1,1954 @@
+%!PS-Adobe-2.0
+%%Creator: Graphviz version 2.12 (Thu May 24 17:55:05 UTC 2007)
+%%For: (toby) Tobias Deutsch ICFP
+%%Title: gates
+%%Pages: (atend)
+%%BoundingBox: (atend)
+%%EndComments
+save
+%%BeginProlog
+/DotDict 200 dict def
+DotDict begin
+
+/setupLatin1 {
+mark
+/EncodingVector 256 array def
+ EncodingVector 0
+
+ISOLatin1Encoding 0 255 getinterval putinterval
+EncodingVector 45 /hyphen put
+
+% Set up ISO Latin 1 character encoding
+/starnetISO {
+        dup dup findfont dup length dict begin
+        { 1 index /FID ne { def }{ pop pop } ifelse
+        } forall
+        /Encoding EncodingVector def
+        currentdict end definefont
+} def
+/Times-Roman starnetISO def
+/Times-Italic starnetISO def
+/Times-Bold starnetISO def
+/Times-BoldItalic starnetISO def
+/Helvetica starnetISO def
+/Helvetica-Oblique starnetISO def
+/Helvetica-Bold starnetISO def
+/Helvetica-BoldOblique starnetISO def
+/Courier starnetISO def
+/Courier-Oblique starnetISO def
+/Courier-Bold starnetISO def
+/Courier-BoldOblique starnetISO def
+cleartomark
+} bind def
+
+%%BeginResource: procset graphviz 0 0
+/coord-font-family /Times-Roman def
+/default-font-family /Times-Roman def
+/coordfont coord-font-family findfont 8 scalefont def
+
+/InvScaleFactor 1.0 def
+/set_scale {
+       dup 1 exch div /InvScaleFactor exch def
+       scale
+} bind def
+
+% styles
+/solid { [] 0 setdash } bind def
+/dashed { [9 InvScaleFactor mul dup ] 0 setdash } bind def
+/dotted { [1 InvScaleFactor mul 6 InvScaleFactor mul] 0 setdash } bind def
+/invis {/fill {newpath} def /stroke {newpath} def /show {pop newpath} def} bind def
+/bold { 2 setlinewidth } bind def
+/filled { } bind def
+/unfilled { } bind def
+/rounded { } bind def
+/diagonals { } bind def
+
+% hooks for setting color 
+/nodecolor { sethsbcolor } bind def
+/edgecolor { sethsbcolor } bind def
+/graphcolor { sethsbcolor } bind def
+/nopcolor {pop pop pop} bind def
+
+/beginpage {	% i j npages
+	/npages exch def
+	/j exch def
+	/i exch def
+	/str 10 string def
+	npages 1 gt {
+		gsave
+			coordfont setfont
+			0 0 moveto
+			(\() show i str cvs show (,) show j str cvs show (\)) show
+		grestore
+	} if
+} bind def
+
+/set_font {
+	findfont exch
+	scalefont setfont
+} def
+
+% draw aligned label in bounding box aligned to current point
+/alignedtext {			% width adj text
+	/text exch def
+	/adj exch def
+	/width exch def
+	gsave
+		width 0 gt {
+			text stringwidth pop adj mul 0 rmoveto
+		} if
+		[] 0 setdash
+		text show
+	grestore
+} def
+
+/boxprim {				% xcorner ycorner xsize ysize
+		4 2 roll
+		moveto
+		2 copy
+		exch 0 rlineto
+		0 exch rlineto
+		pop neg 0 rlineto
+		closepath
+} bind def
+
+/ellipse_path {
+	/ry exch def
+	/rx exch def
+	/y exch def
+	/x exch def
+	matrix currentmatrix
+	newpath
+	x y translate
+	rx ry scale
+	0 0 1 0 360 arc
+	setmatrix
+} bind def
+
+/endpage { showpage } bind def
+/showpage { } def
+
+/layercolorseq
+	[	% layer color sequence - darkest to lightest
+		[0 0 0]
+		[.2 .8 .8]
+		[.4 .8 .8]
+		[.6 .8 .8]
+		[.8 .8 .8]
+	]
+def
+
+/layerlen layercolorseq length def
+
+/setlayer {/maxlayer exch def /curlayer exch def
+	layercolorseq curlayer 1 sub layerlen mod get
+	aload pop sethsbcolor
+	/nodecolor {nopcolor} def
+	/edgecolor {nopcolor} def
+	/graphcolor {nopcolor} def
+} bind def
+
+/onlayer { curlayer ne {invis} if } def
+
+/onlayers {
+	/myupper exch def
+	/mylower exch def
+	curlayer mylower lt
+	curlayer myupper gt
+	or
+	{invis} if
+} def
+
+/curlayer 0 def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+14 default-font-family set_font
+1 setmiterlimit
+% /arrowlength 10 def
+% /arrowwidth 5 def
+
+% make sure pdfmark is harmless for PS-interpreters other than Distiller
+/pdfmark where {pop} {userdict /pdfmark /cleartomark load put} ifelse
+% make '<<' and '>>' safe on PS Level 1 devices
+/languagelevel where {pop languagelevel}{1} ifelse
+2 lt {
+    userdict (<<) cvn ([) cvn load put
+    userdict (>>) cvn ([) cvn load put
+} if
+
+%%EndSetup
+setupLatin1
+%%Page: 1 1
+%%PageBoundingBox: 36 36 1036 1896
+%%PageOrientation: Portrait
+gsave
+36 36 1036 1896 boxprim clip newpath
+0 0 1 beginpage
+1 1 set_scale 0 rotate 40 40 translate
+0.000 0.000 1.000 graphcolor
+newpath -4 -4 moveto
+-4 1856 lineto
+996 1856 lineto
+996 -4 lineto
+closepath fill
+1 setlinewidth
+0.000 0.000 1.000 graphcolor
+newpath -4 -4 moveto
+-4 1856 lineto
+996 1856 lineto
+996 -4 lineto
+closepath stroke
+% cluster_Pipe0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 288 80 moveto
+288 208 lineto
+564 208 lineto
+564 80 lineto
+closepath stroke
+grestore
+% cluster_U_Pipe0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 296 88 moveto
+296 140 lineto
+556 140 lineto
+556 88 lineto
+closepath stroke
+grestore
+% cluster_L_Pipe0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 296 148 moveto
+296 200 lineto
+555 200 lineto
+555 148 lineto
+closepath stroke
+grestore
+% cluster_Pipe1
+gsave
+0.000 0.000 0.827 graphcolor
+newpath 8 216 moveto
+8 344 lineto
+704 344 lineto
+704 216 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 graphcolor
+newpath 8 216 moveto
+8 344 lineto
+704 344 lineto
+704 216 lineto
+closepath stroke
+grestore
+% cluster_U_Pipe1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 16 284 moveto
+16 336 lineto
+696 336 lineto
+696 284 lineto
+closepath stroke
+grestore
+% cluster_L_Pipe1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 16 224 moveto
+16 276 lineto
+695 276 lineto
+695 224 lineto
+closepath stroke
+grestore
+% cluster_Pipe2
+gsave
+0.000 0.000 0.827 graphcolor
+newpath 8 1140 moveto
+8 1268 lineto
+704 1268 lineto
+704 1140 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 graphcolor
+newpath 8 1140 moveto
+8 1268 lineto
+704 1268 lineto
+704 1140 lineto
+closepath stroke
+grestore
+% cluster_U_Pipe2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 16 1148 moveto
+16 1200 lineto
+696 1200 lineto
+696 1148 lineto
+closepath stroke
+grestore
+% cluster_L_Pipe2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 16 1208 moveto
+16 1260 lineto
+695 1260 lineto
+695 1208 lineto
+closepath stroke
+grestore
+% cluster_Pipe3
+gsave
+0.000 0.000 0.827 graphcolor
+newpath 8 374 moveto
+8 502 lineto
+844 502 lineto
+844 374 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 graphcolor
+newpath 8 374 moveto
+8 502 lineto
+844 502 lineto
+844 374 lineto
+closepath stroke
+grestore
+% cluster_U_Pipe3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 16 382 moveto
+16 434 lineto
+836 434 lineto
+836 382 lineto
+closepath stroke
+grestore
+% cluster_L_Pipe3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 16 442 moveto
+16 494 lineto
+835 494 lineto
+835 442 lineto
+closepath stroke
+grestore
+% cluster_Pipe4
+gsave
+0.000 0.000 0.827 graphcolor
+newpath 8 1558 moveto
+8 1686 lineto
+844 1686 lineto
+844 1558 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 graphcolor
+newpath 8 1558 moveto
+8 1686 lineto
+844 1686 lineto
+844 1558 lineto
+closepath stroke
+grestore
+% cluster_U_Pipe4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 16 1566 moveto
+16 1618 lineto
+836 1618 lineto
+836 1566 lineto
+closepath stroke
+grestore
+% cluster_L_Pipe4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 16 1626 moveto
+16 1678 lineto
+835 1678 lineto
+835 1626 lineto
+closepath stroke
+grestore
+% cluster_Pipe5
+gsave
+0.000 0.000 0.827 graphcolor
+newpath 8 1716 moveto
+8 1844 lineto
+984 1844 lineto
+984 1716 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 graphcolor
+newpath 8 1716 moveto
+8 1844 lineto
+984 1844 lineto
+984 1716 lineto
+closepath stroke
+grestore
+% cluster_U_Pipe5
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 16 1784 moveto
+16 1836 lineto
+976 1836 lineto
+976 1784 lineto
+closepath stroke
+grestore
+% cluster_L_Pipe5
+gsave
+1 setlinewidth
+0.000 0.000 0.000 graphcolor
+newpath 16 1724 moveto
+16 1776 lineto
+975 1776 lineto
+975 1724 lineto
+closepath stroke
+grestore
+% upper_pipe_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 114 51.1252 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 108 moveto 76.9804 -0.5 (upper_pipe_0) alignedtext
+grestore
+% section_U0_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 114 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 108 moveto 77.7616 -0.5 (section_U0_0) alignedtext
+grestore
+% upper_pipe_0--section_U0_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 408 114 moveto
+420 114 432 114 444 114 curveto
+stroke
+grestore
+% lower_pipe_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 174 51.1238 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 168 moveto 76.9776 -0.5 (lower_pipe_0) alignedtext
+grestore
+% section_L0_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 174 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 168 moveto 76.2076 -0.5 (section_L0_0) alignedtext
+grestore
+% lower_pipe_0--section_L0_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 408 174 moveto
+420 174 433 174 445 174 curveto
+stroke
+grestore
+% fuel_1
+gsave
+0.106 1.000 1.000 nodecolor
+356 780 31.0191 18 ellipse_path fill
+1 setlinewidth
+filled
+0.106 1.000 1.000 nodecolor
+356 780 31.0191 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 774 moveto 35.7658 -0.5 (fuel_1) alignedtext
+grestore
+% fuel_1--section_L0_0
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 361 762 moveto
+371 722 395 621 408 534 curveto
+431 396 380 345 444 220 curveto
+451 208 462 198 472 190 curveto
+stroke
+grestore
+% section_U1_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 310 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 304 moveto 77.7616 -0.5 (section_U1_2) alignedtext
+grestore
+% fuel_1--section_U1_2
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 361 762 moveto
+371 726 393 643 408 572 curveto
+427 487 409 459 444 378 curveto
+453 359 468 340 480 327 curveto
+stroke
+grestore
+% section_U1_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+636 310 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+636 304 moveto 77.7616 -0.5 (section_U1_3) alignedtext
+grestore
+% fuel_1--section_U1_3
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 359 762 moveto
+367 722 391 627 444 566 curveto
+485 521 529 549 564 498 curveto
+595 454 563 428 584 378 curveto
+593 359 608 340 620 327 curveto
+stroke
+grestore
+% section_U2_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 1174 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 1168 moveto 77.7616 -0.5 (section_U2_2) alignedtext
+grestore
+% fuel_1--section_U2_2
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 358 798 moveto
+366 865 398 1097 444 1152 curveto
+448 1156 452 1160 456 1162 curveto
+stroke
+grestore
+% section_U2_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+636 1174 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+636 1168 moveto 77.7616 -0.5 (section_U2_3) alignedtext
+grestore
+% fuel_1--section_U2_3
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 378 793 moveto
+429 824 553 900 564 918 curveto
+591 963 554 1110 584 1152 curveto
+587 1156 591 1160 596 1163 curveto
+stroke
+grestore
+% section_L3_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 468 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 462 moveto 76.2076 -0.5 (section_L3_2) alignedtext
+grestore
+% fuel_1--section_L3_2
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 362 762 moveto
+371 731 392 666 408 610 curveto
+425 557 407 532 444 490 curveto
+448 486 452 483 457 480 curveto
+stroke
+grestore
+% section_L3_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+636 468 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+636 462 moveto 76.2076 -0.5 (section_L3_3) alignedtext
+grestore
+% fuel_1--section_L3_3
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 365 763 moveto
+380 737 410 687 444 652 curveto
+490 606 527 621 564 566 curveto
+584 538 562 517 584 490 curveto
+588 486 592 483 597 480 curveto
+stroke
+grestore
+% section_L3_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+776 468 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+776 462 moveto 76.2076 -0.5 (section_L3_4) alignedtext
+grestore
+% fuel_1--section_L3_4
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 377 767 moveto
+395 756 421 741 444 728 curveto
+557 668 627 706 704 604 curveto
+736 564 692 531 724 490 curveto
+727 486 732 482 737 480 curveto
+stroke
+grestore
+% section_U4_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 1592 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 1586 moveto 77.7616 -0.5 (section_U4_2) alignedtext
+grestore
+% fuel_1--section_U4_2
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 359 798 moveto
+378 906 474 1466 493 1574 curveto
+stroke
+grestore
+% section_U4_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+636 1592 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+636 1586 moveto 77.7616 -0.5 (section_U4_3) alignedtext
+grestore
+% fuel_1--section_U4_3
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 368 797 moveto
+384 819 415 859 444 890 curveto
+493 941 533 931 564 994 curveto
+591 1048 578 1205 584 1264 curveto
+599 1383 624 1525 633 1574 curveto
+stroke
+grestore
+% section_U4_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+776 1592 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+776 1586 moveto 77.7616 -0.5 (section_U4_4) alignedtext
+grestore
+% fuel_1--section_U4_4
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 387 777 moveto
+464 771 662 760 704 804 curveto
+734 835 701 1535 724 1570 curveto
+727 1574 731 1578 736 1581 curveto
+stroke
+grestore
+% section_L5_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 1750 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 1744 moveto 76.2076 -0.5 (section_L5_2) alignedtext
+grestore
+% fuel_1--section_L5_2
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 359 798 moveto
+368 851 394 1011 408 1144 curveto
+421 1264 402 1570 444 1682 curveto
+452 1702 466 1720 478 1733 curveto
+stroke
+grestore
+% section_L5_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+636 1750 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+636 1744 moveto 76.2076 -0.5 (section_L5_3) alignedtext
+grestore
+% fuel_1--section_L5_3
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 363 797 moveto
+377 830 410 901 444 956 curveto
+491 1029 535 1028 564 1108 curveto
+608 1228 541 1562 584 1682 curveto
+591 1702 606 1720 618 1733 curveto
+stroke
+grestore
+% section_L5_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+776 1750 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+776 1744 moveto 76.2076 -0.5 (section_L5_4) alignedtext
+grestore
+% fuel_1--section_L5_4
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 386 784 moveto
+437 792 537 810 564 832 curveto
+681 930 670 996 704 1144 curveto
+732 1261 684 1570 724 1682 curveto
+731 1702 746 1720 758 1733 curveto
+stroke
+grestore
+% section_L5_5
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+916 1750 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+916 1744 moveto 76.2076 -0.5 (section_L5_5) alignedtext
+grestore
+% fuel_1--section_L5_5
+gsave
+1 setlinewidth
+0.106 1.000 1.000 edgecolor
+newpath 382 769 moveto
+444 745 609 693 704 771 curveto
+861 901 908 1608 915 1732 curveto
+stroke
+grestore
+% fuel_0
+gsave
+0.831 1.000 1.000 nodecolor
+216 653 31.0191 18 ellipse_path fill
+1 setlinewidth
+filled
+0.831 1.000 1.000 nodecolor
+216 653 31.0191 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+216 647 moveto 35.7658 -0.5 (fuel_0) alignedtext
+grestore
+% fuel_0--section_U0_0
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 230 637 moveto
+242 624 258 604 268 584 curveto
+280 564 271 551 288 534 curveto
+330 497 373 541 408 498 curveto
+459 438 402 211 444 144 curveto
+449 137 455 132 462 128 curveto
+stroke
+grestore
+% section_L1_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 250 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 244 moveto 76.2076 -0.5 (section_L1_1) alignedtext
+grestore
+% fuel_0--section_L1_1
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 224 635 moveto
+235 607 258 550 268 498 curveto
+279 451 260 320 288 280 curveto
+295 271 304 265 314 261 curveto
+stroke
+grestore
+% section_L1_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 250 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 244 moveto 76.2076 -0.5 (section_L1_2) alignedtext
+grestore
+% fuel_0--section_L1_2
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 227 636 moveto
+240 618 262 589 288 572 curveto
+335 542 372 577 408 534 curveto
+482 447 381 375 444 280 curveto
+449 273 455 268 462 264 curveto
+stroke
+grestore
+% section_L1_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+636 250 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+636 244 moveto 76.2076 -0.5 (section_L1_3) alignedtext
+grestore
+% fuel_0--section_L1_3
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 224 635 moveto
+236 607 259 550 268 498 curveto
+277 453 255 116 288 84 curveto
+377 0 462 17 564 84 curveto
+616 118 630 196 634 232 curveto
+stroke
+grestore
+% section_L2_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+636 1234 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+636 1228 moveto 76.2076 -0.5 (section_L2_3) alignedtext
+grestore
+% fuel_0--section_L2_3
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 219 671 moveto
+227 723 254 873 288 908 curveto
+378 1001 484 895 564 994 curveto
+594 1031 559 1165 584 1204 curveto
+588 1211 595 1216 602 1220 curveto
+stroke
+grestore
+% section_U3_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 408 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 402 moveto 77.7616 -0.5 (section_U3_1) alignedtext
+grestore
+% fuel_0--section_U3_1
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 222 635 moveto
+232 606 251 548 268 498 curveto
+277 472 270 459 288 438 curveto
+296 430 306 424 316 420 curveto
+stroke
+grestore
+% section_U3_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 408 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 402 moveto 77.7616 -0.5 (section_U3_2) alignedtext
+grestore
+% fuel_0--section_U3_2
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 240 642 moveto
+254 635 272 627 288 620 curveto
+341 598 370 615 408 572 curveto
+449 526 407 487 444 438 curveto
+449 432 456 426 463 422 curveto
+stroke
+grestore
+% section_U3_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+636 408 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+636 402 moveto 77.7616 -0.5 (section_U3_3) alignedtext
+grestore
+% fuel_0--section_U3_3
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 247 652 moveto
+287 649 357 640 408 612 curveto
+428 602 427 591 444 576 curveto
+494 536 526 549 564 498 curveto
+582 476 567 460 584 438 curveto
+589 432 596 426 604 422 curveto
+stroke
+grestore
+% section_U3_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+776 408 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+776 402 moveto 77.7616 -0.5 (section_U3_4) alignedtext
+grestore
+% fuel_0--section_U3_4
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 247 656 moveto
+285 658 353 660 408 645 curveto
+551 609 608 609 704 498 curveto
+723 477 707 460 724 438 curveto
+729 432 736 426 744 422 curveto
+stroke
+grestore
+% section_L4_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+636 1652 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+636 1646 moveto 76.2076 -0.5 (section_L4_3) alignedtext
+grestore
+% fuel_0--section_L4_3
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 218 671 moveto
+226 728 253 902 288 944 curveto
+375 1048 490 958 564 1070 curveto
+599 1122 553 1570 584 1622 curveto
+588 1629 595 1634 601 1639 curveto
+stroke
+grestore
+% section_L4_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+776 1652 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+776 1646 moveto 76.2076 -0.5 (section_L4_4) alignedtext
+grestore
+% fuel_0--section_L4_4
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 220 671 moveto
+229 702 250 767 288 807 curveto
+384 906 461 856 564 945 curveto
+646 1016 670 1042 704 1144 curveto
+722 1195 697 1577 724 1622 curveto
+728 1629 735 1634 741 1639 curveto
+stroke
+grestore
+% section_U5_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+636 1810 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+636 1804 moveto 77.7616 -0.5 (section_U5_3) alignedtext
+grestore
+% fuel_0--section_U5_3
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 216 671 moveto
+218 747 227 1036 288 1098 curveto
+376 1187 483 1051 564 1144 curveto
+611 1198 548 1720 584 1780 curveto
+588 1787 594 1792 601 1796 curveto
+stroke
+grestore
+% section_U5_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+776 1810 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+776 1804 moveto 77.7616 -0.5 (section_U5_4) alignedtext
+grestore
+% fuel_0--section_U5_4
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 218 671 moveto
+224 734 247 939 288 988 curveto
+310 1014 546 1080 564 1107 curveto
+601 1160 546 1632 584 1682 curveto
+618 1727 665 1681 704 1720 curveto
+725 1740 707 1759 724 1780 curveto
+729 1786 736 1792 743 1796 curveto
+stroke
+grestore
+% section_U5_5
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+916 1810 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+916 1804 moveto 77.7616 -0.5 (section_U5_5) alignedtext
+grestore
+% fuel_0--section_U5_5
+gsave
+1 setlinewidth
+0.831 1.000 1.000 edgecolor
+newpath 246 658 moveto
+306 669 448 696 564 727 curveto
+628 744 661 722 704 771 curveto
+940 1040 797 1209 844 1562 curveto
+851 1611 838 1740 864 1780 curveto
+868 1787 875 1792 882 1796 curveto
+stroke
+grestore
+% upper_pipe_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+76 310 51.1252 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 304 moveto 76.9804 -0.5 (upper_pipe_1) alignedtext
+grestore
+% section_U1_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+216 310 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+216 304 moveto 77.7616 -0.5 (section_U1_0) alignedtext
+grestore
+% upper_pipe_1--section_U1_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 128 310 moveto
+140 310 152 310 164 310 curveto
+stroke
+grestore
+% section_U1_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 310 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 304 moveto 77.7616 -0.5 (section_U1_1) alignedtext
+grestore
+% section_U1_0--section_U1_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 268 310 moveto
+280 310 292 310 304 310 curveto
+stroke
+grestore
+% lower_pipe_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+76 250 51.1238 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 244 moveto 76.9776 -0.5 (lower_pipe_1) alignedtext
+grestore
+% section_L1_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+216 250 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+216 244 moveto 76.2076 -0.5 (section_L1_0) alignedtext
+grestore
+% lower_pipe_1--section_L1_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 128 250 moveto
+140 250 153 250 165 250 curveto
+stroke
+grestore
+% section_L1_0--section_L1_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 267 250 moveto
+279 250 293 250 305 250 curveto
+stroke
+grestore
+% fuel_3
+gsave
+0.000 1.000 1.000 nodecolor
+76 1482 31.0191 18 ellipse_path fill
+1 setlinewidth
+filled
+0.000 1.000 1.000 nodecolor
+76 1482 31.0191 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 1476 moveto 35.7658 -0.5 (fuel_3) alignedtext
+grestore
+% fuel_3--section_L1_0
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 85 1464 moveto
+98 1439 120 1390 128 1345 curveto
+152 1229 104 382 164 280 curveto
+168 273 175 268 182 263 curveto
+stroke
+grestore
+% section_U2_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+216 1174 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+216 1168 moveto 77.7616 -0.5 (section_U2_0) alignedtext
+grestore
+% fuel_3--section_U2_0
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 84 1464 moveto
+95 1438 115 1389 128 1345 curveto
+148 1284 125 1256 164 1204 curveto
+169 1198 176 1192 183 1188 curveto
+stroke
+grestore
+% section_U2_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 1174 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 1168 moveto 77.7616 -0.5 (section_U2_1) alignedtext
+grestore
+% fuel_3--section_U2_1
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 93 1467 moveto
+131 1434 218 1351 268 1264 curveto
+283 1240 270 1225 288 1204 curveto
+296 1196 306 1190 316 1186 curveto
+stroke
+grestore
+% section_U3_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+216 408 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+216 402 moveto 77.7616 -0.5 (section_U3_0) alignedtext
+grestore
+% fuel_3--section_U3_0
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 85 1464 moveto
+97 1439 119 1390 128 1345 curveto
+149 1247 112 525 164 438 curveto
+168 431 175 426 182 422 curveto
+stroke
+grestore
+% section_U4_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+216 1592 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+216 1586 moveto 77.7616 -0.5 (section_U4_0) alignedtext
+grestore
+% fuel_3--section_U4_0
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 89 1498 moveto
+105 1518 134 1550 164 1570 curveto
+169 1573 174 1576 180 1579 curveto
+stroke
+grestore
+% section_U4_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 1592 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 1586 moveto 77.7616 -0.5 (section_U4_1) alignedtext
+grestore
+% fuel_3--section_U4_1
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 101 1493 moveto
+140 1510 220 1545 288 1570 curveto
+297 1573 308 1577 317 1580 curveto
+stroke
+grestore
+% section_L5_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+216 1750 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+216 1744 moveto 76.2076 -0.5 (section_L5_0) alignedtext
+grestore
+% fuel_3--section_L5_0
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 89 1499 moveto
+101 1514 118 1538 128 1562 curveto
+158 1632 116 1670 164 1728 curveto
+168 1732 172 1736 177 1738 curveto
+stroke
+grestore
+% section_L5_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 1750 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 1744 moveto 76.2076 -0.5 (section_L5_1) alignedtext
+grestore
+% fuel_3--section_L5_1
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 89 1498 moveto
+101 1514 118 1539 128 1562 curveto
+152 1613 126 1642 164 1682 curveto
+175 1694 264 1722 317 1738 curveto
+stroke
+grestore
+% section_L1_1--section_L1_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 407 250 moveto
+419 250 433 250 445 250 curveto
+stroke
+grestore
+% section_L1_2--section_L1_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 547 250 moveto
+559 250 573 250 585 250 curveto
+stroke
+grestore
+% fuel_2
+gsave
+0.498 1.000 1.000 nodecolor
+76 1318 31.0191 18 ellipse_path fill
+1 setlinewidth
+filled
+0.498 1.000 1.000 nodecolor
+76 1318 31.0191 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 1312 moveto 35.7658 -0.5 (fuel_2) alignedtext
+grestore
+% fuel_2--section_U1_0
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 96 1304 moveto
+107 1294 121 1280 128 1264 curveto
+169 1169 106 418 164 332 curveto
+167 328 171 324 176 322 curveto
+stroke
+grestore
+% fuel_2--section_U1_1
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 96 1304 moveto
+107 1294 121 1280 128 1264 curveto
+167 1174 106 458 164 378 curveto
+169 372 263 340 318 322 curveto
+stroke
+grestore
+% section_L2_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+216 1234 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+216 1228 moveto 76.2076 -0.5 (section_L2_0) alignedtext
+grestore
+% fuel_2--section_L2_0
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 95 1303 moveto
+112 1290 139 1271 164 1256 curveto
+170 1253 176 1250 182 1247 curveto
+stroke
+grestore
+% section_L2_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 1234 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 1228 moveto 76.2076 -0.5 (section_L2_1) alignedtext
+grestore
+% fuel_2--section_L2_1
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 104 1310 moveto
+141 1299 210 1279 268 1261 curveto
+285 1256 303 1251 318 1246 curveto
+stroke
+grestore
+% section_L2_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 1234 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 1228 moveto 76.2076 -0.5 (section_L2_2) alignedtext
+grestore
+% fuel_2--section_L2_2
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 107 1315 moveto
+145 1311 212 1303 268 1292 curveto
+331 1281 347 1278 408 1261 curveto
+425 1257 443 1251 459 1246 curveto
+stroke
+grestore
+% section_L3_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+216 468 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+216 462 moveto 76.2076 -0.5 (section_L3_0) alignedtext
+grestore
+% fuel_2--section_L3_0
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 96 1304 moveto
+107 1294 121 1280 128 1264 curveto
+163 1185 115 561 164 490 curveto
+167 486 171 482 176 479 curveto
+stroke
+grestore
+% section_L3_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 468 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 462 moveto 76.2076 -0.5 (section_L3_1) alignedtext
+grestore
+% fuel_2--section_L3_1
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 96 1304 moveto
+107 1294 121 1280 128 1264 curveto
+185 1134 109 757 164 626 curveto
+196 551 220 535 288 490 curveto
+296 485 305 481 314 478 curveto
+stroke
+grestore
+% section_L4_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+216 1652 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+216 1646 moveto 76.2076 -0.5 (section_L4_0) alignedtext
+grestore
+% fuel_2--section_L4_0
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 84 1336 moveto
+95 1361 115 1411 128 1455 curveto
+150 1528 120 1561 164 1622 curveto
+169 1629 176 1634 183 1638 curveto
+stroke
+grestore
+% section_L4_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 1652 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 1646 moveto 76.2076 -0.5 (section_L4_1) alignedtext
+grestore
+% fuel_2--section_L4_1
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 91 1334 moveto
+108 1353 137 1384 164 1408 curveto
+209 1449 239 1442 268 1494 curveto
+297 1545 253 1577 288 1622 curveto
+295 1631 304 1637 314 1641 curveto
+stroke
+grestore
+% section_L4_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 1652 51.24 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 1646 moveto 76.2076 -0.5 (section_L4_2) alignedtext
+grestore
+% fuel_2--section_L4_2
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 107 1319 moveto
+181 1323 367 1337 408 1380 curveto
+484 1459 383 1533 444 1622 curveto
+449 1629 455 1634 462 1638 curveto
+stroke
+grestore
+% section_U5_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+216 1810 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+216 1804 moveto 77.7616 -0.5 (section_U5_0) alignedtext
+grestore
+% fuel_2--section_U5_0
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 84 1336 moveto
+96 1362 118 1411 128 1455 curveto
+146 1526 125 1720 164 1780 curveto
+168 1787 175 1792 182 1796 curveto
+stroke
+grestore
+% section_U5_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+356 1810 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+356 1804 moveto 77.7616 -0.5 (section_U5_1) alignedtext
+grestore
+% fuel_2--section_U5_1
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 84 1335 moveto
+99 1364 130 1422 164 1465 curveto
+204 1515 241 1506 268 1562 curveto
+290 1606 260 1741 288 1780 curveto
+294 1789 304 1795 314 1799 curveto
+stroke
+grestore
+% section_U5_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+496 1810 52.017 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+496 1804 moveto 77.7616 -0.5 (section_U5_2) alignedtext
+grestore
+% fuel_2--section_U5_2
+gsave
+1 setlinewidth
+0.498 1.000 1.000 edgecolor
+newpath 103 1327 moveto
+142 1341 215 1369 268 1408 curveto
+343 1463 368 1479 408 1562 curveto
+451 1651 389 1700 444 1780 curveto
+449 1787 455 1792 462 1796 curveto
+stroke
+grestore
+% section_U1_1--section_U1_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 408 310 moveto
+420 310 432 310 444 310 curveto
+stroke
+grestore
+% section_U1_2--section_U1_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 548 310 moveto
+560 310 572 310 584 310 curveto
+stroke
+grestore
+% upper_pipe_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+76 1174 51.1252 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 1168 moveto 76.9804 -0.5 (upper_pipe_2) alignedtext
+grestore
+% upper_pipe_2--section_U2_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 128 1174 moveto
+140 1174 152 1174 164 1174 curveto
+stroke
+grestore
+% section_U2_0--section_U2_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 268 1174 moveto
+280 1174 292 1174 304 1174 curveto
+stroke
+grestore
+% lower_pipe_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+76 1234 51.1238 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 1228 moveto 76.9776 -0.5 (lower_pipe_2) alignedtext
+grestore
+% lower_pipe_2--section_L2_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 128 1234 moveto
+140 1234 153 1234 165 1234 curveto
+stroke
+grestore
+% section_L2_0--section_L2_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 267 1234 moveto
+279 1234 293 1234 305 1234 curveto
+stroke
+grestore
+% section_L2_1--section_L2_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 407 1234 moveto
+419 1234 433 1234 445 1234 curveto
+stroke
+grestore
+% section_L2_2--section_L2_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 547 1234 moveto
+559 1234 573 1234 585 1234 curveto
+stroke
+grestore
+% section_U2_1--section_U2_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 408 1174 moveto
+420 1174 432 1174 444 1174 curveto
+stroke
+grestore
+% section_U2_2--section_U2_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 548 1174 moveto
+560 1174 572 1174 584 1174 curveto
+stroke
+grestore
+% upper_pipe_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+76 408 51.1252 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 402 moveto 76.9804 -0.5 (upper_pipe_3) alignedtext
+grestore
+% upper_pipe_3--section_U3_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 128 408 moveto
+140 408 152 408 164 408 curveto
+stroke
+grestore
+% section_U3_0--section_U3_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 268 408 moveto
+280 408 292 408 304 408 curveto
+stroke
+grestore
+% lower_pipe_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+76 468 51.1238 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 462 moveto 76.9776 -0.5 (lower_pipe_3) alignedtext
+grestore
+% lower_pipe_3--section_L3_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 128 468 moveto
+140 468 153 468 165 468 curveto
+stroke
+grestore
+% section_L3_0--section_L3_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 267 468 moveto
+279 468 293 468 305 468 curveto
+stroke
+grestore
+% section_L3_1--section_L3_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 407 468 moveto
+419 468 433 468 445 468 curveto
+stroke
+grestore
+% section_L3_2--section_L3_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 547 468 moveto
+559 468 573 468 585 468 curveto
+stroke
+grestore
+% section_L3_3--section_L3_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 687 468 moveto
+699 468 713 468 725 468 curveto
+stroke
+grestore
+% section_U3_1--section_U3_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 408 408 moveto
+420 408 432 408 444 408 curveto
+stroke
+grestore
+% section_U3_2--section_U3_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 548 408 moveto
+560 408 572 408 584 408 curveto
+stroke
+grestore
+% section_U3_3--section_U3_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 688 408 moveto
+700 408 712 408 724 408 curveto
+stroke
+grestore
+% upper_pipe_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+76 1592 51.1252 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 1586 moveto 76.9804 -0.5 (upper_pipe_4) alignedtext
+grestore
+% upper_pipe_4--section_U4_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 128 1592 moveto
+140 1592 152 1592 164 1592 curveto
+stroke
+grestore
+% section_U4_0--section_U4_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 268 1592 moveto
+280 1592 292 1592 304 1592 curveto
+stroke
+grestore
+% lower_pipe_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+76 1652 51.1238 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 1646 moveto 76.9776 -0.5 (lower_pipe_4) alignedtext
+grestore
+% lower_pipe_4--section_L4_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 128 1652 moveto
+140 1652 153 1652 165 1652 curveto
+stroke
+grestore
+% section_L4_0--section_L4_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 267 1652 moveto
+279 1652 293 1652 305 1652 curveto
+stroke
+grestore
+% section_L4_1--section_L4_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 407 1652 moveto
+419 1652 433 1652 445 1652 curveto
+stroke
+grestore
+% section_L4_2--section_L4_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 547 1652 moveto
+559 1652 573 1652 585 1652 curveto
+stroke
+grestore
+% section_L4_3--section_L4_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 687 1652 moveto
+699 1652 713 1652 725 1652 curveto
+stroke
+grestore
+% section_U4_1--section_U4_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 408 1592 moveto
+420 1592 432 1592 444 1592 curveto
+stroke
+grestore
+% section_U4_2--section_U4_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 548 1592 moveto
+560 1592 572 1592 584 1592 curveto
+stroke
+grestore
+% section_U4_3--section_U4_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 688 1592 moveto
+700 1592 712 1592 724 1592 curveto
+stroke
+grestore
+% upper_pipe_5
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+76 1810 51.1252 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 1804 moveto 76.9804 -0.5 (upper_pipe_5) alignedtext
+grestore
+% upper_pipe_5--section_U5_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 128 1810 moveto
+140 1810 152 1810 164 1810 curveto
+stroke
+grestore
+% section_U5_0--section_U5_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 268 1810 moveto
+280 1810 292 1810 304 1810 curveto
+stroke
+grestore
+% lower_pipe_5
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+76 1750 51.1238 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+76 1744 moveto 76.9776 -0.5 (lower_pipe_5) alignedtext
+grestore
+% lower_pipe_5--section_L5_0
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 128 1750 moveto
+140 1750 153 1750 165 1750 curveto
+stroke
+grestore
+% section_L5_0--section_L5_1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 267 1750 moveto
+279 1750 293 1750 305 1750 curveto
+stroke
+grestore
+% section_L5_1--section_L5_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 407 1750 moveto
+419 1750 433 1750 445 1750 curveto
+stroke
+grestore
+% section_L5_2--section_L5_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 547 1750 moveto
+559 1750 573 1750 585 1750 curveto
+stroke
+grestore
+% section_L5_3--section_L5_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 687 1750 moveto
+699 1750 713 1750 725 1750 curveto
+stroke
+grestore
+% section_L5_4--section_L5_5
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 827 1750 moveto
+839 1750 853 1750 865 1750 curveto
+stroke
+grestore
+% section_U5_1--section_U5_2
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 408 1810 moveto
+420 1810 432 1810 444 1810 curveto
+stroke
+grestore
+% section_U5_2--section_U5_3
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 548 1810 moveto
+560 1810 572 1810 584 1810 curveto
+stroke
+grestore
+% section_U5_3--section_U5_4
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 688 1810 moveto
+700 1810 712 1810 724 1810 curveto
+stroke
+grestore
+% section_U5_4--section_U5_5
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 828 1810 moveto
+840 1810 852 1810 864 1810 curveto
+stroke
+grestore
+endpage
+showpage
+grestore
+%%PageTrailer
+%%EndPage: 1
+%%Trailer
+%%Pages: 1
+%%BoundingBox: 36 36 1036 1896
+end
+restore
+%%EOF

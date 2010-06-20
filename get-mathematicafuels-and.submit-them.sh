@@ -1,21 +1,27 @@
 #!/bin/bash
 
-# this is the source file generated from schani holding data n the form:
-# [carid [status [fuelmatrixes]]]
-# [38850 [true [((1 1) (1 13)) ((1 0) (0 0)) ((1 0) (4 8)) ((1 3) (2 7)) ((3 2) (0 5)) ((1 6) (4 11))]]]
-# or if not successful
-# [27235 [false no cars found]]
+
+
+#this is the source file generated from mathematica holding data n the form:
+#carid fuelmatrixes
+#2723 (((2 7 0 1) (0 7 0 0) (0 5 0 7) (14 1 9 0)) ((1 4 0 0) (0 0 0 0) (4 2 0 2) (0 7 0 0)))
+
+
+
+
 
 RUNTIME=`date +"%F-%T"`
 
-SCHANIFILE="submissions/genetic-fuels-2"
+SCHANIFILE="mathematica.out"
 
 SUBMISSIONFILE="submissions/submittable-fuels-$RUNTIME.txt"
 SUBLISSIONLOGFILE="submissions/submittable-fuels-$RUNTIME.log"
 
 RUNTIME=`date +"%F-%T"`
 
-cat $SCHANIFILE | grep -v false | awk '{gsub("]|[[]","");printf "%s ", $1; gsub("^[^(]+[(]","(");printf "(%s)\n", $0}' > $SUBMISSIONFILE
+#cat $SCHANIFILE | grep -v false | awk '{gsub("]|[[]","");printf "%s ", $1; gsub("^[^(]+[(]","(");printf "(%s)\n", $0}' > $SUBMISSIONFILE
+
+cat $SCHANIFILE > $SUBMISSIONFILE
 
 cat $SUBMISSIONFILE | while read line
 do

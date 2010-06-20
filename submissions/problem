@@ -1,0 +1,49 @@
+probleme bei submission 2010-06-20-18:11:18 :
+
+
+error, carid=39892, fuel not matching
+39892 (((4 6) (7 7)) ((2 4) (7 7)) ((3 3) (4 0)) ((3 9) (1 9)) ((9 1) (3 9)) ((9 7) (4 8)))
+
+error, carid=40093, fuel not matching
+40093 (((9 5) (4 3)) ((3 2) (9 2)) ((7 8) (5 9)) ((4 6) (7 5)) ((9 6) (4 0)) ((8 0) (8 7)))
+
+error, carid=40708, fuel not matching
+40708 (((9 7) (7 8)) ((6 6) (8 2)) ((4 9) (0 9)) ((7 9) (4 7)) ((4 2) (1 9)) ((1 9) (6 5)))
+
+error, carid=9748, fuel not matching
+9748 (((2 1) (4 0)) ((1 3) (4 9)))
+
+error, carid=50063, fuel not matching
+50063 (((6 8) (0 3)) ((3 4) (1 2)) ((8 9) (5 4)) ((2 3) (2 9)) ((9 7) (5 0)) ((3 4) (1 0)))
+
+error, carid=10060, fuel not matching
+10060 (((9 0) (3 4)) ((1 6) (1 1)))
+
+error, carid=50211, fuel not matching
+50211 (((4 7) (6 2)) ((6 9) (3 1)) ((8 8) (6 1)) ((9 10) (8 2)) ((6 3) (9 5)) ((2 9) (1 0)))
+
+error, carid=49865, fuel not matching 
+checking reaction chamber 0 surplus of ingredient 1 in lower pipe when air consists of ingredient 1 only
+49865 (((3 4) (2 8)) ((3 2) (5 2)) ((1 8) (6 5)) ((5 3) (6 3)) ((4 9) (3 1)) ((2 8) (6 1)))
+
+error, carid=49025, fuel not matching
+49025 (((8 4) (0 0)) ((1 8) (9 6)) ((5 3) (0 6)) ((8 3) (5 5)) ((4 4) (7 9)) ((3 9) (0 3)))
+
+error, carid=38850, fuel not matching
+38850 (((1 1) (1 13)) ((1 0) (0 0)) ((1 0) (4 8)) ((1 3) (2 7)) ((3 2) (0 5)) ((1 6) (4 11)))
+
+
+
+
+
+
+
+probleme bei submission 2010-06-20-19:38:35:
+
+
+error, carid=3270, fuel not matching
+3270 (((12 3) (9 0)) ((6 0) (24 3)))
+
+
+
+
