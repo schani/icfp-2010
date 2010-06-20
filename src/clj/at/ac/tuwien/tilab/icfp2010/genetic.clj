@@ -15,23 +15,31 @@
       (nth pop index))))
 
 (defn genetic-algorithm [population fitness-func combine-func mutate-func stop-cond-pred & params]
-  (let [params (merge {:mutation-rate 5} (apply hash-map params))
+  (let [params (merge {:mutation-rate (if combine-func 200 800)} (apply hash-map params))
 	mutation-rate (:mutation-rate params)
 	random (java.util.Random.)]
     (loop [generation 0
 	   population population]
-      (let [fitness-pop (reverse (sort-by second (map (fn [i] [i (fitness-func i)]) population)))]
+      (let [fitness-pop (map (fn [i] [i (fitness-func i)]) population)
+	    fitness-pop (reverse (sort-by second fitness-pop))]
 	(println {:generation generation :best (second (first fitness-pop)) :worst (second (last fitness-pop))})
 	(if (stop-cond-pred generation fitness-pop)
 	  [generation fitness-pop]
 	  (recur (inc generation)
-		 (map (fn [_]
-			(let [offspring (combine-func (first (choose random fitness-pop))
-						      (first (choose random fitness-pop)))]
-			  (if (zero? (.nextInt random mutation-rate))
-			    (mutate-func offspring)
-			    offspring)))
-		      population)))))))
+		 (if combine-func
+		   (map (fn [_]
+			  (let [offspring (combine-func (first (choose random fitness-pop))
+							(first (choose random fitness-pop)))]
+			    (if (<= (.nextInt random 1001) mutation-rate)
+			      (mutate-func offspring)
+			      offspring)))
+			population)
+		   (doall (map (fn [_]
+				 (let [offspring (first (choose random fitness-pop))]
+				   (if (<= (.nextInt random 1001) mutation-rate)
+				     (mutate-func offspring)
+				     offspring)))
+			       population)))))))))
 
 (def *random* (java.util.Random.))
 
@@ -91,3 +99,26 @@
 
 (defn read-cars-from-file [filename]
   (map #(clojure.contrib.string/split #"\s+" %) (clojure.contrib.string/split-lines (slurp filename))))
+
+(defn genetic-car [num-fuelss num-ingredients fuel-max num-tanks max-sections pop-size max-generations]
+  (let [fuelss (map (fn [_]
+		      (map (fn [_]
+			     (Fuel/randomFuel *random* num-ingredients fuel-max))
+			   (range num-tanks)))
+		    (range num-fuelss))
+	pop (map (fn [_]
+		   (random-chamber *random* num-tanks max-sections))
+		 (range pop-size))]
+    (genetic-algorithm pop
+		       (fn [chamber]
+			 (let [car [chamber]
+			       scores (map #(car-fuels-score car %) fuelss)
+			       [poss negs] (partition-with-pred #(>= % 0) scores)
+			       pos-count (count poss)
+			       max-neg (if (zero? (count negs)) 0 (apply max negs))]
+			   (if (zero? pos-count)
+			     max-neg
+			     (- (/ max-neg 2)))))
+		       nil
+		       (fn [chamber] (mutate-chamber *random* chamber num-tanks))
+		       (fn [gen fit-pop] (>= gen max-generations)))))
