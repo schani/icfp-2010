@@ -109,25 +109,29 @@
 		    (range num-fuelss))
 	pop (map (fn [_]
 		   (random-chamber *random* num-tanks max-sections))
-		 (range pop-size))]
-    (genetic-algorithm pop
-		       (fn [chamber]
-			 (let [car [chamber]
-			       scores (map #(car-fuels-score car %) fuelss)
-			       [poss negs] (partition-with-pred #(>= % 0) scores)
-			       pos-count (count poss)
-			       max-neg (if (zero? (count negs)) 0 (apply max negs))]
-			   (if (zero? pos-count)
-			     max-neg
-			     (let [upper-freqs (frequencies (:upper chamber))
-				   lower-freqs (frequencies (:lower chamber))
-				   diff-score (apply * (map (fn [t]
-							      (/ 1 (inc (abs (- (get upper-freqs t 0) (get lower-freqs t 0))))))
-							    (range num-tanks)))
-				   tanks-score (* (count upper-freqs) (count lower-freqs))]
-			       (* (- (/ max-neg pos-count))
-				  ;diff-score
-				  tanks-score)))))
-		       nil
-		       (fn [chamber] (mutate-chamber *random* chamber num-tanks))
-		       (fn [gen fit-pop] (>= gen max-generations)))))
+		 (range pop-size))
+	score-fn (fn [chamber]
+		   (let [car [chamber]
+			 scores (map #(car-fuels-score car %) fuelss)
+			 [poss negs] (partition-with-pred #(>= % 0) scores)
+			 pos-count (count poss)
+			 max-neg (if (zero? (count negs)) 0 (apply max negs))]
+		     (if (zero? pos-count)
+		       [max-neg]
+		       (let [upper-freqs (frequencies (:upper chamber))
+			     lower-freqs (frequencies (:lower chamber))
+			     diff-score (apply * (map (fn [t]
+							(/ 1 (inc (abs (- (get upper-freqs t 0) (get lower-freqs t 0))))))
+						      (range num-tanks)))
+			     tanks-score (* (count upper-freqs) (count lower-freqs))]
+			 [(expt (- (/ max-neg pos-count))
+				(/ 1 (max (count (:upper chamber)) (count (:lower chamber)))))
+			  diff-score
+			  tanks-score]))))
+	[num-gens fit-pop] (genetic-algorithm pop
+					      (fn [chamber] (apply * (score-fn chamber)))
+					      nil
+					      (fn [chamber] (mutate-chamber *random* chamber num-tanks max-sections))
+					      (fn [gen fit-pop] (>= gen max-generations)))]
+    (map (fn [[chamber score]] [chamber (score-fn chamber)])
+	 fit-pop)))
