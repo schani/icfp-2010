@@ -30,7 +30,7 @@
 	 mapping {}
 	 nextindex 0]
     (if (empty? todo)
-      (reverse result)
+      [(reverse result) mapping]
       (let [[car2 mapping nextindex] (transform-chamber (first todo) mapping nextindex)]
 	(recur (cons car2 result) (rest todo) mapping nextindex)))))
 
