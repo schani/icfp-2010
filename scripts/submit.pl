@@ -7,7 +7,7 @@ require HTML::Form;
 
 # Check command line
 my $mode = shift;
-die "Synopsis: ./submit.pl car | fuel | getcars" unless $mode eq "fuel" || $mode eq "car" || $mode eq "getcars";
+die "Synopsis: ./submit.pl car | fuel | getcars | badcars" unless $mode eq "fuel" || $mode eq "car" || $mode eq "getcars" || $mode eq "badcars";
 
 # Instanciate user agent, check for cookie, login if necessary
 my $ua = LWP::UserAgent->new;
@@ -170,7 +170,43 @@ if ($mode eq "car") {
 		s|^action="/icfp10/instance/([0-9]+)/solve/form"$|$1|;
 		print $_;
 	}
+
+
+# Badcars handling
+} elsif ($mode eq "badcars") {
+
+	# Load known_cars
+	my @bad_cars;
+	my $known_cars_fh;
+	open $known_cars_fh, "< data/known_cars.txt" || die "Cannot load database of known cars";
+	while (<$known_cars_fh>) {
+		die unless m/^([0-9]+) (.*)$/;
+		push @bad_cars, $1 if $2 eq "-";
+	}
+	close $known_cars_fh;
+
+	# Loop over bad cars	
+	my $carid;
+	foreach $carid (@bad_cars) {
+		
+		# GET the car form, renew login if necessary
+	    while (1) {
+    		$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/'. $carid .'/solve/form' );
+	    	$response = $ua->request($request);
+			next if $response->content =~ /Access is denied/;
+			last;
+		} continue {
+			login();
+		}
+
+		if ($response->content =~ m/Car:<\/label>([0-3]+)<\/div>/) {
+			printf("id=%d car=%s\n", $carid, $1);
+		} else {
+			printf("id=%d parse error\n", $carid);
+		}
+	}
 }
+
 
 
 # Submitt login form
