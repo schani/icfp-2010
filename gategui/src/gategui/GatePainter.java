@@ -10,7 +10,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Rectangle2D;
+import java.lang.String;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JPanel;
 
 /**
@@ -83,12 +86,13 @@ public class GatePainter extends JPanel {
             g2.setColor(Color.white);
             g2.drawString("gate " + gateNr, (int) rect.getX() + GATE_WIDTH / 2 - 20, (int) rect.getY() + GATE_HEIGHT / 2);
 
+            // curves
             g2.setColor(Color.blue);
             g2.setStroke(new BasicStroke(2));
             if (gate.outL >= 0) {
                 Gate gate2 = gates.get(gate.outL);
                 CubicCurve2D c = new CubicCurve2D.Double();
-                float y2 = (float) ((gate2.inLc == 'L') ? gate2.getTopLeft().getY() : gate2.getBottomLeft().getY());
+                float y2 = (float) ((gate.outLc == 'L') ? gate2.getTopLeft().getY() : gate2.getBottomLeft().getY());
                 c.setCurve(gate.getTopRight().getX(), gate.getTopRight().getY(),
                         gate.getTopRight().getX() + 50, gate.getTopRight().getY(),
                         gate2.rect.x - 50, y2,
@@ -98,7 +102,7 @@ public class GatePainter extends JPanel {
             if (gate.outR >= 0) {
                 Gate gate2 = gates.get(gate.outR);
                 CubicCurve2D c = new CubicCurve2D.Double();
-                float y2 = (float) ((gate2.outRc == 'L') ? gate2.getTopLeft().getY() : gate2.getBottomLeft().getY());
+                float y2 = (float) ((gate.outRc == 'L') ? gate2.getTopLeft().getY() : gate2.getBottomLeft().getY());
                 c.setCurve(gate.getBottomRight().getX(), gate.getBottomRight().getY(),
                         gate.getBottomRight().getX() + 50, gate.getBottomRight().getY(),
                         gate2.rect.x - 50, y2,
@@ -169,7 +173,7 @@ public class GatePainter extends JPanel {
         sb.replace(sb.lastIndexOf(","), sb.length(), ":\n");
 
         sb.append(String.format("%d%c%n", outputLineGoesToGateNr,
-                (gatesArr[outputLineGoesToGateNr].inL == INPUT_LINE) ? 'L' : 'R'));
+                (gatesArr[outputLineGoesToGateNr].outL == OUTPUT_LINE) ? 'L' : 'R'));
         // encode input and output as 'X'
         String str = sb.toString();
         str = str.replace("-1000I", "X");
@@ -178,10 +182,99 @@ public class GatePainter extends JPanel {
         frame.jTextArea1.setText(str);
     }
 
+     void parseTxt() {
+
+        String txt = "3L:\n4R4L0#2L2R,\n3L3R0#4L3R,\n0L0R0#X4R,\nX1R0#1L1R,\n1L2R0#0R0L:\n2L";
+
+        gates.clear();
+//        String txt = frame.jTextArea1.getText().trim();
+        String[] parts = txt.split(":\n");
+        if (parts.length != 3) {
+            throw new IllegalArgumentException("parts != 3");
+        }
+        String[] lines = parts[1].split("\n");
+        System.out.format("contains %d gates%n", lines.length);
+
+        for (int i = 0; i < lines.length; i++) {
+            String[] sides = lines[i].split("0#");
+            assert sides.length == 2;
+            String[] inSpec = parseSide(sides[0]);
+            String[] outSpec = parseSide(sides[1]);
+            assert inSpec.length == 4;
+            assert outSpec.length == 4;
+            Gate gate = new Gate();
+            addGate(gate);
+
+            // inspec
+            if (inSpec[1].equals("X")) {
+                gate.inL = INPUT_LINE;
+                gate.inLc = 'I';
+                inputLineGoesToGateNr = i;
+            } else {
+                gate.inL = Integer.parseInt(inSpec[0]);
+                gate.inLc = inSpec[1].charAt(0);
+            }
+            if (inSpec[3].equals("X")) {
+                gate.inR = INPUT_LINE;
+                gate.inRc = 'I';
+                inputLineGoesToGateNr = i;
+            } else {
+                gate.inR = Integer.parseInt(inSpec[2]);
+                gate.inRc = inSpec[3].charAt(0);
+            }
+
+            // outspec
+            if (outSpec[1].equals("X")) {
+                gate.outL = OUTPUT_LINE;
+                gate.outLc = 'O';
+                outputLineGoesToGateNr = i;
+            } else {
+                gate.outL = Integer.parseInt(outSpec[0]);
+                gate.outLc = outSpec[1].charAt(0);
+            }
+            if (outSpec[3].equals("X")) {
+                gate.outR = OUTPUT_LINE;
+                gate.outRc = 'O';
+                outputLineGoesToGateNr = i;
+            } else {
+                gate.outR = Integer.parseInt(outSpec[2]);
+                gate.outRc = outSpec[3].charAt(0);
+            }
+
+            System.out.format("gate%d: %s%n", i, gate);
+        }
+        repaint(300);
+    }
+
+    String[] parseSide(String side) {
+        String[] result = new String[4];
+        Matcher matcher = Pattern.compile("([0-9]+[RL]|X)([0-9]+[RL]|X)").matcher(side);
+        if (matcher.find()) {
+            String g1 = matcher.group(1);
+            String g2 = matcher.group(2);
+            if (g1.equals("X")) {
+                result[1] = "X";
+            } else {
+                result[0] = g1.substring(0, g1.length() - 1);
+                result[1] = g1.substring(g1.length() - 1);
+            }
+            if (g2.equals("X")) {
+                result[3] = "X";
+            } else {
+                result[2] = g2.substring(0, g2.length() - 1);
+                result[3] = g2.substring(g2.length() - 1);
+            }
+        } else {
+            System.err.println("cannot parse side " + side);
+        }
+        return result;
+    }
+
+
+
     class GateMouseListener implements MouseListener {
 
         public void mouseClicked(MouseEvent e) {
-            System.out.format("clicked %s%n", e.getComponent());
             Gate gate = getGateByPosition(e.getX(), e.getY());
             System.out.println("clicked gate nr " + gates.indexOf(gate));
 //            System.out.format("%s%n", getQuadrantByPosition(gate, e.getX(), e.getY()));
@@ -237,7 +330,7 @@ public class GatePainter extends JPanel {
                 }
                 inputLineDefinitionMode = false;
                 outputLineDefinitionMode = false;
-                repaint(500);
+                repaint(300);
                 return;
             }
 
@@ -293,18 +386,15 @@ public class GatePainter extends JPanel {
                     }
                     lastSelectedGate = null;
                     lastSelectedQuadrant = null;
-                    repaint(500);
+                    repaint(300);
                 }
             }
         }
 
         public void mousePressed(MouseEvent e) {
-            System.out.println("pressed");
         }
 
         public void mouseReleased(MouseEvent e) {
-            System.out.println("released");
-            exportGatesToTextField();
         }
 
         public void mouseEntered(MouseEvent e) {

@@ -2,7 +2,6 @@ package gategui;
 
 import at.ac.tuwien.tilab.icfp2010.Simulator;
 import java.util.ArrayList;
-import javax.print.DocFlavor.INPUT_STREAM;
 
 /**
  *
@@ -31,7 +30,6 @@ public class Main {
         Simulator simulator = new Simulator();
 
         ArrayList<Gate> gates = frame.paintComponent.gates;
-//        int circuit[] = new int[1 + gates.size() * 2];
         int circuit[] = new int[gates.size() * 2];
         final int offset = 1; // circuit[0] is gatenr connected to input
         circuit[0] = -99; // debug hint
@@ -46,15 +44,11 @@ public class Main {
             // input line
             if (gate.inL == GatePainter.INPUT_LINE) {
                 inputLineIdx = offset + i * 2;
-               //> circuit[0] = inputLineIdx;
             }
             if (gate.inR == GatePainter.INPUT_LINE) {
                 inputLineIdx = offset + i * 2 + 1;
-               //>  circuit[0] = inputLineIdx;
             }
-//            circuit[offset + i * 2] = outL;
             circuit[i * 2] = outL;
-//            circuit[offset + i * 2 + 1] = outR;
             circuit[i * 2 + 1] = outR;
         }
 
