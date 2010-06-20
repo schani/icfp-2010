@@ -30,7 +30,8 @@
 	 mapping {}
 	 nextindex 0]
     (if (empty? todo)
-      [(reverse result) mapping]
+      (let [result (reverse result)]
+	(with-meta result {:mapping mapping}))
       (let [[car2 mapping nextindex] (transform-chamber (first todo) mapping nextindex)]
 	(recur (cons car2 result) (rest todo) mapping nextindex)))))
 
@@ -51,15 +52,6 @@
 	'<
 	'>))))
 
-(defn compare-pipes-buggy [pipe1 pipe2]
-  (loop [p1 pipe1
-	 p2 pipe2]
-    (if (empty? p1)
-      (if (empty? p2)
-	'=
-	'<)
-      (if (empty? p2)
-	'>
 
 
 (defn compare-chambers [chamber1 chamber2]
@@ -100,7 +92,7 @@
 
 
 (defn minimized-car [car]
-  (first (sort car-smaller (map first (map transform-car (perm-car car))))))
+  (first (sort car-smaller (map transform-car (perm-car car)))))
 
 ; (compare-cars some-car some-car)
 ; (perm-car some-car)
