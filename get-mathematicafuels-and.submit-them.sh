@@ -12,7 +12,7 @@
 
 RUNTIME=`date +"%F-%T"`
 
-SCHANIFILE="muhaha.out"
+SCHANIFILE="raw00sol.txt"
 
 SUBMISSIONFILE="submissions/submittable-fuels-$RUNTIME.txt"
 SUBLISSIONLOGFILE="submissions/submittable-fuels-$RUNTIME.log"
