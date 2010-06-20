@@ -1,6 +1,6 @@
 (ns at.ac.tuwien.tilab.icfp2010.superpmap)
 
-(defn- partition-with-pred [pred coll]
+(defn partition-with-pred [pred coll]
   (let [res (group-by pred coll)]
     [(res true) (res false)]))
 

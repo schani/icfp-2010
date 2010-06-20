@@ -3,7 +3,10 @@
 	at.ac.tuwien.tilab.icfp2010.ternary
 	at.ac.tuwien.tilab.icfp2010.search
 	at.ac.tuwien.tilab.icfp2010.superpmap
-	at.ac.tuwien.complang.distributor.vsc)
+	at.ac.tuwien.tilab.icfp2010.fuel
+	at.ac.tuwien.tilab.icfp2010.chambaopti
+	at.ac.tuwien.complang.distributor.vsc
+	clojure.contrib.math)
   (:require clojure.contrib.string)
   (:import [at.ac.tuwien.tilab.icfp2010 Fuel]))
 
@@ -15,23 +18,31 @@
       (nth pop index))))
 
 (defn genetic-algorithm [population fitness-func combine-func mutate-func stop-cond-pred & params]
-  (let [params (merge {:mutation-rate 5} (apply hash-map params))
+  (let [params (merge {:mutation-rate (if combine-func 200 800)} (apply hash-map params))
 	mutation-rate (:mutation-rate params)
 	random (java.util.Random.)]
     (loop [generation 0
 	   population population]
-      (let [fitness-pop (reverse (sort-by second (map (fn [i] [i (fitness-func i)]) population)))]
+      (let [fitness-pop (map (fn [i] [i (fitness-func i)]) population)
+	    fitness-pop (reverse (sort-by second fitness-pop))]
 	(println {:generation generation :best (second (first fitness-pop)) :worst (second (last fitness-pop))})
 	(if (stop-cond-pred generation fitness-pop)
 	  [generation fitness-pop]
 	  (recur (inc generation)
-		 (map (fn [_]
-			(let [offspring (combine-func (first (choose random fitness-pop))
-						      (first (choose random fitness-pop)))]
-			  (if (zero? (.nextInt random mutation-rate))
-			    (mutate-func offspring)
-			    offspring)))
-		      population)))))))
+		 (if combine-func
+		   (map (fn [_]
+			  (let [offspring (combine-func (first (choose random fitness-pop))
+							(first (choose random fitness-pop)))]
+			    (if (<= (.nextInt random 1001) mutation-rate)
+			      (mutate-func offspring)
+			      offspring)))
+			population)
+		   (doall (map (fn [_]
+				 (let [offspring (first (choose random fitness-pop))]
+				   (if (<= (.nextInt random 1001) mutation-rate)
+				     (mutate-func offspring)
+				     offspring)))
+			       population)))))))))
 
 (def *random* (java.util.Random.))
 
@@ -91,3 +102,57 @@
 
 (defn read-cars-from-file [filename]
   (map #(clojure.contrib.string/split #"\s+" %) (clojure.contrib.string/split-lines (slurp filename))))
+
+(defn genetic-car [num-fuelss num-ingredients fuel-max num-tanks max-sections pop-size max-generations]
+  (let [fuelss (map (fn [_]
+		      (map (fn [_]
+			     (Fuel/randomFuel *random* num-ingredients fuel-max))
+			   (range num-tanks)))
+		    (range num-fuelss))
+	pop (map (fn [_]
+		   (random-chamber *random* num-tanks max-sections))
+		 (range pop-size))
+	score-fn (fn [chamber]
+		   (let [car [chamber]
+			 scores (map #(car-fuels-score car %) fuelss)
+			 [poss negs] (partition-with-pred #(>= % 0) scores)
+			 pos-count (count poss)
+			 max-neg (if (zero? (count negs)) 0 (apply max negs))]
+		     (if (zero? pos-count)
+		       [max-neg]
+		       (let [upper-freqs (frequencies (:upper chamber))
+			     lower-freqs (frequencies (:lower chamber))
+			     upper-count (count (:upper chamber))
+			     lower-count (count (:lower chamber))
+			     diff-score (apply * (map (fn [t]
+							(/ 1 (inc (abs (- (get upper-freqs t 0) (get lower-freqs t 0))))))
+						      (range num-tanks)))
+			     tanks-score (* (count upper-freqs) (count lower-freqs))
+			     short-upper-score (if (< upper-count lower-count) 2 1)]
+			 [(expt (- (/ max-neg pos-count))
+				(/ 1 (max upper-count lower-count)))
+			  ;diff-score
+			  tanks-score
+			  short-upper-score]))))
+	[num-gens fit-pop] (genetic-algorithm pop
+					      (fn [chamber] (apply * (score-fn chamber)))
+					      nil
+					      (fn [chamber] (mutate-chamber *random* chamber num-tanks max-sections))
+					      (fn [gen fit-pop] (>= gen max-generations))
+					      :mutation-rate 950)
+	[best best-score] (first fit-pop)]
+    (if (< best-score 0)
+      nil
+      (let [car [best]
+	    list-fuelss (map #(map unjava-fuel %)
+			     (filter #(> (car-fuels-score car %) 0) fuelss))
+	    car (minimized-car car)
+	    mapping (into {} (map (fn [[k v]] [v k]) (:mapping (meta car))))
+	    fuels (first list-fuelss)
+	    fuels (map #(nth fuels (mapping %))
+		       (range (count fuels)))
+	    transposed-fuels (apply list (map #(apply list (apply map list %)) fuels))]
+	(println (thing-to-string (car-schani2biely car)))
+	(println transposed-fuels)
+	(println (thing-to-string transposed-fuels))
+	[(count list-fuelss) car fuels]))))
