@@ -5,6 +5,14 @@ require LWP::UserAgent;
 require HTTP::Cookies;
 require HTML::Form;
 
+# Find data path
+my $datapath;
+if (exists $ENV{SUBMIT_DATA_PATH}) {
+	$datapath = $ENV{SUBMIT_DATA_PATH};
+} else {
+	$datapath = "data";
+}
+
 # Check command line
 my $synopsis = "Synopsis: ./submit.pl car | [v]fuel | getcarids | badcars | update-allcars";
 my $mode = shift || die $synopsis;
@@ -196,7 +204,7 @@ if ($mode eq "car") {
 	# Load known_cars
 	my @bad_cars;
 	my $known_cars_fh;
-	open $known_cars_fh, "< data/known_cars.txt" || die "Cannot load database of known cars";
+	open $known_cars_fh, "< ${datapath}/known_cars.txt" || die "Cannot load database of known cars";
 	while (<$known_cars_fh>) {
 		die unless m/^([0-9]+) (.*)$/;
 		push @bad_cars, $1 if $2 eq "-";
@@ -243,7 +251,7 @@ if ($mode eq "car") {
 
 	# Open output-descr to update allcars.txt
 	my $all_cars_fh;
-	open $all_cars_fh, ">> data/allcars.txt" || die;
+	open $all_cars_fh, ">> ${datapath}/allcars.txt" || die;
 
 	# Loop over new cars	
 	my $carid2;
@@ -270,7 +278,7 @@ if ($mode eq "car") {
 	}
 	
 	close $all_cars_fh;
-	print "data/allcars.txt updated.";
+	print "${datapath}/allcars.txt updated.";
 }
 
 
@@ -298,7 +306,7 @@ sub login {
 sub load_allcars {
 	my %all_cars;
 	my $all_cars_fh;
-	open $all_cars_fh, "< data/allcars.txt" || die "Cannot load database of all cars";
+	open $all_cars_fh, "< ${datapath}/allcars.txt" || die "Cannot load database of all cars";
 	while (<$all_cars_fh>) {
 		next if m/^ ?$/;
 		die unless m/^([0-9]+) (.*)$/;
