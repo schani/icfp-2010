@@ -30,6 +30,13 @@
 			     (if (empty? lower) 0 (inc (apply max lower))))))
 		    car))))
 
+(defn car-sections [car]
+  (if (empty? car)
+    0
+    (apply max (map (fn [chamber]
+		      (max (count (:upper chamber)) (count (:lower chamber))))
+		    car))))
+
 (defn fuels-ingredients [fuels]
   (.numIngredients (first fuels)))
 

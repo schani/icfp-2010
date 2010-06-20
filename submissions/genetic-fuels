@@ -1,7 +1,7 @@
-2723 (((2 0 0 14) (7 7 5 1) (0 0 0 9) (1 0 7 0)) ((1 0 4 0) (4 0 2 7) (0 0 0 0) (0 0 2 0)))
-2738 (((1 11 1) (0 0 1) (0 0 0)) ((1 5 3) (1 0 4) (0 9 9)))
-
-
+false 2723 (((2 0 0 14) (7 7 5 1) (0 0 0 9) (1 0 7 0)) ((1 0 4 0) (4 0 2 7) (0 0 0 0) (0 0 2 0)))
+false 2738 (((1 11 1) (0 0 1) (0 0 0)) ((1 5 3) (1 0 4) (0 9 9)))
+false
+false
 [19153 [true [((4 5) (7 0)) ((2 9) (1 5)) ((3 1) (9 5))]]]
 [11156 [true [((9 3) (9 7)) ((5 9) (6 9))]]]
 [9987 [true [((2 5) (8 8)) ((3 9) (0 1))]]]
@@ -79,3 +79,38 @@
 [46742 [false no cars found]]
 [26069 [false no cars found]]
 [46600 [false no cars found]]
+[3630 [true [((2 0) (4 0)) ((1 0) (0 1))]]]
+[3815 [true [((2 0) (8 0)) ((1 0) (5 1))]]]
+[26103 [false no cars found]]
+[10255 [false no cars found]]
+[2869 [false no cars found]]
+[2774 [false no cars found]]
+[46810 [false no cars found]]
+[26123 [false no cars found]]
+[3658 [true [((2 1) (0 0)) ((1 1) (0 0))]]]
+[2864 [false no cars found]]
+[26130 [false no cars found]]
+[26125 [true [((1 8) (0 2)) ((1 0) (1 0))]]]
+[26186 [false no cars found]]
+[26226 [false no cars found]]
+[11964 [false no cars found]]
+[38850 [true [((1 1) (1 13)) ((1 0) (0 0)) ((1 0) (4 8)) ((1 3) (2 7)) ((3 2) (0 5)) ((1 6) (4 11))]]]
+[26683 [false no cars found]]
+[26291 [false no cars found]]
+[20069 [false no cars found]]
+[3268 [false no cars found]]
+[27030 [false no cars found]]
+[3283 [true [((2 0) (0 1)) ((1 15) (0 0))]]]
+[44465 [false no cars found]]
+[26098 [false no cars found]]
+[27134 [false no cars found]]
+[27131 [false no cars found]]
+[39849 [false no cars found]]
+[39217 [false no cars found]]
+[3336 [false no cars found]]
+[39144 [false no cars found]]
+[27235 [false no cars found]]
+[27213 [false no cars found]]
+[30852 [false no cars found]]
+[34540 [false no cars found]]
+[25192 [false no cars found]]
