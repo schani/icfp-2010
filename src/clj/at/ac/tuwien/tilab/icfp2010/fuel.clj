@@ -91,6 +91,7 @@
 
 (defn car-to-mathematica [id car]
   (loop [chamber-list car, string "", num-of-tanks 0, num-of-chambs 0]
+;    (println "hoscherei is now " chamber-list)
     (if (empty? chamber-list)
       (str
        string
@@ -108,13 +109,19 @@
        (reduce (fn [x y] (str x ", " y)) (map (fn [x] (str "A" x "/.X[[1]]")) (range  (inc num-of-tanks))))
        "]\n\n"
        )
-      (let [chamber (first chamber-list), max-num (apply max (cons num-of-tanks (concat (chamber :upper) (chamber :lower))))]
+      (let [chamber (first chamber-list), 
+	    max-num (apply max (cons num-of-tanks (concat (chamber :upper) (chamber :lower))))]
 	(recur (rest chamber-list)
 	       (str  string
 		     "Z" num-of-chambs " = "
-		     (reduce (fn [x y] (str x "*" y)) (map (fn [x] (str "A" x)) (chamber :upper )))
+;		     (println "hai")
+		     ;(reduce (fn [x y] (str x "*" y)) (map (fn [x] (str "A" x)) (chamber :upper )))
+		     (apply str (interpose "*" (map #(str "A" %) (:upper chamber))))
+;		     (println "hai2")
 		     " - "
-		     (reduce (fn [x y] (str x "*" y)) (map (fn [x] (str "A" x)) (chamber :lower )))
+;		     (reduce (fn [x y] (str x "*" y)) (map (fn [x] (str "A" x)) (chamber :lower )))
+		     (apply str (interpose "*" (map #(str "A" %) (:upper chamber))))
+;		     (println "hai3")
 		     (if (chamber :is-main)
 		       " - 1"
 		       ""
@@ -122,11 +129,12 @@
 		     ";\n")
 	       max-num
 	       (inc num-of-chambs)
-	       )
-	))))
+	       )))))
+
+(reduce (fn [x y] (str x "*" y)) [])
+(apply str (interpose "*" ["1" "2" "3"]))
 
 ; for kurde in `ls`; do qsub $kurde ; done
-
 (defn prepare-cars-mathematica [file]
   (let [pattern (re-pattern "(\\d+) (\\d+)")]
     (let [file (BufferedReader. (FileReader. file))]
