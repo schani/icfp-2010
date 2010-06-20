@@ -144,7 +144,7 @@ if ($mode eq "car") {
         exit 1;
 	} elsif ($response->content =~ /<pre>([^<]+)<\/pre>/m) {
         printf("error, carid=%d, fuel not matching\n", $carid);
-#        print STDERR $1;
+        #print STDERR $1;
 		exit 1;
     } else {
 		die "Could not parse result. Output saved to ./out.html";
