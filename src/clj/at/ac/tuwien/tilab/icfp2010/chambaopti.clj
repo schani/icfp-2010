@@ -108,4 +108,4 @@
   [(:upper chamber) (if (= (:is-main chamber) true) 0 1) (:lower chamber)])
 
 (defn car-schani2biely [car]
-  (vec (mapcat bielyfizierer car)))
+  (apply list (map bielyfizierer car)))
