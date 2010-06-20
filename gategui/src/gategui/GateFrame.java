@@ -36,6 +36,7 @@ public class GateFrame extends javax.swing.JFrame {
         simulatorButton = new javax.swing.JButton();
         setInLineButton = new javax.swing.JButton();
         setOutLine = new javax.swing.JButton();
+        parseButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,7 +98,6 @@ public class GateFrame extends javax.swing.JFrame {
             }
         });
 
-        lineNrsCheckBox.setSelected(true);
         lineNrsCheckBox.setText("show gate nrs");
 
         simulatorButton.setText("simulate circuit");
@@ -121,6 +121,13 @@ public class GateFrame extends javax.swing.JFrame {
             }
         });
 
+        parseButton.setText("parse text");
+        parseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                parseButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -134,7 +141,7 @@ public class GateFrame extends javax.swing.JFrame {
                         .addComponent(quitButton))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(111, 111, 111)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,15 +155,12 @@ public class GateFrame extends javax.swing.JFrame {
                             .addComponent(moveToggleButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lineNrsCheckBox)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lineNrsCheckBox)
-                                    .addComponent(exportButton))
-                                .addGap(56, 56, 56)))))
+                                .addComponent(exportButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(parseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -170,10 +174,12 @@ public class GateFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(moveToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(exportButton)
-                            .addComponent(moveToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(3, 3, 3)
-                        .addComponent(lineNrsCheckBox))
+                            .addComponent(parseButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lineNrsCheckBox)
+                        .addGap(1, 1, 1))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton1)
                         .addComponent(setInLineButton)))
@@ -222,6 +228,10 @@ public class GateFrame extends javax.swing.JFrame {
     paintComponent.outputLineDefinitionMode = true;
     }//GEN-LAST:event_setOutLineActionPerformed
 
+    private void parseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parseButtonActionPerformed
+       paintComponent.parseTxt();
+    }//GEN-LAST:event_parseButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton exportButton;
     private javax.swing.JButton jButton1;
@@ -232,6 +242,7 @@ public class GateFrame extends javax.swing.JFrame {
     javax.swing.JCheckBox lineNrsCheckBox;
     javax.swing.JToggleButton moveToggleButton;
     private javax.swing.JPanel paintPanel;
+    private javax.swing.JButton parseButton;
     private javax.swing.JButton quitButton;
     private javax.swing.JButton setInLineButton;
     private javax.swing.JButton setOutLine;
