@@ -14,9 +14,9 @@ if (exists $ENV{SUBMIT_DATA_PATH}) {
 }
 
 # Check command line
-my $synopsis = "Synopsis: ./submit.pl car | [v]fuel | getcarids | badcars | update-allcars";
+my $synopsis = "Synopsis: ./submit.pl [v]car | [v]fuel | getcarids | badcars | update-allcars";
 my $mode = shift || die $synopsis;
-die $synopsis unless $mode eq "fuel" || $mode eq "vfuel" || $mode eq "car" || $mode eq "getcarids" || $mode eq "badcars" || $mode eq "update-allcars";
+die $synopsis unless $mode eq "fuel" || $mode eq "vfuel" || $mode eq "car" || $mode eq "vcar" || $mode eq "getcarids" || $mode eq "badcars" || $mode eq "update-allcars";
 
 # Instanciate user agent, check for cookie, login if necessary
 my $ua = LWP::UserAgent->new;
@@ -28,7 +28,7 @@ my ($request, $response, $form);
 
 
 # Car handling
-if ($mode eq "car") {
+if ($mode eq "car" || $mode eq "vcar") {
 	
 	# More command line handling
 	my ($car, $fuel);
@@ -52,6 +52,26 @@ if ($mode eq "car") {
 	# Test Input
 	die "Invalid car" unless $car =~ /^[012]+$/;
 	die "Invalid fuel" unless $fuel =~ /^[0-9LRlr:,Xx\#\n]+$/m;
+
+	# Try request against test server
+	$request = HTTP::Request->new( GET => 'http://nfa.imn.htwk-leipzig.de/icfpcont/' );
+    $response = $ua->request($request);
+    $form = HTML::Form->parse( $response );
+    $form->value( "G0", $car );
+	$form->value( "G1", $fuel );
+	$request = $form->click();
+	$response = $ua->request($request);
+
+	# Parse answer from test server
+	unless ($response->content =~ /Good! The car can use this fuel./m) {
+		if ($mode eq "vcar") {
+			$response->content =~ />([^<]+)<\/pre/m; 
+			print STDERR $1;
+		}
+        print "error, car & fuel not matching";
+		exit 1;
+	}
+	print "Hint: Test server ok, now submitting\n";
 
 	# GET the car form, renew login if necessary
     while (1) {
