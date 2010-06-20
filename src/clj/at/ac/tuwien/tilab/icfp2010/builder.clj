@@ -40,6 +40,34 @@
 			  [2 1] (un-preprocess-java-circuit 6 [5 3 0 1 4 2 6])
 			  [2 2] (un-preprocess-java-circuit 5 [4 3 0 14 1 2 6 10 13 11 7 8 9 12 5])})
 
+(def delay-triple-adders {[2 1 0] (un-preprocess-java-circuit 12 [5 3 0 10 8 1 4 9 7 11 6 2 12])
+			  [1 0 0] (un-preprocess-java-circuit 8 [7 4 0 6 11 12 5 9 1 2 13 14 10 3 8])
+			  [2 2 1] (un-preprocess-java-circuit 14 [5 3 0 6 7 13 9 10 2 12 4 1 8 11 14])
+			  [1 1 1] (un-preprocess-java-circuit 12 [5 4 0 1 11 2 6 9 3 7 10 8 12])
+			  [0 0 1] (un-preprocess-java-circuit 9 [3 5 0 10 13 11 4 14 7 8 1 2 6 12 9])
+			  [1 2 2] (un-preprocess-java-circuit 14 [5 4 0 6 2 8 11 10 13 12 1 3 9 7 14])
+			  [0 1 2] (un-preprocess-java-circuit 9 [3 1 0 11 10 7 4 5 8 6 12 2 9])
+			  [2 1 1] (un-preprocess-java-circuit 11 [5 3 0 6 12 14 10 4 1 2 9 13 8 7 11])
+			  [1 0 1] (un-preprocess-java-circuit 9 [5 4 0 10 12 11 1 2 7 8 13 14 3 6 9])
+			  [2 2 2] (un-preprocess-java-circuit 12 [5 3 0 2 10 1 11 9 4 7 6 8 12])
+			  [1 1 2] (un-preprocess-java-circuit 14 [5 4 0 6 13 8 9 10 2 12 3 1 7 11 14])
+			  [0 0 2] (un-preprocess-java-circuit 14 [3 5 0 7 9 13 1 2 11 12 8 4 6 10 14])
+			  [2 0 0] (un-preprocess-java-circuit 7 [8 3 0 6 11 12 5 9 1 2 13 14 10 4 7])
+			  [2 1 2] (un-preprocess-java-circuit 14 [5 3 0 6 13 8 12 9 1 11 2 4 7 10 14])
+			  [1 0 2] (un-preprocess-java-circuit 12 [5 4 0 1 9 2 11 10 3 7 6 8 12])
+			  [2 0 1] (un-preprocess-java-circuit 12 [5 3 0 1 11 2 6 10 4 7 9 8 12])
+			  [2 0 2] (un-preprocess-java-circuit 14 [5 3 0 6 7 1 10 9 11 4 13 2 8 12 14])
+			  [0 2 0] (un-preprocess-java-circuit 6 [1 5 0 12 11 13 4 10 2 3 9 14 7 8 6])
+			  [1 2 0] (un-preprocess-java-circuit 12 [5 4 0 1 3 2 11 10 9 7 6 8 12])
+			  [0 1 0] (un-preprocess-java-circuit 11 [6 5 0 12 4 13 14 2 3 8 10 9 7 1 11])
+			  [0 2 1] (un-preprocess-java-circuit 12 [3 1 0 5 6 2 11 10 4 7 9 8 12])
+			  [2 2 0] (un-preprocess-java-circuit 11 [5 3 0 6 2 12 13 9 8 14 10 7 1 4 11])
+			  [1 1 0] (un-preprocess-java-circuit 14 [5 4 0 6 13 1 12 9 8 11 2 3 10 7 14])
+			  [0 0 0] (un-preprocess-java-circuit 7 [3 1 0 9 4 12 6 11 10 2 5 8 7])
+			  [1 2 1] (un-preprocess-java-circuit 14 [5 4 0 6 7 1 12 9 13 11 2 3 8 10 14])
+			  [0 1 1] (un-preprocess-java-circuit 11 [9 1 0 12 7 8 10 4 13 14 5 6 2 3 11])
+			  [0 2 2] (un-preprocess-java-circuit 14 [6 5 0 8 9 10 13 2 12 4 7 3 11 1 14])})
+
 (defn shift-input [input n]
   (if (= input :x-in)
     input
@@ -98,8 +126,9 @@
 	 res []]
     (cond (empty? zs) res
 	  (= (count zs) 1) (conj res (adders (first zs)))
-	  :else (recur (drop 2 zs)
-		       (conj res (delay-double-adders (take 2 zs)))))))
+	  (= (count zs) 2) (conj res (delay-double-adders (take 2 zs)))
+	  :else (recur (drop 3 zs)
+		       (conj res (delay-triple-adders (take 3 zs)))))))
 
 (defn reduce-right [f s]
   (cond (empty? s) (f)

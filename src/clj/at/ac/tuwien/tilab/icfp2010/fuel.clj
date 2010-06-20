@@ -12,7 +12,7 @@
 	   (map thing-to-string thing))  
     (if (vector? thing)
       (apply str (map thing-to-string thing))
-      (number-to-ternary thing))))
+      (encode-number thing))))
 
 
 (defn output-fuel "(((1))) is a fuel" 

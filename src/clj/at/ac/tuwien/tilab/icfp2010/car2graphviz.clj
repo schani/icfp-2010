@@ -1,6 +1,5 @@
 (ns at.ac.tuwien.tilab.icfp2010.car2graphviz
-  (:use  at.ac.tuwien.tilab.icfp2010.ternary)
-  )
+  (:use  at.ac.tuwien.tilab.icfp2010.ternary))
 
 (defn graphviz-from-chamber [index chamber]
   (let [fuel-colors ["magenta", "orange", "cyan", "red", "green", "blue"]

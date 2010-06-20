@@ -36,4 +36,9 @@ public class Gate {
     public Point2D.Float getBottomRight() {
         return new Point2D.Float(rect.x + rect.width, rect.y + rect.height);
     }
+
+    @Override
+    public String toString() {
+        return String.format("[in: %d%c %d%c] [out: %d%c %d%c]", inL, inLc, inR, inRc, outL, outLc, outR, outRc);
+    }
 }

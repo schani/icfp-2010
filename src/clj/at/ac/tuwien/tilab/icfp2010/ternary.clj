@@ -96,6 +96,8 @@
   (case input
 	0 "0"
 	1 "10"
+	2 "11"
+	3 "12"
 	(str "22"
 	     (encode-number (- (invert-len-offset input) 2))
 	     (trinarify-number (- input (len-offset (invert-len-offset input)))
