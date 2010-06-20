@@ -17,9 +17,12 @@ while (<$known_cars_fh>) {
 close $known_cars_fh;
 
 
-# Get all_cars from server
+# Update allcars database
+system "./submit.pl update-allcars" || die;
+
+# Get car_ids from database
 my $all_cars_fh;
-open $all_cars_fh, "./submit.pl getcars |" || die;
+open $all_cars_fh, "./submit.pl getcarids |" || die;
 while (<$all_cars_fh>) {
 	die unless m/^([0-9]+)$/;
 	push @all_cars, $1;

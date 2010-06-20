@@ -41,16 +41,22 @@ while (<$known_cars_fh>) {
 close $known_cars_fh;
 
 
+my $no_known_cars = keys %known_cars;
+my $i = 0;
 my ($car);
 foreach $car (keys %known_cars) {
+	$i++;
 	
 	my $carfuel = $known_cars{$car};
 	
 	# don't try if we already have better fuel
-	next if !($carfuel eq "-") && $fuels{$carfuel} < $new_fuel_size; 
+	if ( !($carfuel eq "-") && ($fuels{$carfuel} < $new_fuel_size) ) {
+            print "skiping ${car}, we already have shorter fuel.\n";
+            next;
+        }
 
 	# try newfuel on the car
-	print "./submit.pl fuel $car - <data/fuel_${new_fuel}.txt : ";
+	print "${i}/${no_known_cars}: ./submit.pl fuel $car - <data/fuel_${new_fuel}.txt : ";
 	system "./submit.pl fuel $car - <data/fuel_${new_fuel}.txt";
 	
 	# now change database

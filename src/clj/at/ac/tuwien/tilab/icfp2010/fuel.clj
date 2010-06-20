@@ -6,16 +6,18 @@
 
  
 
-;; warning only up to 41 is supported
-
 (defn thing-to-string [thing]
   (if (list? thing)
     (apply str 
-	   (prefixes (count thing)) 
+	   (encode-list-length (count thing)) 
 	   (map thing-to-string thing))  
     (if (vector? thing)
       (apply str (map thing-to-string thing))
-      (encode-number thing))))
+      (if (seq? thing)
+	(do 
+	  (println "warning. got sequential which is neither a list not a vector. assuming list.")
+	  (recur (apply list thing)))
+	(encode-number thing)))))
 
 
 (defn output-fuel "(((1))) is a fuel" 

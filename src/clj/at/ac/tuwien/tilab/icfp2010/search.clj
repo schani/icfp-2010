@@ -195,8 +195,8 @@
 	  (recur (rest combinations) (conj no-solutions combination))
 	  (recur (rest combinations) no-solutions))))))
 
-(defn search-delay-triple-adders [max]
-  (loop [n 2
+(defn search-delay-triple-adders [min max]
+  (loop [n min
 	 combinations (all-inputs 3)]
     (when (<= n max)
       (let [no-solutions (search-delay-triple-adders-with-length n combinations)]

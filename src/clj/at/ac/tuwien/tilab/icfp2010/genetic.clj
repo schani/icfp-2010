@@ -2,6 +2,7 @@
   (:use at.ac.tuwien.tilab.icfp2010.cars
 	at.ac.tuwien.tilab.icfp2010.ternary
 	at.ac.tuwien.tilab.icfp2010.search
+	at.ac.tuwien.tilab.icfp2010.superpmap
 	at.ac.tuwien.complang.distributor.vsc)
   (:require clojure.contrib.string)
   (:import [at.ac.tuwien.tilab.icfp2010 Fuel]))
@@ -57,10 +58,16 @@
   (let [fuels (map unjava-fuel fuels)]
     (map #(apply map list %) fuels)))
 
-(vsc-fn genetic-solve-car-from-string 1 [car-string min-ingred max-ingred pop-size init-max max-mutate max-generations]
+(vsc-fn genetic-solve-car-from-string 2 [car-string
+					 min-ingred max-ingred
+					 min-sections max-sections
+					 pop-size init-max max-mutate max-generations]
 	(try
-	  (let [[rest-string car] (parse-car car-string)]
+	  (let [[rest-string car] (parse-car car-string)
+		num-sections (car-sections car)]
 	    (cond (not (empty? rest-string)) [false "car does not parse"]
+		  (or (< num-sections min-sections)
+		      (> num-sections max-sections)) [false "number of sections does not match"]
 		  (< (car-tanks car) 2) [false "car does not have at least 2 tanks"]
 		  :else
 		  (loop [num-ingred min-ingred]
@@ -69,15 +76,18 @@
 		      (let [[gen fit-pop] (genetic-fuels car num-ingred pop-size init-max max-mutate max-generations)
 			    [best best-score] (first fit-pop)]
 			(if (> best-score 0)
-			  [true (koeblerify-fuels best)]
+			  [true (str (apply vector (koeblerify-fuels best)))]
 			  (recur (inc num-ingred))))))))
 	  (catch Exception exc
 	    [false (str exc)])))
 
-(defn genetic-solve-cars [cars min-ingred max-ingred pop-size init-max max-mutate max-generations]
-  (vsc-pmap 1000 (fn [[id string]]
-		   [id (genetic-solve-car-from-string-vsc string min-ingred max-ingred pop-size init-max max-mutate max-generations)])
-	    cars))
+(defn genetic-solve-cars [cars
+			  min-ingred max-ingred
+			  min-sections max-sections
+			  pop-size init-max max-mutate max-generations]
+  (superpmap 1000 (fn [[id string]]
+		    [id (genetic-solve-car-from-string-vsc string min-ingred max-ingred min-sections max-sections pop-size init-max max-mutate max-generations)])
+	     cars))
 
 (defn read-cars-from-file [filename]
   (map #(clojure.contrib.string/split #"\s+" %) (clojure.contrib.string/split-lines (slurp filename))))
