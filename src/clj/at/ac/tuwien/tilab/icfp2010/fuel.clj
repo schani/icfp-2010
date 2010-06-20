@@ -121,7 +121,7 @@
 ;		     (println "hai2")
 		     " - "
 ;		     (reduce (fn [x y] (str x "*" y)) (map (fn [x] (str "A" x)) (chamber :lower )))
-		     (apply str (interpose "*" (map #(str "A" %) (:upper chamber))))
+		     (apply str (interpose "*" (map #(str "A" %) (:lower chamber))))
 ;		     (println "hai3")
 		     (if (chamber :is-main)
 		       " - 1"
@@ -131,6 +131,7 @@
 	       max-num
 	       (inc num-of-chambs)
 	       )))))
+
 
 ; for kurde in `ls`; do qsub $kurde ; done
 (defn prepare-cars-mathematica [file]
