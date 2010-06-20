@@ -21,10 +21,14 @@
 (def test-car [{:upper [0 1 0 1 0 0], :is-main true, :lower [1 0 0 1 0 0 1]}])
 
 (defn car-tanks [car]
-  (inc (apply max (map (fn [chamber]
-			 (max (apply max (:upper chamber))
-			      (apply max (:lower chamber))))
-		       car))))
+  (if (empty? car)
+    0
+    (apply max (map (fn [chamber]
+		      (let [upper (:upper chamber)
+			    lower (:lower chamber)]
+			(max (if (empty? upper) 0 (inc (apply max upper)))
+			     (if (empty? lower) 0 (inc (apply max lower))))))
+		    car))))
 
 (defn fuels-ingredients [fuels]
   (.numIngredients (first fuels)))
