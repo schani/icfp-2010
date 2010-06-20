@@ -8,7 +8,7 @@
 
 RUNTIME=`date +"%F-%T"`
 
-SCHANIFILE="submissions/genetic-fuels"
+SCHANIFILE="submissions/genetic-fuels-2"
 
 SUBMISSIONFILE="submissions/submittable-fuels-$RUNTIME.txt"
 SUBLISSIONLOGFILE="submissions/submittable-fuels-$RUNTIME.log"
@@ -31,6 +31,7 @@ do
     #echo $carid $fuelstring
 
     #generate fuel factory and submit it to the contest page (and log the output)
+   
     ./build-and-submit-fuel.sh $carid $fuelstring >> $SUBLISSIONLOGFILE
 
 done
