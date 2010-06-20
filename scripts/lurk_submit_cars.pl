@@ -1,5 +1,7 @@
 #!/usr/bin/perl -Wall
 
+die "Lockfile present!" if -f "data/new_fuel.lock";
+
 my %known_cars;
 my @all_cars;
 my @fuels;

@@ -6,8 +6,9 @@ require HTTP::Cookies;
 require HTML::Form;
 
 # Check command line
-my $mode = shift;
-die "Synopsis: ./submit.pl car | fuel | getcars | badcars" unless $mode eq "fuel" || $mode eq "car" || $mode eq "getcars" || $mode eq "badcars";
+my $synopsis = "Synopsis: ./submit.pl car | fuel | getcars | badcars";
+my $mode = shift || die $synopsis;
+die $synopsis unless $mode eq "fuel" || $mode eq "car" || $mode eq "getcars" || $mode eq "badcars";
 
 # Instanciate user agent, check for cookie, login if necessary
 my $ua = LWP::UserAgent->new;
@@ -74,6 +75,11 @@ if ($mode eq "car") {
     if ($response->content =~ /<span id="instance.errors" class="errors">([^<]+)<\/span>/m) {
         print $1;
         exit 1;
+    } elsif ($response->content =~ /You have submitted the car ([0-9])+ with size ([0-9]+)/m) {
+		my ($newid, $newsize) = ($1, $2);
+		$response->content =~ /This is car ([0-9]+) out of/;
+		printf("success, carid=%d, size=%d, carno=%d\n", $newid, $newsize, $1); 
+		exit 0;
     } elsif ($response->content =~ /<pre>([^<]+)<\/pre>/m) {
         print $1;
         exit 1;
@@ -144,7 +150,7 @@ if ($mode eq "car") {
         exit 1;
 	} elsif ($response->content =~ /<pre>([^<]+)<\/pre>/m) {
         printf("error, carid=%d, fuel not matching\n", $carid);
-#        print STDERR $1;
+        #print STDERR $1;
 		exit 1;
     } else {
 		die "Could not parse result. Output saved to ./out.html";
@@ -200,9 +206,9 @@ if ($mode eq "car") {
 		}
 
 		if ($response->content =~ m/Car:<\/label>([0-3]+)<\/div>/) {
-			printf("id=%d car=%s\n", $carid, $1);
+			printf("%d %s\n", $carid, $1);
 		} else {
-			printf("id=%d parse error\n", $carid);
+			print STDERR sprintf("%d parse error\n", $carid);
 		}
 	}
 }
