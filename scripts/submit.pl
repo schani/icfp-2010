@@ -233,12 +233,24 @@ if ($mode eq "car" || $mode eq "vcar") {
 	}
 	close $known_cars_fh;
 
-	my %all_cars2 = load_allcars();
+	# exclude solved cars found in submission log
+	my %log_solved;
+	my $log_fh;
+	open $log_fh, "cat ${datapath}/log/*.log |" || die "Failure cat_ing log-files\n";
+	while (<$log_fh>) {
+		my ($id) = /^success, carid=([0-9]+),/;
+		($id) = /^([0-9]+)$/ unless $id;
+		next unless $id;
+		$log_solved{$id} = 1;
+	}
+
+	my %all_cars = load_allcars();
 
 	# Loop over bad cars	
 	my $carid;
 	foreach $carid (@bad_cars) {
-		printf("%d %s\n", $carid, $all_cars2{$carid});
+		next if exists $log_solved{$carid};
+		printf("%d %s\n", $carid, $all_cars{$carid});
 	}
 
 # Update allcars
