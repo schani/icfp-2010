@@ -256,63 +256,43 @@ if ($mode eq "car" || $mode eq "vcar") {
 # Update allcars
 } elsif ($mode eq "update-allcars") {
 
-	# Load allcars file
-	my %all_cars3 = load_allcars();
-
-	# GET the car form, renew login if necessary
-    while (1) {
-    	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/score/instanceTeamCount' );
-	    $response = $ua->request($request);
-		next unless $response->content =~ /action/;
-		last;
-	} continue {
-		login();
-		print STDERR "Warning: Renewing login";
-	}
-
-	my @server_cars;
-	my @matches = $response->content =~ m|action="/icfp10/instance/[0-9]+/solve/form"|g;
-	foreach (@matches) {
-		s|^action="/icfp10/instance/([0-9]+)/solve/form"$|$1|;
-		push @server_cars, $_;
-	}
-
-	# Filter cars	
-	my @new_cars = grep { ! exists $all_cars3{$_} } @server_cars;
-
-	my $no_new_cars = @new_cars;
-	print "Found ${no_new_cars} new cars\n";		
-
-	# Open output-descr to update allcars.txt
-	my $all_cars_fh;
-	open $all_cars_fh, ">> ${datapath}/allcars.txt" || die;
-
-	# Loop over new cars	
-	my $carid2;
-	my $i;
-	foreach $carid2 (@new_cars) {
-		$i++;
-		
-		# GET the car form, renew login if necessary
-	    while (1) {
-    		$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/'. $carid2 .'/solve/form' );
-	    	$response = $ua->request($request);
-			next if $response->content =~ /Access is denied/;
-			last;
-		} continue {
-			login();
-		}
-
-		if ($response->content =~ m/Car:<\/label>([0-3]+)<\/div>/) {
-			print $all_cars_fh sprintf("%d %s", $carid2, $1);
-			print "${i}/${no_new_cars}\n";
-		} else {
-			print STDERR sprintf("%d parse error\n", $carid2);
-		}
-	}
+	# GET the form
+	$request = HTTP::Request->new( GET => 'http://nfa.imn.htwk-leipzig.de/recent_cars/' );
+    $response = $ua->request($request);
 	
+	my $page = 0;
+	my %allcars; my @matches;
+	do {
+		# round trip
+		$form = HTML::Form->parse( $response );
+		$form->value( "G0", $page );
+		$request = $form->click();
+		$response = $ua->request($request);
+
+		# parse response, save into hash
+		@matches = $response->content =~ m|\(([0-9]+),[^,]*,&quot;([0-2]+)&quot;\)|g;
+		for (my $i=0; $i < @matches; $i+=2) {
+			my $k = shift @matches; my $v = shift @matches;
+			$allcars{$k} = $v;
+			$page = $k;
+		}
+
+		print ".";
+
+		# do not increase page, server does it implicitly
+	} while (@matches);
+
+	die "Could not load any cars. Strange." unless (keys %allcars);
+
+	# sort them, dump to outfile
+	my $all_cars_fh;
+	open $all_cars_fh, "> ${datapath}/.allcars.txt".$$ || die;
+	foreach (sort keys %allcars) {
+		print $all_cars_fh $_ . " " . $allcars{$_};
+	}
 	close $all_cars_fh;
-	print "${datapath}/allcars.txt updated.";
+	rename "${datapath}/.allcars.txt".$$, "${datapath}/allcars.txt" || die "Cannot rename file\n";
+
 }
 
 
