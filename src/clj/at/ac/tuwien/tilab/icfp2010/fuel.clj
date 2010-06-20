@@ -96,7 +96,7 @@
        string
        "X = FindInstance[ "
        (apply str (map (fn [x] (str "Z" x " >= 0 && ")) (range  num-of-chambs)))
-       (reduce (fn [x y] (str x " && " y)) (map (fn [x] (str "A" x " >= 0")) (range  (inc num-of-tanks))))
+       (reduce (fn [x y] (str x " && " y)) (map (fn [x] (str "A" x " >= 1")) (range  (inc num-of-tanks))))
        ", {"
        (reduce (fn [x y] (str x ", " y)) (map (fn [x] (str "A" x)) (range  (inc num-of-tanks))))
        "}, Integers];\n"
