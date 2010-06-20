@@ -41,7 +41,7 @@ open $fuel_fh, "wc -l data/fuel_*.txt |" || die;
 while (<$fuel_fh>) {
 	next if m/^ *[0-9]+ total$/;
 	die unless m|^ *[0-9]+ data/fuel_(.+)\.txt$|;
-	unshift @fuels, $1;
+	push @fuels, $1;
 }
 
 
@@ -59,6 +59,7 @@ foreach $car (@new_cars) {
 		print "${i}/${no}: ./submit.pl fuel $car - <data/fuel_${fuel}.txt : ";
 		system "./submit.pl fuel $car - <data/fuel_${fuel}.txt";
 		$goodfuel = $fuel if ($? == 0 || $? == 2560);
+		last if $goodfuel;
 	}
 	# save success to db
 	if ($goodfuel) {
