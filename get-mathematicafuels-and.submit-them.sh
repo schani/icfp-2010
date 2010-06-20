@@ -12,7 +12,7 @@
 
 RUNTIME=`date +"%F-%T"`
 
-SCHANIFILE="raw00sol.txt"
+SCHANIFILE="mathematica.out"
 
 SUBMISSIONFILE="submissions/submittable-fuels-$RUNTIME.txt"
 SUBLISSIONLOGFILE="submissions/submittable-fuels-$RUNTIME.log"
