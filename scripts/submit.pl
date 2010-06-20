@@ -6,9 +6,9 @@ require HTTP::Cookies;
 require HTML::Form;
 
 # Check command line
-my $synopsis = "Synopsis: ./submit.pl car | fuel | getcars | badcars";
+my $synopsis = "Synopsis: ./submit.pl car | [v]fuel | getcarids | badcars | update-allcars";
 my $mode = shift || die $synopsis;
-die $synopsis unless $mode eq "fuel" || $mode eq "car" || $mode eq "getcars" || $mode eq "badcars";
+die $synopsis unless $mode eq "fuel" || $mode eq "vfuel" || $mode eq "car" || $mode eq "getcarids" || $mode eq "badcars" || $mode eq "update-allcars";
 
 # Instanciate user agent, check for cookie, login if necessary
 my $ua = LWP::UserAgent->new;
@@ -48,6 +48,7 @@ if ($mode eq "car") {
 	# GET the car form, renew login if necessary
     while (1) {
     	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/form' );
+		$cookieJar->add_cookie_header( $request );
 	    $response = $ua->request($request);
 		next if $response->content =~ /Access is denied/;
 		last;
@@ -93,7 +94,7 @@ if ($mode eq "car") {
 
 
 # Fuel handling
-} elsif ($mode eq "fuel") {
+} elsif ($mode eq "fuel" || $mode eq "vfuel") {
 	
 	# More command line handling
 	my ($carid, $fuel);
@@ -113,10 +114,33 @@ if ($mode eq "car") {
 	# Test Input
 	die "Invalid car" unless $carid =~ /^[0-9]+$/;
 	die "Invalid fuel" unless $fuel =~ /^[0-9LRlr:,Xx\#\n]+$/m;
+	
+
+	# Try request against test server
+	my %all_cars = load_allcars();
+	my $car = $all_cars{$carid};
+   	$request = HTTP::Request->new( GET => 'http://nfa.imn.htwk-leipzig.de/icfpcont/' );
+    $response = $ua->request($request);
+    $form = HTML::Form->parse( $response );
+    $form->value( "G0", $car );
+	$form->value( "G1", $fuel );
+	$request = $form->click();
+	$response = $ua->request($request);
+
+	# Parse answer from test server
+	unless ($response->content =~ /Good! The car can use this fuel./m) {
+		$response->content =~ /<pre>([^<]+)<\/pre>/m;
+        printf("error, carid=%d, fuel not matching\n", $carid);
+        print STDERR $1 if $mode eq "vfuel";
+		exit 1;
+	}
+
+	# Test server says its ok, continue to real server	
 
 	# GET the car form, renew login if necessary
     while (1) {
     	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/'. $carid .'/solve/form' );
+		$cookieJar->add_cookie_header( $request );
 	    $response = $ua->request($request);
 		next if $response->content =~ /Access is denied/;
 		last;
@@ -150,7 +174,7 @@ if ($mode eq "car") {
         exit 1;
 	} elsif ($response->content =~ /<pre>([^<]+)<\/pre>/m) {
         printf("error, carid=%d, fuel not matching\n", $carid);
-        #print STDERR $1;
+        print STDERR $1 if $mode eq "vfuel";
 		exit 1;
     } else {
 		die "Could not parse result. Output saved to ./out.html";
@@ -158,25 +182,13 @@ if ($mode eq "car") {
 
 
 # Getcars handling
-} elsif ($mode eq "getcars") {
+} elsif ($mode eq "getcarids") {
 
-
-	# GET the car form, renew login if necessary
-    while (1) {
-    	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/score/instanceTeamCount' );
-	    $response = $ua->request($request);
-		next unless $response->content =~ /action/;
-		last;
-	} continue {
-		login();
-	}
-
-	my @matches = $response->content =~ m|action="/icfp10/instance/[0-9]+/solve/form"|g;
-	foreach (@matches) {
-		s|^action="/icfp10/instance/([0-9]+)/solve/form"$|$1|;
+	my %all_cars = load_allcars();
+	
+	foreach (keys %all_cars) {
 		print $_;
 	}
-
 
 # Badcars handling
 } elsif ($mode eq "badcars") {
@@ -191,13 +203,57 @@ if ($mode eq "car") {
 	}
 	close $known_cars_fh;
 
+	my %all_cars2 = load_allcars();
+
 	# Loop over bad cars	
 	my $carid;
 	foreach $carid (@bad_cars) {
+		printf("%d %s\n", $carid, $all_cars2{$carid});
+	}
+
+# Update allcars
+} elsif ($mode eq "update-allcars") {
+
+	# Load allcars file
+	my %all_cars3 = load_allcars();
+
+	# GET the car form, renew login if necessary
+    while (1) {
+    	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/score/instanceTeamCount' );
+	    $response = $ua->request($request);
+		next unless $response->content =~ /action/;
+		last;
+	} continue {
+		login();
+		print STDERR "Warning: Renewing login";
+	}
+
+	my @server_cars;
+	my @matches = $response->content =~ m|action="/icfp10/instance/[0-9]+/solve/form"|g;
+	foreach (@matches) {
+		s|^action="/icfp10/instance/([0-9]+)/solve/form"$|$1|;
+		push @server_cars, $_;
+	}
+
+	# Filter cars	
+	my @new_cars = grep { ! exists $all_cars3{$_} } @server_cars;
+
+	my $no_new_cars = @new_cars;
+	print "Found ${no_new_cars} new cars\n";		
+
+	# Open output-descr to update allcars.txt
+	my $all_cars_fh;
+	open $all_cars_fh, ">> data/allcars.txt" || die;
+
+	# Loop over new cars	
+	my $carid2;
+	my $i;
+	foreach $carid2 (@new_cars) {
+		$i++;
 		
 		# GET the car form, renew login if necessary
 	    while (1) {
-    		$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/'. $carid .'/solve/form' );
+    		$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/'. $carid2 .'/solve/form' );
 	    	$response = $ua->request($request);
 			next if $response->content =~ /Access is denied/;
 			last;
@@ -206,16 +262,21 @@ if ($mode eq "car") {
 		}
 
 		if ($response->content =~ m/Car:<\/label>([0-3]+)<\/div>/) {
-			printf("%d %s\n", $carid, $1);
+			print $all_cars_fh sprintf("%d %s", $carid2, $1);
+			print "${i}/${no_new_cars}\n";
 		} else {
-			print STDERR sprintf("%d parse error\n", $carid);
+			print STDERR sprintf("%d parse error\n", $carid2);
 		}
 	}
+	
+	close $all_cars_fh;
+	print "data/allcars.txt updated.";
 }
 
 
 
-# Submitt login form
+
+# Submit login form
 sub login {
     # GET the form (including the session cookie)
     my $request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/login' );
@@ -232,3 +293,17 @@ sub login {
     $response = $ua->request($request);
 }
 
+
+# Load allcars file
+sub load_allcars {
+	my %all_cars;
+	my $all_cars_fh;
+	open $all_cars_fh, "< data/allcars.txt" || die "Cannot load database of all cars";
+	while (<$all_cars_fh>) {
+		next if m/^ ?$/;
+		die unless m/^([0-9]+) (.*)$/;
+		$all_cars{$1} = $2;
+	}
+	close $all_cars_fh;
+	return %all_cars;
+}

@@ -13,7 +13,11 @@
 	   (map thing-to-string thing))  
     (if (vector? thing)
       (apply str (map thing-to-string thing))
-      (encode-number thing))))
+      (if (seq? thing)
+	(do 
+	  (println "warning. got sequential which is neither a list not a vector. assuming list.")
+	  (recur (apply list thing)))
+	(encode-number thing)))))
 
 
 (defn output-fuel "(((1))) is a fuel" 
