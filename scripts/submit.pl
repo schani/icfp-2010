@@ -48,6 +48,7 @@ if ($mode eq "car") {
 	# GET the car form, renew login if necessary
     while (1) {
     	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/form' );
+		$cookieJar->add_cookie_header( $request );
 	    $response = $ua->request($request);
 		next if $response->content =~ /Access is denied/;
 		last;
@@ -139,6 +140,7 @@ if ($mode eq "car") {
 	# GET the car form, renew login if necessary
     while (1) {
     	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/'. $carid .'/solve/form' );
+		$cookieJar->add_cookie_header( $request );
 	    $response = $ua->request($request);
 		next if $response->content =~ /Access is denied/;
 		last;
@@ -233,15 +235,21 @@ if ($mode eq "car") {
 		push @server_cars, $_;
 	}
 
+	# Filter cars	
 	my @new_cars = grep { ! exists $all_cars3{$_} } @server_cars;
-	
+
+	my $no_new_cars = @new_cars;
+	print "Found ${no_new_cars} new cars\n";		
+
 	# Open output-descr to update allcars.txt
 	my $all_cars_fh;
 	open $all_cars_fh, ">> data/allcars.txt" || die;
 
 	# Loop over new cars	
 	my $carid2;
+	my $i;
 	foreach $carid2 (@new_cars) {
+		$i++;
 		
 		# GET the car form, renew login if necessary
 	    while (1) {
@@ -255,7 +263,7 @@ if ($mode eq "car") {
 
 		if ($response->content =~ m/Car:<\/label>([0-3]+)<\/div>/) {
 			print $all_cars_fh sprintf("%d %s", $carid2, $1);
-			print ".";
+			print "${i}/${no_new_cars}\n";
 		} else {
 			print STDERR sprintf("%d parse error\n", $carid2);
 		}
