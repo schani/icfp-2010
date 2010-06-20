@@ -145,3 +145,15 @@
 
 (defn parse-car [input]
   (parse-list input parse-chamber))
+
+(defn parse-list-1 [input]
+  (parse-list input parse-number))
+
+(defn parse-list-2 [input]
+  (parse-list input parse-list-1))
+
+(defn parse-fuel [input]
+  (parse-list input parse-list-2))
+
+
+
