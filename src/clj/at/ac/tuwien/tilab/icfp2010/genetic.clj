@@ -3,7 +3,8 @@
 	at.ac.tuwien.tilab.icfp2010.ternary
 	at.ac.tuwien.tilab.icfp2010.search
 	at.ac.tuwien.tilab.icfp2010.superpmap
-	at.ac.tuwien.complang.distributor.vsc)
+	at.ac.tuwien.complang.distributor.vsc
+	clojure.contrib.math)
   (:require clojure.contrib.string)
   (:import [at.ac.tuwien.tilab.icfp2010 Fuel]))
 
@@ -118,7 +119,15 @@
 			       max-neg (if (zero? (count negs)) 0 (apply max negs))]
 			   (if (zero? pos-count)
 			     max-neg
-			     (- (/ max-neg 2)))))
+			     (let [upper-freqs (frequencies (:upper chamber))
+				   lower-freqs (frequencies (:lower chamber))
+				   diff-score (apply * (map (fn [t]
+							      (/ 1 (inc (abs (- (get upper-freqs t 0) (get lower-freqs t 0))))))
+							    (range num-tanks)))
+				   tanks-score (* (count upper-freqs) (count lower-freqs))]
+			       (* (- (/ max-neg pos-count))
+				  ;diff-score
+				  tanks-score)))))
 		       nil
 		       (fn [chamber] (mutate-chamber *random* chamber num-tanks))
 		       (fn [gen fit-pop] (>= gen max-generations)))))
