@@ -74,7 +74,7 @@ public class Fuel {
 	long x = m [i][j] + diff;
 	if (x < 0)
 	    x = 0;
-	else if (x == 0 && i == 0 && j == 0)
+	if (x == 0 && i == 0 && j == 0)
 	    x = 1;
 
 	m [i][j] = x;
