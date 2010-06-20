@@ -84,3 +84,51 @@
 		     (if solution 
 		       (conj solutions [car-id solution])
 		       solutions)))))))))
+
+(def mathematica-header "#$ -N mathematica\n#$ -pe mpich 32\n#$ -M mark.probst@gmail.com\n#$ -l h_rt=06:00:00\n#######$ -ar 2046\n#$ -cwd\n#$ -V\n\nMATHDIR=/opt/mathematica/tuwien/70/bin\n\n$MATHDIR/math <<EOF\n")
+(def mathematica-footer "\nEOF")
+
+(defn car-to-mathematica [car]
+  (loop [chamber-list car, string "", num-of-tanks 0, num-of-chambs 0]
+    (if (empty? chamber-list)
+      (str
+       string
+       "FindInstance[ "
+       (apply str (map (fn [x] (str "Z" x " >= 0 && ")) (range  num-of-chambs)))
+       (reduce (fn [x y] (str x " && " y)) (map (fn [x] (str "A" x " >= 0")) (range  (inc num-of-tanks))))
+       ", {"
+       (reduce (fn [x y] (str x ", " y)) (map (fn [x] (str "A" x)) (range  (inc num-of-tanks))))
+       "}, Integers]"
+       )
+      (let [chamber (first chamber-list), max-num (apply max (cons num-of-tanks (concat (chamber :upper) (chamber :lower))))]
+	(recur (rest chamber-list)
+	       (str  "Z" num-of-chambs " = "
+		     (reduce (fn [x y] (str x "*" y)) (map (fn [x] (str "A" x)) (chamber :upper )))
+		     " - "
+		     (reduce (fn [x y] (str x "*" y)) (map (fn [x] (str "A" x)) (chamber :lower )))
+		     (if (chamber :is-main)
+		       " - 1"
+		       ""
+		       )
+		     ";\n")
+	       max-num
+	       (inc num-of-chambs)
+	       )
+	))))
+
+(defn prepare-cars-mathematica [file]
+  (let [pattern (re-pattern "id=(\\d+) car=(\\d+)")]
+    (with-open [file (BufferedReader. (FileReader. file))]
+	(loop [lines (line-seq file)]
+	  (if-not lines
+	    nil
+	    (let [line (first lines)
+		  [_ car-id car-code] (first (re-seq pattern line))
+		  parsed-car (second (parse-car car-code))
+		  math-string (car-to-mathematica parsed-car)]
+	      (do
+		(with-open [out (BufferedWriter. (FileWriter. (str "mathematica_car" car-id ".sh")))]
+		(.write out (str mathematica-header math-string mathematica-footer))
+		))
+	      (recur (next lines))
+	      ))))))
