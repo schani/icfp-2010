@@ -3,6 +3,8 @@
 	at.ac.tuwien.tilab.icfp2010.ternary
 	at.ac.tuwien.tilab.icfp2010.search
 	at.ac.tuwien.tilab.icfp2010.superpmap
+	at.ac.tuwien.tilab.icfp2010.fuel
+	at.ac.tuwien.tilab.icfp2010.chambaopti
 	at.ac.tuwien.complang.distributor.vsc
 	clojure.contrib.math)
   (:require clojure.contrib.string)
@@ -137,6 +139,20 @@
 					      nil
 					      (fn [chamber] (mutate-chamber *random* chamber num-tanks max-sections))
 					      (fn [gen fit-pop] (>= gen max-generations))
-					      :mutation-rate 950)]
-    (map (fn [[chamber score]] [chamber (score-fn chamber)])
-	 fit-pop)))
+					      :mutation-rate 950)
+	[best best-score] (first fit-pop)]
+    (if (< best-score 0)
+      nil
+      (let [car [best]
+	    list-fuelss (map #(map unjava-fuel %)
+			     (filter #(> (car-fuels-score car %) 0) fuelss))
+	    car (minimized-car car)
+	    mapping (into {} (map (fn [[k v]] [v k]) (:mapping (meta car))))
+	    fuels (first list-fuelss)
+	    fuels (map #(nth fuels (mapping %))
+		       (range (count fuels)))
+	    transposed-fuels (apply list (map #(apply list (apply map list %)) fuels))]
+	(println (thing-to-string (car-schani2biely car)))
+	(println transposed-fuels)
+	(println (thing-to-string transposed-fuels))
+	[(count list-fuelss) car fuels]))))
