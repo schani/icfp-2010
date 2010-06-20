@@ -103,7 +103,7 @@
        "StringForm[\""
        id
        " ("
-       (apply str (map (fn [x] " ((``)) ") (range (inc num-of-tanks))))
+       (apply str (map (fn [x] (str " ((``)) ")) (range (inc num-of-tanks))))
        ")\", "
        (reduce (fn [x y] (str x ", " y)) (map (fn [x] (str "A" x "/.X[[1]]")) (range  (inc num-of-tanks))))
        "]\n\n"
@@ -137,9 +137,8 @@
 		  [_ car-id car-code] (first (re-seq pattern line))
 		  parsed-car (second (parse-car car-code)) 
 		  math-string (car-to-mathematica car-id parsed-car)]
-	      (with-open [out (BufferedWriter. (FileWriter. (str "mathematica_car" car-id))), script (BufferedWriter. (FileWriter. (str "mathematica_car" car-id ".sh")))]
+	      (with-open [out (BufferedWriter. (FileWriter. (str "mathematica_cars/mathematica_car" car-id)))]
 		(.write out math-string )
-;		(.write script (str mathematica-header "mathematica_car" car-id))
 		)
 	      (recur (rest lines))
 	      ))))))
