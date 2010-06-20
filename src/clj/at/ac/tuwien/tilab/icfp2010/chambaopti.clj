@@ -82,6 +82,8 @@
 	       {:upper ['a 'b 'c], :is-main true, :lower ['b 'c 'a 'd]}
 	       {:upper ['f 'a], :is-main true, :lower ['b 'c]}])
 
+(defn car-biely2schani [car]
+  (map #({:upper (first %) :is-main (if (= (second %) 0) false true) :lower (second (rest %))}) car))
 
 ; (compare-cars some-car some-car)
 ; (perm-car some-car)
@@ -95,3 +97,15 @@
 ; (transform-car some-car)
 
 ; (compare-pipes [1 1 1] [1 1])
+
+(defn saubua [x]
+  {:upper (x 0) :is-main (if (= (x 1) 0) true false) :lower (x 2)})
+
+(defn car-biely2schani [car]
+  (map saubua car))
+
+(defn bielyfizierer [chamber]
+  [(:upper chamber) (if (= (:is-main chamber) true) 0 1) (:lower chamber)])
+
+(defn car-schani2biely [car]
+  (map bielyfizierer car))
