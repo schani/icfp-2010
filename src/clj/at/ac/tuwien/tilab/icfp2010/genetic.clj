@@ -1,5 +1,6 @@
 (ns at.ac.tuwien.tilab.icfp2010.genetic
-  (:use at.ac.tuwien.tilab.icfp2010.cars)
+  (:use at.ac.tuwien.tilab.icfp2010.cars
+	at.ac.tuwien.tilab.icfp2010.ternary)
   (:import [at.ac.tuwien.tilab.icfp2010 Fuel]))
 
 (defn- choose [random pop]
@@ -16,7 +17,7 @@
     (loop [generation 0
 	   population population]
       (let [fitness-pop (reverse (sort-by second (map (fn [i] [i (fitness-func i)]) population)))]
-	(println {:generation generation :best (first fitness-pop) :worst (last fitness-pop)})
+	(println {:generation generation :best (second (first fitness-pop)) :worst (second (last fitness-pop))})
 	(if (stop-cond-pred generation fitness-pop)
 	  [generation fitness-pop]
 	  (recur (inc generation)
@@ -48,3 +49,21 @@
 		       (fn [fuels] (map #(.mutate % *random* max-mutate) fuels))
 		       (fn [gen fit-pop] (or (>= gen max-generations)
 					     (> (second (first fit-pop)) 0))))))
+
+(defn koeblerify-fuels [fuels]
+  (let [fuels (map unjava-fuel fuels)]
+    (map #(apply map list %) fuels)))
+
+(defn genetic-solve-car-from-string [car-string min-ingred max-ingred pop-size init-max max-mutate max-generations]
+  (let [[rest-string car] (parse-car car-string)]
+    (cond (not (empty? rest-string)) [false "car does not parse"]
+	  (< (car-tanks car) 2) [false "car does not have at least 2 tanks"]
+	  :else
+	  (loop [num-ingred min-ingred]
+	    (if (> num-ingred max-ingred)
+	      [false "no cars found"]
+	      (let [[gen fit-pop] (genetic-fuels car num-ingred pop-size init-max max-mutate max-generations)
+		    [best best-score] (first fit-pop)]
+		(if (> best-score 0)
+		  [true (koeblerify-fuels best)]
+		  (recur (inc num-ingred)))))))))
