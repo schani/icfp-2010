@@ -35,6 +35,23 @@
 	(recur (cons car2 result) (rest todo) mapping nextindex)))))
 
 (defn compare-pipes [pipe1 pipe2]
+  (let [cp1 (count pipe1)
+	cp2 (count pipe2)]
+    (if (= cp1 cp2)
+      (loop [p1 pipe1
+	     p2 pipe2]
+	(if (empty? p1)
+	  '=
+	  (if (= (first p1) (first p2))
+	    (recur (rest p1) (rest p2))
+	    (if (< (first p1) (first p2))
+	      '<
+	      '>))))
+      (if (< cp1 cp2)
+	'<
+	'>))))
+
+(defn compare-pipes-buggy [pipe1 pipe2]
   (loop [p1 pipe1
 	 p2 pipe2]
     (if (empty? p1)
@@ -43,11 +60,7 @@
 	'<)
       (if (empty? p2)
 	'>
-	(if (= (first p1) (first p2))
-	  (recur (rest p1) (rest p2))
-	  (if (< (first p1) (first p2))
-	    '<
-	    '>))))))
+
 
 (defn compare-chambers [chamber1 chamber2]
   (let [upper (compare-pipes (:upper chamber1) (:upper chamber2))]
@@ -84,6 +97,10 @@
 
 (defn car-biely2schani [car]
   (map #({:upper (first %) :is-main (if (= (second %) 0) false true) :lower (second (rest %))}) car))
+
+
+(defn minimized-car [car]
+  (first (sort car-smaller (map first (map transform-car (perm-car car))))))
 
 ; (compare-cars some-car some-car)
 ; (perm-car some-car)
