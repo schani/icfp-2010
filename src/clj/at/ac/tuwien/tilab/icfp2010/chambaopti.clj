@@ -105,7 +105,7 @@
   (map saubua car))
 
 (defn bielyfizierer [chamber]
-  [(:upper chamber) (if (= (:is-main chamber) true) 0 1) (:lower chamber)])
+  [(apply list (:upper chamber)) (if (= (:is-main chamber) true) 0 1) (apply list (:lower chamber))])
 
 (defn car-schani2biely [car]
   (apply list (map bielyfizierer car)))
