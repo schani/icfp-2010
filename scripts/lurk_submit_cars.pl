@@ -50,11 +50,13 @@ my $good_cars_fh;
 open $good_cars_fh, ">> data/known_cars.txt" || die;
 
 my ($car, $fuel, $goodfuel);
+my $no = @new_cars; my $i = 0;
 foreach $car (@new_cars) {
+	$i++;
 	# try each known fuel against new car
 	$goodfuel = undef;
 	foreach $fuel (@fuels) {
-		print "./submit.pl fuel $car - <data/fuel_${fuel}.txt : ";
+		print "${i}/${no}: ./submit.pl fuel $car - <data/fuel_${fuel}.txt : ";
 		system "./submit.pl fuel $car - <data/fuel_${fuel}.txt";
 		$goodfuel = $fuel if ($? == 0 || $? == 2560);
 	}
