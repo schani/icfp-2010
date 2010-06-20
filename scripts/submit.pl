@@ -164,6 +164,7 @@ if ($mode eq "car" || $mode eq "vcar") {
         printf("error, carid=%d, fuel not matching\n", $carid);
 		exit 1;
 	}
+	print STDERR "Hint: Test server ok, now submitting\n";
 
 	# Test server says its ok, continue to real server	
 
