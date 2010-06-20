@@ -68,7 +68,7 @@
        nil)))
 
 (defn solve-all-simple-cars [file]
-  (let [pattern (re-pattern "id=(\\d+) car=(\\d+)")]
+  (let [pattern (re-pattern "(\\d+) (\\d+)")]
     (with-open [file (BufferedReader. (FileReader. file))]
       (with-open [out (BufferedWriter. (FileWriter. "skriptl"))]
 	(loop [lines (line-seq file) solutions []]
@@ -78,6 +78,7 @@
 		  [_ car-id car-code] (first (re-seq pattern line))
 		  parsed-car (parse-car-carefully car-id car-code)
 		  solution (fuel-for-simple-car parsed-car)]
+	      (println (str "considering car #" car-id))
 	      (when solution
 					;	      (println (str "submission" car-id " "  solution))
 		(.write out (str "./build-and-submit-fuel.sh " car-id " " (thing-to-string solution) "\n"))
