@@ -75,6 +75,11 @@ if ($mode eq "car") {
     if ($response->content =~ /<span id="instance.errors" class="errors">([^<]+)<\/span>/m) {
         print $1;
         exit 1;
+    } elsif ($response->content =~ /You have submitted the car ([0-9])+ with size ([0-9]+)/m) {
+		my ($newid, $newsize) = ($1, $2);
+		$response->content =~ /This is car ([0-9]+) out of/;
+		printf("success, carid=%d, size=%d, carno=%d\n", $newid, $newsize, $1); 
+		exit 0;
     } elsif ($response->content =~ /<pre>([^<]+)<\/pre>/m) {
         print $1;
         exit 1;
