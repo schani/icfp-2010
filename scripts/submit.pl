@@ -260,8 +260,11 @@ if ($mode eq "car" || $mode eq "vcar") {
 	$request = HTTP::Request->new( GET => 'http://nfa.imn.htwk-leipzig.de/recent_cars/' );
     $response = $ua->request($request);
 	
-	my $page = 0;
-	my %allcars; my @matches;
+	my %allcars = load_allcars();	
+
+	my @tmpkeys = sort { $a <=> $b } keys %allcars;
+	my $page = pop(@tmpkeys);
+	my @matches;
 	do {
 		# round trip
 		$form = HTML::Form->parse( $response );
@@ -287,7 +290,7 @@ if ($mode eq "car" || $mode eq "vcar") {
 	# sort them, dump to outfile
 	my $all_cars_fh;
 	open $all_cars_fh, "> ${datapath}/.allcars.txt".$$ || die;
-	foreach (sort keys %allcars) {
+	foreach (sort { $a <=> $b } keys %allcars) {
 		print $all_cars_fh $_ . " " . $allcars{$_};
 	}
 	close $all_cars_fh;
