@@ -13,9 +13,9 @@
 	   (map thing-to-string thing))  
     (if (vector? thing)
       (apply str (map thing-to-string thing))
-      (if (seq? thing)
+      (if (not (number? thing))
 	(do 
-	  (println "warning. got sequential which is neither a list not a vector. assuming list.")
+	  (println "warning. not a number, trying to make a list of it.")
 	  (recur (apply list thing)))
 	(encode-number thing)))))
 
