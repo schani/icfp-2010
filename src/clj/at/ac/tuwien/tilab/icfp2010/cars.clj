@@ -3,7 +3,7 @@
   (:import [at.ac.tuwien.tilab.icfp2010 Fuel]))
 
 (defn long-arr [a]
-  (into-array (. Long TYPE) a))
+  (into-array (. Long TYPE) (map long a)))
 
 (def long-array-type (type (long-arr [1 2 3])))
 

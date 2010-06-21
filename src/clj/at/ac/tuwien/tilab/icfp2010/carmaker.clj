@@ -40,7 +40,6 @@
 	   :lower (vector (list i n) (list j m))
 	   }))
 
-(oages-auto 4 'A 11 'B)
 
 (defn oager-fuel [i n j m]
   (let [car (minimized-car (oages-auto i n j m))
@@ -50,4 +49,52 @@
 	   (second (invmapping %)) 
 	   (first (invmapping %)))
 	 (sort (keys invmapping))))))
+
+(defn make-fuel [automobil]
+  (let [car (minimized-car automobil)
+	swapper ((meta car) :mapping)
+	invmapping (into {} (map (fn [[x y]] [y x]) swapper))]
+    (apply list (map #(matrix-hoch-n 
+	   (second (invmapping %)) 
+	   (first (invmapping %)))
+	 (sort (keys invmapping))))))
+
+
+
+(def some-a '((6 2 0 0)
+	      (0 2 0 0)
+	      (0 0 6 2)
+	      (0 0 0 2)))
+
+(def some-b '((1 1 0 0)
+	      (0 1 0 0)
+	      (0 0 1 1)
+	      (0 0 0 1)))
+
+(def links '((1 0 0 0)
+	     (0 0 1 0)
+	     (0 0 0 1)
+	     (0 1 0 0)))
+
+(def rechts '((1 0 0 0)
+	      (0 0 0 1)
+	      (0 1 0 0)
+	      (0 0 1 0)))
+
+(defn perm-matrix-mix [auto]
+  (apply vector (apply list (map (fn [cham] 
+	 {:upper (apply vector (interleave (cham :upper) (repeat (list 1 links)) (repeat (list 1 rechts)))),
+	  :is-main (cham :is-main),
+	  :lower (apply vector (interleave (cham :lower) (repeat (list 1 links)) (repeat (list 1 rechts))))
+	  })
+       auto))))
+
+
+
+
+;; (beta-car (oages-auto 57 some-a 76 some-b))
+
+;; (thing-to-string (car-schani2biely (minimized-car (perm-matrix-mix beta-car))))
+
+;; (thing-to-string (make-fuel  (perm-matrix-mix beta-car)))
 
