@@ -14,7 +14,7 @@ while true; do
     ./log2known.pl
 
     echo "sleeping"
-    sleep 60 
+    sleep 600 
 done
 
 
