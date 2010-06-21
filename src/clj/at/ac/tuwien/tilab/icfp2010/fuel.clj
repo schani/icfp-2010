@@ -41,7 +41,7 @@
    
 
 (defn fuel-for-simple-car
-  "simple cars are cars which have something like a>b^221 and b>=a^222"
+  "simple cars are cars that have something like a>b^221 and b>=a^222"
   [c]
   (if-not (is-simple-car c)
     nil 
