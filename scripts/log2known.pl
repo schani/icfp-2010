@@ -36,16 +36,16 @@ while (<$log_fh>) {
 # Loop over solved
 my $good_cars_fh;
 my $carid;
-foreach $carid (keys %known_cars) {
+foreach $carid (keys %log_solved) {
 	next if $known_cars{$carid} eq "!";
 	if (! exists $known_cars{$carid}) {
 		open $good_cars_fh, ">> data/known_cars.txt" || die;
 		print $good_cars_fh "${carid} !";
 		close $good_cars_fh;
-		print $good_cars_fh "${carid} !";
+		#print "${carid} !";
 	} else {
 		system "sed -i 's/^${carid} .*\$/${carid} !/' ${datapath}/known_cars.txt";
-		print "sed -i 's/^${carid} .*\$/${carid} !/' ${datapath}/known_cars.txt";
+		#print "sed -i 's/^${carid} .*\$/${carid} !/' ${datapath}/known_cars.txt";
 	}		
 }
 
