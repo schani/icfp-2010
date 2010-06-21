@@ -165,4 +165,12 @@
 	    transposed-fuels (apply list (map #(apply list (apply map list %)) fuels))]
 	(println (thing-to-string (car-schani2biely car)))
 	(println (thing-to-string transposed-fuels))
-	[(count list-fuelss) car fuels]))))
+	[best-score (count list-fuelss) car fuels]))))
+
+(vsc-fn genetic-produce-car 1 [num-fuelss num-ingredients fuel-max num-tanks max-sections pop-size max-generations]
+	(let [[score fuelss-count car fuels] (genetic-car num-fuelss num-ingredients fuel-max num-tanks
+							  max-sections pop-size max-generations)]
+	  (if score
+	    (let [transposed-fuels (apply list (map #(apply list (apply map list %)) fuels))]
+	      [score fuelss-count car (thing-to-string (car-schani2biely car)) (thing-to-string transposed-fuels)])
+	    nil)))
