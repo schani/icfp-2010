@@ -84,6 +84,7 @@ if ($mode eq "car" || $mode eq "vcar") {
 		last;
 	} continue {
 		print STDERR "Retrying...";
+		sleep 1;
 		login() if $response->content =~ /Access is denied/;
 	}
 
@@ -97,7 +98,10 @@ if ($mode eq "car" || $mode eq "vcar") {
     $cookieJar->add_cookie_header( $request );
     do {
 	    $response = $ua->request($request);
-		print STDERR "Retrying..." unless ($response->code < 400);
+		unless ($response->code < 400) {
+			print STDERR "Retrying...";
+			sleep 1;
+		}
 	} until ($response->code < 400);
 
     # save output
@@ -150,27 +154,27 @@ if ($mode eq "car" || $mode eq "vcar") {
 	die "Invalid fuel" unless $fuel =~ /^[0-9LRlr:,Xx\#\n]+$/m;
 	
 
-	# Try request against test server
-	my %all_cars = load_allcars();
-	my $car = $all_cars{$carid};
-   	$request = HTTP::Request->new( GET => 'http://nfa.imn.htwk-leipzig.de/icfpcont/' );
-    $response = $ua->request($request);
-    $form = HTML::Form->parse( $response );
-    $form->value( "G0", $car );
-	$form->value( "G1", $fuel );
-	$request = $form->click();
-	$response = $ua->request($request);
-
-	# Parse answer from test server
-	unless ($response->content =~ /Good! The car can use this fuel./m) {
-		if ($mode eq "vfuel") {
-			my @msgs = $response->content =~ />([^<]+)<\/pre/g; 
-			print STDERR join("\n", @msgs);
-		}
-        printf("error, carid=%d, fuel not matching\n", $carid);
-		exit 1;
-	}
-	print STDERR "Hint: Test server ok, now submitting\n";
+#	# Try request against test server
+#	my %all_cars = load_allcars();
+#	my $car = $all_cars{$carid};
+#   	$request = HTTP::Request->new( GET => 'http://nfa.imn.htwk-leipzig.de/icfpcont/' );
+#    $response = $ua->request($request);
+#    $form = HTML::Form->parse( $response );
+#    $form->value( "G0", $car );
+#	$form->value( "G1", $fuel );
+#	$request = $form->click();
+#	$response = $ua->request($request);
+#
+#	# Parse answer from test server
+#	unless ($response->content =~ /Good! The car can use this fuel./m) {
+#		if ($mode eq "vfuel") {
+#			my @msgs = $response->content =~ />([^<]+)<\/pre/g; 
+#			print STDERR join("\n", @msgs);
+#		}
+#        printf("error, carid=%d, fuel not matching\n", $carid);
+#		exit 1;
+#	}
+#	print STDERR "Hint: Test server ok, now submitting\n";
 
 	# Test server says its ok, continue to real server	
 
@@ -184,6 +188,7 @@ if ($mode eq "car" || $mode eq "vcar") {
 		last;
 	} continue {
 		print STDERR "Retrying...";
+        sleep 1;
 		login() if $response->content =~ /Access is denied/;
 	}
 
@@ -196,7 +201,10 @@ if ($mode eq "car" || $mode eq "vcar") {
     $cookieJar->add_cookie_header( $request );
 	do {
 	    $response = $ua->request($request);
-		print STDERR "Retrying..." unless ($response->code < 400);
+		unless ($response->code < 400) {
+			print STDERR "Retrying...";
+			sleep 1;
+		}
 	} until ($response->code < 400);
 
     # save output
