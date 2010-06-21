@@ -54,25 +54,25 @@ if ($mode eq "car" || $mode eq "vcar") {
 	die "Invalid car" unless $car =~ /^[012]+$/;
 	die "Invalid fuel" unless $fuel =~ /^[0-9LRlr:,Xx\#\n]+$/m;
 
-	# Try request against test server
-	$request = HTTP::Request->new( GET => 'http://nfa.imn.htwk-leipzig.de/icfpcont/' );
-    $response = $ua->request($request);
-    $form = HTML::Form->parse( $response );
-    $form->value( "G0", $car );
-	$form->value( "G1", $fuel );
-	$request = $form->click();
-	$response = $ua->request($request);
-
-	# Parse answer from test server
-	unless ($response->content =~ /Good! The car can use this fuel./m) {
-		if ($mode eq "vcar") {
-			my @msgs = $response->content =~ />([^<]+)<\/pre/g; 
-			print STDERR join("\n", @msgs);
-		}
-        print "error, car & fuel not matching";
-		exit 1;
-	}
-	print "Hint: Test server ok, now submitting\n";
+#	# Try request against test server
+#	$request = HTTP::Request->new( GET => 'http://nfa.imn.htwk-leipzig.de/icfpcont/' );
+#    $response = $ua->request($request);
+#    $form = HTML::Form->parse( $response );
+#    $form->value( "G0", $car );
+#	$form->value( "G1", $fuel );
+#	$request = $form->click();
+#	$response = $ua->request($request);
+#
+#	# Parse answer from test server
+#	unless ($response->content =~ /Good! The car can use this fuel./m) {
+#		if ($mode eq "vcar") {
+#			my @msgs = $response->content =~ />([^<]+)<\/pre/g; 
+#			print STDERR join("\n", @msgs);
+#		}
+#        print "error, car & fuel not matching";
+#		exit 1;
+#	}
+#	print "Hint: Test server ok, now submitting\n";
 
 	# GET the car form, renew login if necessary
 	do {

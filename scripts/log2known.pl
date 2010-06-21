@@ -37,13 +37,13 @@ while (<$log_fh>) {
 my $good_cars_fh;
 my $carid;
 foreach $carid (keys %log_solved) {
-	next if $known_cars{$carid} eq "!";
 	if (! exists $known_cars{$carid}) {
 		open $good_cars_fh, ">> data/known_cars.txt" || die;
 		print $good_cars_fh "${carid} !";
 		close $good_cars_fh;
 		#print "${carid} !";
 	} else {
+		next if $known_cars{$carid} eq "!";
 		system "sed -i 's/^${carid} .*\$/${carid} !/' ${datapath}/known_cars.txt";
 		#print "sed -i 's/^${carid} .*\$/${carid} !/' ${datapath}/known_cars.txt";
 	}		
