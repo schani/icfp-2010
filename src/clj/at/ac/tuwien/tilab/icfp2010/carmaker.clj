@@ -94,7 +94,29 @@
 
 ;; (beta-car (oages-auto 57 some-a 76 some-b))
 
-;; (thing-to-string (car-schani2biely (minimized-car (perm-matrix-mix beta-car))))
 
-;; (thing-to-string (make-fuel  (perm-matrix-mix beta-car)))
+(def liste '((23 73) (71 73) (41 31) (53 61) (42 7)
+;	     (325 142) (99 56) (201 4) (277 53) (18 3)
+	     ))
+
+(def liste2 '((43 51) (53 122) (49 17) (85 100) (67 43)
+	      (101 103) (111 87) (72 99) (76 98) (50 60)))
+
+(def liste3 '((53 61) (57 22) (79 97) (83 14) (19 77)
+	      (6 73) (91 7) (34 69) (75 35) (82 75)))
+
+(defn make-some-cars [l]
+     (loop [s "" 
+	    l l]
+       (if (empty? l)
+	 s
+	 (let [p (first l)
+	       beta-car (oages-auto (first p) some-a (second p) some-b)]
+	   (recur (str s "./build-and-submit-car.sh "
+		       (thing-to-string (car-schani2biely (minimized-car (perm-matrix-mix beta-car)))) " "
+		       (thing-to-string (make-fuel  (perm-matrix-mix beta-car)))
+		       "\n\n") 
+		  (rest l))))))
+
+
 
