@@ -103,12 +103,25 @@
 (defn read-cars-from-file [filename]
   (map #(clojure.contrib.string/split #"\s+" %) (clojure.contrib.string/split-lines (slurp filename))))
 
+(defn transpose [l]
+  (apply map list l))
+
+(def fuels-blacklist
+     (let [lines (filter #(and (> (count %) 0) (not (.startsWith % "#")))
+			 (clojure.contrib.string/split-lines (slurp "submissions/check_fuels.list")))
+	   fuelss (map #(second (parse-fuel %)) lines)
+	   fuelss (map transpose fuelss)]
+       (apply vector (map (fn [fuels]
+			    (map make-java-fuel fuels))
+			  fuelss))))
+
 (defn genetic-car [num-fuelss num-ingredients fuel-max num-tanks max-sections pop-size max-generations]
   (let [fuelss (map (fn [_]
 		      (map (fn [_]
 			     (Fuel/randomFuel *random* num-ingredients fuel-max))
 			   (range num-tanks)))
 		    (range num-fuelss))
+	blacklist (filter #(>= (count %) num-tanks) fuels-blacklist)
 	pop (map (fn [_]
 		   (random-chamber *random* num-tanks max-sections))
 		 (range pop-size))
@@ -124,16 +137,14 @@
 			     lower-freqs (frequencies (:lower chamber))
 			     upper-count (count (:upper chamber))
 			     lower-count (count (:lower chamber))
-			     diff-score (apply * (map (fn [t]
-							(/ 1 (inc (abs (- (get upper-freqs t 0) (get lower-freqs t 0))))))
-						      (range num-tanks)))
 			     tanks-score (* (count upper-freqs) (count lower-freqs))
-			     short-upper-score (if (< upper-count lower-count) 2 1)]
+			     short-upper-score (if (< upper-count lower-count) 2 1)
+			     blacklist-match (some #(> (car-fuels-score car %) 0) blacklist)]
 			 [(expt (- (/ max-neg pos-count))
 				(/ 1 (max upper-count lower-count)))
-			  ;diff-score
 			  tanks-score
-			  short-upper-score]))))
+			  short-upper-score
+			  (if blacklist-match 1/10 1)]))))
 	[num-gens fit-pop] (genetic-algorithm pop
 					      (fn [chamber] (apply * (score-fn chamber)))
 					      nil
@@ -153,6 +164,5 @@
 		       (range (count fuels)))
 	    transposed-fuels (apply list (map #(apply list (apply map list %)) fuels))]
 	(println (thing-to-string (car-schani2biely car)))
-	(println transposed-fuels)
 	(println (thing-to-string transposed-fuels))
 	[(count list-fuelss) car fuels]))))
