@@ -5,8 +5,6 @@ use strict;
 my $new_fuel_name = shift || die "Synopis: ./submit_new_fuel_against_all.pl data/fuel_XXX.txt";
 die "specify fuel as: data/fuel_XXX.txt" unless $new_fuel_name =~ m|data/fuel_.*\.txt|;
 
-system "touch data/new_fuel.lock";
-
 
 my %known_cars;
 my %fuels;
@@ -48,6 +46,7 @@ foreach $car (keys %known_cars) {
 	$i++;
 	
 	my $carfuel = $known_cars{$car};
+	next if $carfuel eq "!"; # external fuel, don't touch!
 	
 	# don't try if we already have better fuel
 	my $old_fuel_size = $fuels{$carfuel} || 100000;
@@ -66,5 +65,4 @@ foreach $car (keys %known_cars) {
 	}
 }
 
-system "rm -f data/new_fuel.lock";		
 print "All done!\n";

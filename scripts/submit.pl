@@ -273,6 +273,7 @@ if ($mode eq "car" || $mode eq "vcar") {
 		printf("%d %s\n", $carid, $all_cars{$carid});
 	}
 
+
 # Update allcars
 } elsif ($mode eq "update-allcars") {
 

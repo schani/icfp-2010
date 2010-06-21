@@ -1,7 +1,5 @@
 #!/usr/bin/perl -Wall
 
-die "Lockfile present!" if -f "data/new_fuel.lock";
-
 my %known_cars;
 my @all_cars;
 my @fuels;
@@ -47,7 +45,6 @@ while (<$fuel_fh>) {
 
 # Open output-descr to update db
 my $good_cars_fh;
-open $good_cars_fh, ">> data/known_cars.txt" || die;
 
 my ($car, $fuel, $goodfuel);
 my $no = @new_cars; my $i = 0;
@@ -62,12 +59,14 @@ foreach $car (@new_cars) {
 		last if $goodfuel;
 	}
 	# save success to db
+	open $good_cars_fh, ">> data/known_cars.txt" || die;
 	if ($goodfuel) {
 		print $good_cars_fh "${car} ${goodfuel}";
 	} else {
 		print $good_cars_fh "${car} -";
 	}
+	close $good_cars_fh;
 }
 		
-close $good_cars_fh;
+
 print "All done!\n";
