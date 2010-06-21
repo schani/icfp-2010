@@ -93,21 +93,19 @@
 	     (dec length)))))
 
 (defn encode-number [input]
-  (case input
-	0 "0"
-	1 "10"
-	2 "11"
-	3 "12"
-	(str "22"
-	     (encode-number (- (invert-len-offset input) 2))
-	     (trinarify-number (- input (len-offset (invert-len-offset input)))
-			       (invert-len-offset input)))))
+  (cond (zero? input) "0"
+	(= 1 input) "10"
+	(= 2 input) "11"
+	(= 3 input) "12"
+	:else (str "22"
+		   (encode-number (- (invert-len-offset input) 2))
+		   (trinarify-number (- input (len-offset (invert-len-offset input)))
+				     (invert-len-offset input)))))
 
 (defn encode-list-length [len]
-  (case len 
-	0 "0"
-	1 "1"
-	(str "22" (encode-number (- len 2)))))
+  (cond (zero? len) "0"
+	(= 1 len) "1"
+	:else (str "22" (encode-number (- len 2)))))
 
 (defn parse-number [input]
   (case (first input)
