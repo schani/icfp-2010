@@ -75,28 +75,29 @@ if ($mode eq "car" || $mode eq "vcar") {
 	print "Hint: Test server ok, now submitting\n";
 
 	# GET the car form, renew login if necessary
-    while (1) {
-    	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/form' );
-		$cookieJar->add_cookie_header( $request );
-	    $response = $ua->request($request);
-		next if $response->code >= 400;
-		next if $response->content =~ /Access is denied/;
-		last;
-	} continue {
-		print STDERR "Retrying...";
-		sleep 1;
-		login() if $response->content =~ /Access is denied/;
-	}
+	do {
+        while (1) {
+        	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/form' );
+    		$cookieJar->add_cookie_header( $request );
+    	    $response = $ua->request($request);
+    		next if $response->code >= 400;
+    		next if $response->content =~ /Access is denied/;
+    		last;
+    	} continue {
+    		print STDERR "Retrying...";
+    		sleep 1;
+    		login() if $response->content =~ /Access is denied/;
+    	}
 
-    # parse the form, fill in values
-    $form = HTML::Form->parse( $response );
-    $form->value( "problem", $car );
-    $form->value( "exampleSolution.contents", $fuel );
+        # parse the form, fill in values
+        $form = HTML::Form->parse( $response );
+        $form->value( "problem", $car );
+        $form->value( "exampleSolution.contents", $fuel );
 
-    # make new request, add cookie, post
-    $request = $form->click();
-    $cookieJar->add_cookie_header( $request );
-    do {
+        # make new request, add cookie, post
+        $request = $form->click();
+        $cookieJar->add_cookie_header( $request );
+    
 	    $response = $ua->request($request);
 		unless ($response->code < 400) {
 			print STDERR "Retrying...";
@@ -179,27 +180,28 @@ if ($mode eq "car" || $mode eq "vcar") {
 	# Test server says its ok, continue to real server	
 
 	# GET the car form, renew login if necessary
-    while (1) {
-    	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/'. $carid .'/solve/form' );
-		$cookieJar->add_cookie_header( $request );
-	    $response = $ua->request($request);
-		next if $response->code >= 400;
-		next if $response->content =~ /Access is denied/;
-		last;
-	} continue {
-		print STDERR "Retrying...";
-        sleep 1;
-		login() if $response->content =~ /Access is denied/;
-	}
-
-	# parse the form, fill in values
-    $form = HTML::Form->parse( $response );
-    $form->value( "contents", $fuel );
-
-    # make new request, add cookie, post
-    $request = $form->click();
-    $cookieJar->add_cookie_header( $request );
 	do {
+        while (1) {
+        	$request = HTTP::Request->new( GET => 'http://icfpcontest.org/icfp10/instance/'. $carid .'/solve/form' );
+    		$cookieJar->add_cookie_header( $request );
+    	    $response = $ua->request($request);
+    		next if $response->code >= 400;
+    		next if $response->content =~ /Access is denied/;
+    		last;
+    	} continue {
+    		print STDERR "Retrying...";
+            sleep 1;
+    		login() if $response->content =~ /Access is denied/;
+    	}
+
+    	# parse the form, fill in values
+        $form = HTML::Form->parse( $response );
+        $form->value( "contents", $fuel );
+
+        # make new request, add cookie, post
+        $request = $form->click();
+        $cookieJar->add_cookie_header( $request );
+	
 	    $response = $ua->request($request);
 		unless ($response->code < 400) {
 			print STDERR "Retrying...";
@@ -272,6 +274,7 @@ if ($mode eq "car" || $mode eq "vcar") {
 		next if exists $log_solved{$carid};
 		printf("%d %s\n", $carid, $all_cars{$carid});
 	}
+
 
 # Update allcars
 } elsif ($mode eq "update-allcars") {

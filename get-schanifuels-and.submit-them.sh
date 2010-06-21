@@ -8,7 +8,7 @@
 
 RUNTIME=`date +"%F-%T"`
 
-SCHANIFILE="submissions/genetic-fuels-2"
+SCHANIFILE="submissions/genetic-fuels-3"
 
 SUBMISSIONFILE="submissions/submittable-fuels-$RUNTIME.txt"
 SUBLISSIONLOGFILE="submissions/submittable-fuels-$RUNTIME.log"
